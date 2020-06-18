@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_task_planner_app/bloc/login_bloc.dart';
+import 'package:flutter_task_planner_app/bloc/navigation_bloc.dart';
 
 import 'package:flutter_task_planner_app/screens/home_page.dart';
 import 'package:flutter_task_planner_app/theme/colors/light_colors.dart';
@@ -9,7 +10,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 void main() => runApp(LoginPage());
   
 
-class LoginPage extends StatelessWidget{
+class LoginPage extends StatelessWidget with NavigationStates{
   TextEditingController accountController = TextEditingController();
   TextEditingController passController = TextEditingController();
   LoginBloc bloc = LoginBloc();

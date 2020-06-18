@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_task_planner_app/bloc/navigation_bloc.dart';
 import 'package:flutter_task_planner_app/screens/calendar_page.dart';
 import 'package:flutter_task_planner_app/theme/colors/light_colors.dart';
 import 'package:percent_indicator/percent_indicator.dart';
@@ -6,7 +7,7 @@ import 'package:flutter_task_planner_app/widgets/task_column.dart';
 import 'package:flutter_task_planner_app/widgets/active_project_card.dart';
 import 'package:flutter_task_planner_app/widgets/top_container.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatelessWidget with NavigationStates{
   Text subheading(String title) {
     return Text(
       title,
@@ -46,12 +47,7 @@ class HomePage extends StatelessWidget {
                   children: <Widget>[
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Icon(Icons.menu,
-                            color: LightColors.kDarkBlue, size: 30.0),
-                        Icon(Icons.search,
-                            color: LightColors.kDarkBlue, size: 25.0),
-                      ],
+                      
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(
