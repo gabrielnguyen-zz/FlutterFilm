@@ -2,7 +2,10 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_task_planner_app/bloc/login_bloc.dart';
+import 'package:flutter_task_planner_app/bloc/logout_bloc.dart';
 import 'package:flutter_task_planner_app/bloc/navigation_bloc.dart';
+import 'package:flutter_task_planner_app/screens/login.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../theme/colors/light_colors.dart';
@@ -138,10 +141,11 @@ class _SideBarState extends State<SideBar>
                     ),
                     MenuItem(
                       icon: Icons.exit_to_app,
-                      title: "Log out",
+                      title: "Log Out",
                       onTap: (){
                         onIconPressed();
-                        BlocProvider.of<NavigationBloc>(context).add(NavigationEvents.LogoutClickEvent);
+                        print("press logout");
+                        LogoutBLoc().pressLogOut(context);
                       },
                     ),
                   ]),
@@ -175,6 +179,7 @@ class _SideBarState extends State<SideBar>
       },
     );
   }
+  
 }
 
 class MenuItem extends StatelessWidget {

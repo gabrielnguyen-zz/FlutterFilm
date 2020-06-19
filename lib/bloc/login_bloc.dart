@@ -1,12 +1,14 @@
 
 import 'dart:async';
-
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_task_planner_app/dataprovider/login.dart';
 
 class LoginBloc{
 
   StreamController user =  new StreamController();
   StreamController notSignup = new StreamController();
+  StreamController isLogged = new StreamController();
+  Stream get isLoggedStream => isLogged.stream;
   Stream get userStream =>user.stream;
   Stream get notSignUpStream => notSignup.stream;
   Future<bool> checkLogin(String accountID, String password) async {
@@ -16,6 +18,7 @@ class LoginBloc{
     print(result);
     if(result!=null){
       user.sink.add(result);
+      openSession(result);
       return true;
     }else{
       notSignup.sink.add("Not signed up yet");
@@ -25,6 +28,19 @@ class LoginBloc{
 
   void dispose(){
     user.close();
+    notSignup.close();
+    isLogged.close();
   }
 
+  void openSession(String role) async {
+    SharedPreferences  pref =  await SharedPreferences.getInstance();
+    await pref.setString("role", role);
+    isLogged.sink.add(true);
+  }
+
+  void closeSession() async{
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    pref.remove("role");
+    isLogged.sink.add(false);
+  }
 }

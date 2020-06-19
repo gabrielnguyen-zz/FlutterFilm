@@ -2,18 +2,25 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_task_planner_app/bloc/login_bloc.dart';
 import 'package:flutter_task_planner_app/bloc/navigation_bloc.dart';
-
-import 'package:flutter_task_planner_app/screens/home_page.dart';
+import 'package:flutter_task_planner_app/screens/menu.dart';
 import 'package:flutter_task_planner_app/theme/colors/light_colors.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 void main() => runApp(LoginPage());
   
 
-class LoginPage extends StatelessWidget with NavigationStates{
+class LoginPage extends StatefulWidget with NavigationStates{
+  @override
+  _LoginPageState createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
   TextEditingController accountController = TextEditingController();
+
   TextEditingController passController = TextEditingController();
+
   LoginBloc bloc = LoginBloc();
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -98,18 +105,28 @@ class LoginPage extends StatelessWidget with NavigationStates{
       ),
     );
   }
+
   void onSignInClicked(){
     String accountID = accountController.text;
     String password = passController.text;
     bloc.checkLogin(accountID, password);
     
   }
+
   void loginNagivator(String data, BuildContext context,String error){
     print(data);
+    
     if(data == 'admin'){
-      Navigator.push(context, new MaterialPageRoute(builder: (context) => new HomePage()));
+      //Navigator.push(context, new MaterialPageRoute(builder: (context) => new HomePage()));
+      Navigator.pushReplacement(context, MaterialPageRoute(
+        
+        builder: (context){
+        return MenuPage();
+      }));
     }else if(data == 'user'){
-      Navigator.push(context, new MaterialPageRoute(builder: (context) => new HomePage()));
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context){
+        return MenuPage();
+      }));
     }else{
       Fluttertoast.showToast(msg: error,
                             toastLength: Toast.LENGTH_LONG,

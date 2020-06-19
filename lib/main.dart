@@ -1,6 +1,7 @@
+
 import 'package:flutter/material.dart';
-import 'package:flutter_task_planner_app/dataprovider/login.dart';
-import 'package:flutter_task_planner_app/screens/home_page.dart';
+import 'package:flutter_task_planner_app/bloc/login_bloc.dart';
+
 import 'package:flutter_task_planner_app/screens/login.dart';
 import 'package:flutter_task_planner_app/screens/menu.dart';
 import 'package:flutter_task_planner_app/theme/colors/light_colors.dart';
@@ -16,6 +17,7 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
+  LoginBloc bloc  = LoginBloc();
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -29,8 +31,28 @@ class MyApp extends StatelessWidget {
               fontFamily: 'Poppins'
             ),
       ),
-      home: MenuPage(),
+      //home: MenuPage(),
+      home: createContent(),
       debugShowCheckedModeBanner: false,
+    );
+  }
+
+
+  Widget createContent(){
+    return StreamBuilder(
+      stream: bloc.isLoggedStream,
+      builder: (context, snapshot){
+        print("login");
+        if(snapshot.data ==null){
+          print("chua dang nhap");
+          return LoginPage();
+          
+        }else{
+          print("dang nhap");
+          return MenuPage();
+        }
+        
+      },
     );
   }
 }
