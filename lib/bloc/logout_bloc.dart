@@ -9,10 +9,9 @@ import 'login_bloc.dart';
 
 class LogoutBLoc{
 
-  void pressLogOut(context){
+  Future<void> pressLogOut(context) async {
     print("logout");
-    Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => LoginPage()), (route) => false);
+    Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=> LoginPage()), (route) => false);
     LoginBloc().closeSession();
-
   }
 }

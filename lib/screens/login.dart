@@ -2,12 +2,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_task_planner_app/bloc/login_bloc.dart';
 import 'package:flutter_task_planner_app/bloc/navigation_bloc.dart';
+import 'package:flutter_task_planner_app/screens/home_page.dart';
 import 'package:flutter_task_planner_app/screens/menu.dart';
 import 'package:flutter_task_planner_app/theme/colors/light_colors.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:loading/indicator/ball_pulse_indicator.dart';
+import 'package:loading/loading.dart';
+import 'package:loading/loading.dart';
 
 void main() => runApp(LoginPage());
-  
 
 class LoginPage extends StatefulWidget with NavigationStates{
   @override
@@ -15,16 +18,25 @@ class LoginPage extends StatefulWidget with NavigationStates{
 }
 
 class _LoginPageState extends State<LoginPage> {
+  
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: LoginScreen(),
+    );
+  }
+}
+
+class LoginScreen extends StatelessWidget{
   TextEditingController accountController = TextEditingController();
 
   TextEditingController passController = TextEditingController();
 
   LoginBloc bloc = LoginBloc();
-
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
+    return new Scaffold(
         body:
         Container(
           padding: EdgeInsets.fromLTRB(30, 0, 30, 0),
@@ -79,7 +91,9 @@ class _LoginPageState extends State<LoginPage> {
                   child:  RaisedButton(
                       color: LightColors.kDarkYellow,
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(8))),
-                      onPressed:onSignInClicked,
+                      onPressed:(){
+                        onSignInClicked(context);
+                        },
                       child: Text(
                         "SIGN IN",
                       style: TextStyle(color: Colors.white,fontSize:16),),
@@ -87,50 +101,23 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 
               ),
-              new Container(
-                child: StreamBuilder(
-                stream: bloc.userStream,
-                builder: (context, snapshot){
-                  if(snapshot.hasData){
-                    loginNagivator(snapshot.data, context,snapshot.error);
-                  }
-                return Container();
-                  } 
-                ),
-              ),
+              
             ]
           ) ,
         )
         
-      ),
-    );
+      );
+      
   }
+  
 
-  void onSignInClicked(){
+
+  bool onSignInClicked(BuildContext context){
+    FocusScope.of(context).unfocus();
+    Loading(indicator: BallPulseIndicator(),size: 100,color: Colors.orange[300],);
     String accountID = accountController.text;
     String password = passController.text;
-    bloc.checkLogin(accountID, password);
+    bloc.checkLogin(context,accountID, password);
     
   }
-
-  void loginNagivator(String data, BuildContext context,String error){
-    print(data);
-    
-    if(data == 'admin'){
-      //Navigator.push(context, new MaterialPageRoute(builder: (context) => new HomePage()));
-      Navigator.pushReplacement(context, MaterialPageRoute(
-        
-        builder: (context){
-        return MenuPage();
-      }));
-    }else if(data == 'user'){
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context){
-        return MenuPage();
-      }));
-    }else{
-      Fluttertoast.showToast(msg: error,
-                            toastLength: Toast.LENGTH_LONG,
-                            );
-    }
-  } 
 }

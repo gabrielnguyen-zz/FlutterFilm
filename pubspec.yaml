@@ -17,7 +17,7 @@ dependencies:
   rxdart: ^0.24.1
   flutter_bloc: ^4.0.1
   shared_preferences: ^0.5.7+3
-  
+  loading: ^1.0.2
 
 dev_dependencies:
   flutter_test:

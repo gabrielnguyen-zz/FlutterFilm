@@ -14,9 +14,8 @@ import '../theme/colors/light_colors.dart';
 import '../theme/colors/light_colors.dart';
 import 'home_page.dart';
 
-void main() => runApp(MenuPage());
 
-class MenuPage extends StatelessWidget {
+class ActorMenuPage extends StatelessWidget {
   bool isCollapsed = true;
   @override
   Widget build(BuildContext context) {
@@ -33,19 +32,19 @@ class MenuPage extends StatelessWidget {
             ),
           ]),
         ),
-        SideBar(),
+        ActorSideBar(),
       ],
     ));
   }
 }
 
-class SideBar extends StatefulWidget {
+class ActorSideBar extends StatefulWidget {
   @override
-  _SideBarState createState() => _SideBarState();
+  _ActorSideBarState createState() => _ActorSideBarState();
 }
 
-class _SideBarState extends State<SideBar>
-    with SingleTickerProviderStateMixin<SideBar> {
+class _ActorSideBarState extends State<ActorSideBar>
+    with SingleTickerProviderStateMixin<ActorSideBar> {
   AnimationController animationController;
 
   final animationDuration = const Duration(milliseconds: 500);
@@ -112,7 +111,7 @@ class _SideBarState extends State<SideBar>
                       indent: 32,
                       endIndent: 32,
                     ),
-                    MenuItem(
+                    ActorMenuItem(
                       icon: Icons.home,
                       title: "Home",
                       onTap: (){
@@ -120,11 +119,11 @@ class _SideBarState extends State<SideBar>
                         BlocProvider.of<NavigationBloc>(context).add(NavigationEvents.HomePageClickEvent);
                       },
                     ),
-                    MenuItem(
+                    ActorMenuItem(
                       icon: Icons.person,
                       title: "List of Acted",
                     ),
-                    MenuItem(
+                    ActorMenuItem(
                       icon: Icons.person,
                       title: "List of Incoming Act",
                     ),
@@ -135,11 +134,11 @@ class _SideBarState extends State<SideBar>
                       indent: 32,
                       endIndent: 32,
                     ),
-                    MenuItem(
+                    ActorMenuItem(
                       icon: Icons.settings,
                       title: "Setting",
                     ),
-                    MenuItem(
+                    ActorMenuItem(
                       icon: Icons.exit_to_app,
                       title: "Log Out",
                       onTap: (){
@@ -182,11 +181,11 @@ class _SideBarState extends State<SideBar>
   
 }
 
-class MenuItem extends StatelessWidget {
+class ActorMenuItem extends StatelessWidget {
   final IconData icon;
   final String title;
   final Function onTap;
-  const MenuItem({Key key, this.icon, this.title,this.onTap}) : super(key: key);
+  const ActorMenuItem({Key key, this.icon, this.title,this.onTap}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
