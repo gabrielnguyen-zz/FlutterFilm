@@ -17,6 +17,7 @@ import 'home_page.dart';
 
 class ActorMenuPage extends StatelessWidget {
   bool isCollapsed = true;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

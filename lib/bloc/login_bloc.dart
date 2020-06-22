@@ -21,7 +21,7 @@ class LoginBloc{
     var result = await login.checkLogin(accountID, password);
     print(result);
     if(result!=null){
-      openSession(result);
+      openSession(accountID,result);
         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context){
               if(result == 'admin'){
                 return ActorMenuPage();
@@ -45,15 +45,17 @@ class LoginBloc{
     isLogged.close();
   }
 
-  void openSession(String role) async {
+  void openSession(String accountId,String role) async {
     SharedPreferences  pref =  await SharedPreferences.getInstance();
     await pref.setString("role", role);
+    await pref.setString("accountID", accountId);
     isLogged.sink.add(true);
   }
 
   void closeSession() async{
     SharedPreferences pref = await SharedPreferences.getInstance();
     pref.remove("role");
+    pref.remove("accountID");
     isLogged.sink.add(false);
   }
 }

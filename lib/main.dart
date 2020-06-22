@@ -43,16 +43,7 @@ class MyApp extends StatelessWidget {
     return StreamBuilder(
       stream: bloc.isLoggedStream,
       builder: (context, snapshot){
-        print("login");
-        if(snapshot.data ==null){
-          print("chua dang nhap");
-          return LoginPage();
-          
-        }else{
-          print("dang nhap");
-          return ActorMenuPage();
-        }
-        
+        return LoginPage();
       },
     );
   }

@@ -2,13 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_task_planner_app/bloc/login_bloc.dart';
 import 'package:flutter_task_planner_app/bloc/navigation_bloc.dart';
-import 'package:flutter_task_planner_app/screens/home_page.dart';
-import 'package:flutter_task_planner_app/screens/menu.dart';
 import 'package:flutter_task_planner_app/theme/colors/light_colors.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:loading/indicator/ball_pulse_indicator.dart';
 import 'package:loading/loading.dart';
-import 'package:loading/loading.dart';
+
 
 void main() => runApp(LoginPage());
 

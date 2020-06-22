@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter_task_planner_app/main.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../screens/home_page.dart';
 import '../screens/home_page.dart';
@@ -13,6 +14,8 @@ enum NavigationEvents {
 abstract class NavigationStates {}
 
 class NavigationBloc extends Bloc<NavigationEvents, NavigationStates> {
+  
+
   @override
   // TODO: implement initialState
   NavigationStates get initialState => HomePage();
