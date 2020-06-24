@@ -15,5 +15,15 @@ class SharePreferencesProvider{
     return null;
   }
 
+
+  Future<String> getTitle() async{
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    String title = pref.getString("Act");
+    if(title!= null){
+      return title;
+    }else{
+      return null;
+    }
+  }
     
 }

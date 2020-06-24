@@ -24,7 +24,7 @@ class LoginBloc{
       openSession(accountID,result);
         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context){
               if(result == 'admin'){
-                return ActorMenuPage();
+                return ActorMenuPage(screen: HomePage(),);
               }else{
                 return null;
               }

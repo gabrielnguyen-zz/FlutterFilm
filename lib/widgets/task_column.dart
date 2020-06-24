@@ -5,47 +5,51 @@ class TaskColumn extends StatelessWidget {
   final Color iconBackgroundColor;
   final String title;
   final String subtitle;
-  TaskColumn({
-    this.icon,
-    this.iconBackgroundColor,
-    this.title,
-    this.subtitle,
-  });
+  final Function onTap;
+  TaskColumn(
+      {this.icon,
+      this.iconBackgroundColor,
+      this.title,
+      this.subtitle,
+      this.onTap});
   @override
   Widget build(BuildContext context) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: <Widget>[
-        CircleAvatar(
-          radius: 20.0,
-          backgroundColor: iconBackgroundColor,
-          child: Icon(
-            icon,
-            size: 15.0,
-            color: Colors.white,
+    return GestureDetector(
+      onTap: onTap,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          CircleAvatar(
+            radius: 20.0,
+            backgroundColor: iconBackgroundColor,
+            child: Icon(
+              icon,
+              size: 15.0,
+              color: Colors.white,
+            ),
           ),
-        ),
-        SizedBox(width: 10.0),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Text(
-              title,
-              style: TextStyle(
-                fontSize: 16.0,
-                fontWeight: FontWeight.w700,
+          SizedBox(width: 10.0),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(
+                title,
+                style: TextStyle(
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.w700,
+                ),
               ),
-            ),
-            Text(
-              subtitle,
-              style: TextStyle(
-                  fontSize: 14.0,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.black45),
-            ),
-          ],
-        )
-      ],
+              Text(
+                subtitle,
+                style: TextStyle(
+                    fontSize: 14.0,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.black45),
+              ),
+            ],
+          )
+        ],
+      ),
     );
   }
 }

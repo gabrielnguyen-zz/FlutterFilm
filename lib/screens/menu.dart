@@ -1,11 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_task_planner_app/bloc/login_bloc.dart';
 import 'package:flutter_task_planner_app/bloc/logout_bloc.dart';
-import 'package:flutter_task_planner_app/bloc/navigation_bloc.dart';
-import 'package:flutter_task_planner_app/screens/login.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../theme/colors/light_colors.dart';
@@ -17,26 +13,40 @@ import 'home_page.dart';
 
 class ActorMenuPage extends StatelessWidget {
   bool isCollapsed = true;
+  final Widget screen;
 
-  @override
+  ActorMenuPage({Key key, this.screen}) : super(key: key);
+@override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Stack(
-      children: <Widget>[
-        BlocProvider<NavigationBloc>(
-          create: (context) => NavigationBloc(),
-          child: Stack(children: <Widget>[
-            BlocBuilder<NavigationBloc, NavigationStates>(
-              builder: (context, navigationState) {
-                return navigationState as Widget;
-              },
-            ),
-          ]),
-        ),
-        ActorSideBar(),
-      ],
-    ));
+      body: Stack(
+        children: <Widget>[
+          screen ?? HomePage(),
+          ActorSideBar(),
+        ],
+      ),
+    );
   }
+  
+  // @override
+  // Widget build(BuildContext context) {
+  //   return Scaffold(
+  //       body: Stack(
+  //     children: <Widget>[
+  //       BlocProvider<NavigationBloc>(
+  //         create: (context) => NavigationBloc(),
+  //         child: Stack(children: <Widget>[
+  //           BlocBuilder<NavigationBloc, NavigationStates>(
+  //             builder: (context, navigationState) {
+  //               return navigationState as Widget;
+  //             },
+  //           ),
+  //         ]),
+  //       ),
+  //       ActorSideBar(),
+  //     ],
+  //   ));
+  // }
 }
 
 class ActorSideBar extends StatefulWidget {
@@ -87,97 +97,97 @@ class _ActorSideBarState extends State<ActorSideBar>
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-
-    return StreamBuilder<bool>(
-      initialData: false,
-      stream: isSideBarOpenedStream,
-      builder: (context, isSideBarOpenedAsync) {
-        return AnimatedPositioned(
-          duration: animationDuration,
-          top: 0,
-          bottom: 0,
-          left: isSideBarOpenedAsync.data ? 0 : -screenWidth,
-          right: isSideBarOpenedAsync.data ? 0 : screenWidth - 45,
-          child: Row(
-            children: <Widget>[
-              Expanded(
-                child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  color: Colors.orange[300],
-                  child: Column(children: <Widget>[
-                    Divider(
-                      height: 64,
-                      thickness: 0.5,
-                      color: Colors.white.withOpacity(0.3),
-                      indent: 32,
-                      endIndent: 32,
-                    ),
-                    ActorMenuItem(
-                      icon: Icons.home,
-                      title: "Home",
-                      onTap: (){
-                        onIconPressed();
-                        BlocProvider.of<NavigationBloc>(context).add(NavigationEvents.HomePageClickEvent);
-                      },
-                    ),
-                    ActorMenuItem(
-                      icon: Icons.person,
-                      title: "List of Acted",
-                    ),
-                    ActorMenuItem(
-                      icon: Icons.person,
-                      title: "List of Incoming Act",
-                    ),
-                    Divider(
-                      height: 64,
-                      thickness: 0.5,
-                      color: Colors.white.withOpacity(0.3),
-                      indent: 32,
-                      endIndent: 32,
-                    ),
-                    ActorMenuItem(
-                      icon: Icons.settings,
-                      title: "Setting",
-                    ),
-                    ActorMenuItem(
-                      icon: Icons.exit_to_app,
-                      title: "Log Out",
-                      onTap: (){
-                        onIconPressed();
-                        print("press logout");
-                        LogoutBLoc().pressLogOut(context);
-                      },
-                    ),
-                  ]),
+    return  StreamBuilder<bool>(
+        initialData: false,
+        stream: isSideBarOpenedStream,
+        builder: (context, isSideBarOpenedAsync) {
+          return AnimatedPositioned(
+            duration: animationDuration,
+            top: 0,
+            bottom: 0,
+            left: isSideBarOpenedAsync.data ? 0 : -screenWidth,
+            right: isSideBarOpenedAsync.data ? 0 : screenWidth - 45,
+            child: Row(
+              children: <Widget>[
+                Expanded(
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    color: Colors.orange[300],
+                    child: Column(children: <Widget>[
+                      Divider(
+                        height: 64,
+                        thickness: 0.5,
+                        color: Colors.white.withOpacity(0.3),
+                        indent: 32,
+                        endIndent: 32,
+                      ),
+                      ActorMenuItem(
+                        icon: Icons.home,
+                        title: "Home",
+                        onTap: (){
+                          onIconPressed();
+                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => ActorMenuPage(screen: HomePage())));
+                        },
+                      ),
+                      ActorMenuItem(
+                        icon: Icons.person,
+                        title: "List of Acted",
+                      ),
+                      ActorMenuItem(
+                        icon: Icons.person,
+                        title: "List of Incoming Act",
+                      ),
+                      Divider(
+                        height: 64,
+                        thickness: 0.5,
+                        color: Colors.white.withOpacity(0.3),
+                        indent: 32,
+                        endIndent: 32,
+                      ),
+                      ActorMenuItem(
+                        icon: Icons.settings,
+                        title: "Setting",
+                      ),
+                      ActorMenuItem(
+                        icon: Icons.exit_to_app,
+                        title: "Log Out",
+                        onTap: (){
+                          onIconPressed();
+                          print("press logout");
+                          LogoutBLoc().pressLogOut(context);
+                        },
+                      ),
+                    ]),
+                  ),
                 ),
-              ),
-              Align(
-                alignment: Alignment(0, -0.9),
-                child: GestureDetector(
-                  onTap: () {
-                    onIconPressed();
-                  },
-                  child: ClipPath(
-                    clipper: CustomMenuClipper(),
-                    child: Container(
-                      width: 35,
-                      height: 110,
-                      color: Colors.orange[300],
-                      alignment: Alignment.center,
-                      child: AnimatedIcon(
-                        progress: animationController.view,
-                        icon: AnimatedIcons.menu_close,
-                        color: LightColors.kLightYellow,
+                Align(
+                  alignment: Alignment(0, -0.9),
+                  child: GestureDetector(
+                    onTap: () {
+                      onIconPressed();
+                    },
+                    child: ClipPath(
+                      clipper: CustomMenuClipper(),
+                      child: Container(
+                        width: 35,
+                        height: 110,
+                        color: Colors.orange[300],
+                        alignment: Alignment.center,
+                        child: AnimatedIcon(
+                          progress: animationController.view,
+                          icon: AnimatedIcons.menu_close,
+                          color: LightColors.kLightYellow,
+                        ),
                       ),
                     ),
                   ),
-                ),
-              )
-            ],
-          ),
-        );
-      },
-    );
+                )
+              ],
+            ),
+          );
+        },
+      );
+    
   }
   
 }

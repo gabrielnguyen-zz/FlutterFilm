@@ -1,15 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_task_planner_app/bloc/login_bloc.dart';
-import 'package:flutter_task_planner_app/bloc/navigation_bloc.dart';
 import 'package:flutter_task_planner_app/theme/colors/light_colors.dart';
-import 'package:loading/indicator/ball_pulse_indicator.dart';
-import 'package:loading/loading.dart';
+
 
 
 void main() => runApp(LoginPage());
 
-class LoginPage extends StatefulWidget with NavigationStates{
+class LoginPage extends StatefulWidget {
   @override
   _LoginPageState createState() => _LoginPageState();
 }
@@ -33,7 +31,7 @@ class LoginScreen extends StatelessWidget{
   LoginBloc bloc = LoginBloc();
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
+    return Scaffold(
         body:
         Container(
           padding: EdgeInsets.fromLTRB(30, 0, 30, 0),
@@ -111,7 +109,7 @@ class LoginScreen extends StatelessWidget{
 
   bool onSignInClicked(BuildContext context){
     FocusScope.of(context).unfocus();
-    Loading(indicator: BallPulseIndicator(),size: 100,color: Colors.orange[300],);
+    
     String accountID = accountController.text;
     String password = passController.text;
     bloc.checkLogin(context,accountID, password);

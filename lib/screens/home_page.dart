@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_task_planner_app/screens/viewact.dart';
+import 'menu.dart';
 import 'package:flutter_task_planner_app/bloc/getuserinfo_bloc.dart';
-import 'package:flutter_task_planner_app/bloc/navigation_bloc.dart';
-import 'package:flutter_task_planner_app/models/user.dart';
-import 'package:flutter_task_planner_app/screens/calendar_page.dart';
 import 'package:flutter_task_planner_app/theme/colors/light_colors.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:flutter_task_planner_app/widgets/task_column.dart';
-import 'package:flutter_task_planner_app/widgets/active_project_card.dart';
 import 'package:flutter_task_planner_app/widgets/top_container.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class HomePage extends StatefulWidget with NavigationStates {
+class HomePage extends StatefulWidget{
   static CircleAvatar calendarIcon() {
     return CircleAvatar(
       radius: 25.0,
@@ -22,11 +20,14 @@ class HomePage extends StatefulWidget with NavigationStates {
       ),
     );
   }
+
   @override
   _HomePageState createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
+  AnimationController animationController;
+
   Text subheading(String title) {
     return Text(
       title,
@@ -135,92 +136,102 @@ class _HomePageState extends State<HomePage> {
                                         MainAxisAlignment.spaceBetween,
                                     children: <Widget>[
                                       subheading('My Acting'),
-                                      GestureDetector(
-                                        onTap: () {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    CalendarPage()),
-                                          );
-                                        },
-                                        child: HomePage.calendarIcon(),
-                                      ),
                                     ],
                                   ),
                                   SizedBox(height: 15.0),
                                   TaskColumn(
-                                    icon: Icons.alarm,
-                                    iconBackgroundColor: LightColors.kRed,
+                                    icon: Icons.blur_circular,
+                                    iconBackgroundColor:
+                                        LightColors.kDarkYellow,
                                     title: 'Incoming',
-                                    subtitle: snapshot.data.waiting.toString() + ' act are coming.',
+                                    subtitle: snapshot.data.waiting.toString() +
+                                        ' act are coming.',
+                                    onTap: () {
+                                      String title = "Waiting";
+
+                                      print("tapped");
+                                      onTaskClicked(title);
+                                    },
                                   ),
                                   SizedBox(
                                     height: 15.0,
                                   ),
                                   TaskColumn(
-                                    icon: Icons.blur_circular,
-                                    iconBackgroundColor:
-                                        LightColors.kDarkYellow,
+                                    icon: Icons.alarm,
+                                    iconBackgroundColor: LightColors.kRed,
                                     title: 'In Progress',
-                                    subtitle: snapshot.data.inProgress.toString() + ' are current acting now.',
+                                    subtitle:
+                                        snapshot.data.inProgress.toString() +
+                                            ' are current acting now.',
+                                    onTap: () {
+                                      String title = "In Progress";
+
+                                      print("tapped");
+                                      onTaskClicked(title);
+                                    },
                                   ),
                                   SizedBox(height: 15.0),
                                   TaskColumn(
                                     icon: Icons.check_circle_outline,
                                     iconBackgroundColor: LightColors.kBlue,
                                     title: 'Done',
-                                    subtitle: snapshot.data.done.toString() + ' act had finished',
+                                    subtitle: snapshot.data.done.toString() +
+                                        ' act had finished',
+                                    onTap: () {
+                                      String title = "Done";
+                                      print("tapped");
+                                      onTaskClicked(title);
+                                    },
                                   ),
                                 ],
                               ),
                             ),
-                            Container(
-                              color: Colors.transparent,
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 20.0, vertical: 10.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  subheading('Active Projects'),
-                                  SizedBox(height: 5.0),
-                                  Row(
-                                    children: <Widget>[
-                                      ActiveProjectsCard(
-                                        cardColor: LightColors.kGreen,
-                                        loadingPercent: 0.25,
-                                        title: 'Medical App',
-                                        subtitle: '9 hours progress',
-                                      ),
-                                      SizedBox(width: 20.0),
-                                      ActiveProjectsCard(
-                                        cardColor: LightColors.kRed,
-                                        loadingPercent: 0.6,
-                                        title: 'Making History Notes',
-                                        subtitle: '20 hours progress',
-                                      ),
-                                    ],
-                                  ),
-                                  Row(
-                                    children: <Widget>[
-                                      ActiveProjectsCard(
-                                        cardColor: LightColors.kDarkYellow,
-                                        loadingPercent: 0.45,
-                                        title: 'Sports App',
-                                        subtitle: '5 hours progress',
-                                      ),
-                                      SizedBox(width: 20.0),
-                                      ActiveProjectsCard(
-                                        cardColor: LightColors.kBlue,
-                                        loadingPercent: 0.9,
-                                        title: 'Online Flutter Course',
-                                        subtitle: '23 hours progress',
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ),
+                            // Container(
+                            //   color: Colors.transparent,
+                            //   padding: EdgeInsets.symmetric(
+                            //       horizontal: 20.0, vertical: 10.0),
+                            //   child: Column(
+                            //     crossAxisAlignment: CrossAxisAlignment.start,
+                            //     children: <Widget>[
+                            //       subheading('Active Projects'),
+                            //       SizedBox(height: 5.0),
+                            //       Row(
+                            //         children: <Widget>[
+                            //           ActiveProjectsCard(
+                            //             cardColor: LightColors.kGreen,
+                            //             loadingPercent: 0.25,
+                            //             title: 'Medical App',
+                            //             subtitle: '9 hours progress',
+                            //           ),
+                            //           SizedBox(width: 20.0),
+                            //           ActiveProjectsCard(
+                            //             cardColor: LightColors.kRed,
+                            //             loadingPercent: 0.6,
+                            //             title: 'Making History Notes',
+                            //             subtitle: '20 hours progress',
+                            //           ),
+                            //         ],
+                            //       ),
+                            //       Row(
+                            //         children: <Widget>[
+                            //           ActiveProjectsCard(
+                            //             cardColor: LightColors.kDarkYellow,
+                            //             loadingPercent: 0.45,
+                            //             title: 'Sports App',
+                            //             subtitle: '5 hours progress',
+                            //           ),
+                            //           SizedBox(width: 20.0),
+                            //           ActiveProjectsCard(
+                            //             cardColor: LightColors.kBlue,
+                            //             loadingPercent: 0.9,
+                            //             title: 'Online Flutter Course',
+                            //             subtitle: '23 hours progress',
+                            //           ),
+                            //         ],
+                            //       ),
+                            //     ],
+                            //   ),
+                            // ),
                           ],
                         ),
                       ),
@@ -231,8 +242,15 @@ class _HomePageState extends State<HomePage> {
             );
           }
           return CircularProgressIndicator(
-                  valueColor: new AlwaysStoppedAnimation<Color>(Colors.orange),
-                );
+            valueColor: new AlwaysStoppedAnimation<Color>(Colors.orange),
+          );
         });
+  }
+
+  Future<void> onTaskClicked(String title) async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    sharedPreferences.setString("Act", title);
+    print(sharedPreferences.getString("Act"));
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) => ActorMenuPage(screen: ViewActPage(),) ));
   }
 }
