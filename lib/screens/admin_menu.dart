@@ -12,18 +12,18 @@ import '../theme/colors/light_colors.dart';
 import 'home_page.dart';
 
 
-class ActorMenuPage extends StatelessWidget {
+class AdminMenuPage extends StatelessWidget {
   bool isCollapsed = true;
   final Widget screen;
 
-  ActorMenuPage({Key key, this.screen}) : super(key: key);
+  AdminMenuPage({Key key, this.screen}) : super(key: key);
 @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
         children: <Widget>[
           screen ?? HomePage(),
-          ActorSideBar(),
+          AdminSideBar(),
         ],
       ),
     );
@@ -50,13 +50,13 @@ class ActorMenuPage extends StatelessWidget {
   // }
 }
 
-class ActorSideBar extends StatefulWidget {
+class AdminSideBar extends StatefulWidget {
   @override
-  _ActorSideBarState createState() => _ActorSideBarState();
+  _AdminSideBarState createState() => _AdminSideBarState();
 }
 
-class _ActorSideBarState extends State<ActorSideBar>
-    with SingleTickerProviderStateMixin<ActorSideBar> {
+class _AdminSideBarState extends State<AdminSideBar>
+    with SingleTickerProviderStateMixin<AdminSideBar> {
   AnimationController animationController;
 
   final animationDuration = const Duration(milliseconds: 500);
@@ -127,7 +127,7 @@ class _ActorSideBarState extends State<ActorSideBar>
                         title: "Home",
                         onTap: (){
                           onIconPressed();
-                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => ActorMenuPage(screen: HomePage())));
+                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => AdminMenuPage(screen: HomePage())));
                         },
                       ),
                       Divider(
@@ -143,7 +143,7 @@ class _ActorSideBarState extends State<ActorSideBar>
                         onTap: (){
                           onIconPressed();
                           print("press setting");
-                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => ActorMenuPage(screen: UserSettingPage(),)));
+                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => AdminMenuPage(screen: UserSettingPage(),)));
                         },
                       ),
                       ActorMenuItem(

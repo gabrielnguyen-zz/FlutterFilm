@@ -14,10 +14,15 @@ class GetUserInfo{
     if(response.statusCode == 200){
       final data  = json.decode(response.body);
         var actorName  = data['actorName'].toString();
+        var actorID = data['actorId'].toString();
         var image = data['image'];
         var phone = data['phone'];
         var actorDes = data['actorDes'];
         var email = data['email'];
+        var createdTime = data['createdTime'];
+        var createdBy = data['createdBy'];
+        var updatedTime = data['updatedTime'];
+        var updatedBy = data['updatedBy'];
         int done = 0,inProgress = 0 ,waiting = 0;
         List scenes = data['sceneActor'];
         for(var scene in scenes){
@@ -31,6 +36,7 @@ class GetUserInfo{
           }
         }
         Actor actor = new Actor(
+          actorId: actorID,
           actorName: actorName,
           actorDes: actorDes,
           image: image,
@@ -38,7 +44,12 @@ class GetUserInfo{
           email: email,
           inProgress: inProgress,
           done: done,
-          waiting: waiting
+          waiting: waiting,
+          createdTime: createdTime,
+          createdBy: createdBy,
+          updatedBy: updatedBy,
+          updatedTime: updatedTime,
+          accountId: accountID
         );
         return actor;
     }

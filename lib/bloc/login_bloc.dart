@@ -2,6 +2,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_task_planner_app/screens/admin_home_page.dart';
+import 'package:flutter_task_planner_app/screens/admin_menu.dart';
 import 'package:flutter_task_planner_app/screens/home_page.dart';
 import 'package:flutter_task_planner_app/screens/menu.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -22,11 +24,16 @@ class LoginBloc{
     print(result);
     if(result!=null){
       openSession(accountID,result);
+      print(result);
         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context){
-              if(result == 'admin'){
+              if(result == 'user'){
                 return ActorMenuPage(screen: HomePage(),);
-              }else{
-                return null;
+              }else 
+              if(result == 'admin'){
+                return AdminMenuPage(screen: AdminHomePage());
+              }
+              else{
+                return Container(width:0,height:0);
               }
             }
           )
