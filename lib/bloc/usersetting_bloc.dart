@@ -10,6 +10,7 @@ class UserSettingBloc {
   Stream get userSet => userSettingStream.stream;
 
   Future<bool> updateUser(Actor actor) async {
+    
       var userSetting = UserSetting();
       var result = await userSetting.updateUserSetting(actor);
       print(result);

@@ -44,7 +44,6 @@ class _UserSettingState extends State<UserSettingPage> {
   UserSettingBloc setBloc = UserSettingBloc();
   @override
   Widget build(BuildContext context) {
-    
     bloc.getAllStatusScene();
     double width = MediaQuery.of(context).size.width;
     return StreamBuilder(
@@ -146,7 +145,6 @@ class _UserSettingState extends State<UserSettingPage> {
                                       controller: actorDesController,
                                       style: TextStyle(
                                           fontSize: 18, color: Colors.black),
-                                      
                                       decoration: InputDecoration(
                                         labelText: "ACTOR DESCRIPTION",
                                         errorText: snapshot.hasError
@@ -160,7 +158,6 @@ class _UserSettingState extends State<UserSettingPage> {
                                       controller: mailController,
                                       style: TextStyle(
                                           fontSize: 18, color: Colors.black),
-                                      
                                       decoration: InputDecoration(
                                         labelText: "MAIL",
                                         errorText: snapshot.hasError
@@ -174,7 +171,6 @@ class _UserSettingState extends State<UserSettingPage> {
                                       controller: phoneController,
                                       style: TextStyle(
                                           fontSize: 18, color: Colors.black),
-                                      
                                       decoration: InputDecoration(
                                         labelText: "PHONE",
                                         errorText: snapshot.hasError
@@ -184,15 +180,22 @@ class _UserSettingState extends State<UserSettingPage> {
                                             color: Color(0xff888888),
                                             fontSize: 15),
                                       )),
-                                  RaisedButton(
-                                    onPressed: (){
+                                  GestureDetector(
+                                    onTap: () {
                                       onSaveClicked(snapshot.data);
                                     },
-                                    color: LightColors.kDarkYellow,
-                                    textColor: Colors.white,
-                                    padding: const EdgeInsets.all(0.0),
                                     child: Container(
-                                      width: 500,
+                                      child: Text(
+                                        'Create Task',
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.w700,
+                                            fontSize: 18),
+                                      ),
+                                      alignment: Alignment.center,
+                                      margin:
+                                          EdgeInsets.fromLTRB(20, 10, 20, 20),
+                                      width: width - 40,
                                       decoration: BoxDecoration(
                                         gradient: LinearGradient(
                                             begin: Alignment.topRight,
@@ -201,24 +204,19 @@ class _UserSettingState extends State<UserSettingPage> {
                                               Color(0xfff46b45),
                                               Color(0xffeea849)
                                             ]),
-                                      ),
-                                      padding: const EdgeInsets.all(10.0),
-                                      child: Align(
-                                        alignment: Alignment.center,
-                                        child: const Text('Save',
-                                            style:
-                                                TextStyle(color: Colors.white)),
+                                        borderRadius: BorderRadius.circular(30),
                                       ),
                                     ),
                                   ),
                                   StreamBuilder(
                                     stream: setBloc.userSet,
-                                    builder: (context,result){
-                                      if(result.hasData){
+                                    builder: (context, result) {
+                                      if (result.hasData) {
                                         return Text(
                                           result.data.toString(),
-                                          style: TextStyle(color: Colors.red,fontSize: 20),
-                                          );
+                                          style: TextStyle(
+                                              color: Colors.red, fontSize: 20),
+                                        );
                                       }
                                       return Text('');
                                     },
@@ -288,7 +286,8 @@ class _UserSettingState extends State<UserSettingPage> {
           }
         });
   }
-  void onSaveClicked(Actor actor){
+
+  void onSaveClicked(Actor actor) {
     FocusScope.of(context).unfocus();
     String email = mailController.text;
     String phone = phoneController.text;
