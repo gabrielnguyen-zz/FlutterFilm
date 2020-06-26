@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_task_planner_app/bloc/create_actor_bloc.dart';
+import 'package:flutter_task_planner_app/bloc/create_tool_bloc.dart';
 import 'package:flutter_task_planner_app/models/actor.dart';
+import 'package:flutter_task_planner_app/models/tool.dart';
 import 'package:flutter_task_planner_app/widgets/top_container.dart';
 import 'package:flutter_task_planner_app/widgets/back_button.dart';
 import 'package:flutter_task_planner_app/widgets/my_text_field.dart';
 
-class CreateActorPage extends StatelessWidget {
-  TextEditingController actorNameController = TextEditingController();
-  TextEditingController actorDesController = TextEditingController();
-  TextEditingController usernameController = TextEditingController();
-  TextEditingController emailController = TextEditingController();
-  TextEditingController phoneController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
-  var bloc = CreateActorBloc();
+class CreateToolPage extends StatelessWidget {
+  TextEditingController toolNameController = TextEditingController();
+  TextEditingController toolDesController = TextEditingController();
+  TextEditingController quantityController = TextEditingController();
+  //TextEditingController imageController = TextEditingController();
+  var bloc = CreateToolBloc();
   @override
   Widget build(BuildContext context) {
     
@@ -40,7 +40,7 @@ class CreateActorPage extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
                       Text(
-                        'Create new actor',
+                        'Create new tool',
                         style: TextStyle(
                             fontSize: 30.0, fontWeight: FontWeight.w700),
                       ),
@@ -52,11 +52,8 @@ class CreateActorPage extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       MyTextField(
-                          label: 'Actor Name', controller: actorNameController),
-                      MyTextField(
-                        label: 'Username',
-                        controller: usernameController,
-                      ),
+                          label: 'Tool Name', controller: toolNameController),
+                      
                     ],
                   ))
                 ],
@@ -72,39 +69,27 @@ class CreateActorPage extends StatelessWidget {
                     children: <Widget>[
                       Expanded(
                           child: MyTextField(
-                        label: 'Mail',
-                        controller: emailController,
+                        label: 'Quantity',
+                        controller: quantityController,
                       )),
                       SizedBox(width: 40),
-                      Expanded(
-                        child: MyTextField(
-                          label: 'Phone',
-                          controller: phoneController,
-                        ),
-                      ),
+                      // Expanded(
+                      //   child: MyTextField(
+                      //     label: 'Image',
+                      //     controller: ima,
+                      //   ),
+                      // ),
                     ],
                   ),
                   SizedBox(height: 20),
                   MyTextField(
                     label: 'Description',
-                    controller: actorDesController,
+                    controller: toolDesController,
                   ),
                   SizedBox(height: 20),
-                  TextField(
-                    controller: passwordController,
-                    style: TextStyle(color: Colors.black87),
-                    obscureText: true,
-                    decoration: InputDecoration(
-                        labelText: "Password",
-                        labelStyle: TextStyle(color: Colors.black45),
-                        focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: Colors.black)),
-                        border: UnderlineInputBorder(
-                            borderSide: BorderSide(color: Colors.grey))),
-                  ),
                   SizedBox(height: 20),
                   StreamBuilder(
-                    stream: bloc.createActorGet,
+                    stream: bloc.createToolGet,
                     builder: (context, result) {
                       if (result.hasData) {
                         return Text(
@@ -132,7 +117,7 @@ class CreateActorPage extends StatelessWidget {
                   children: <Widget>[
                     Container(
                       child: Text(
-                        'Create Actor',
+                        'Create Tool',
                         style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.w700,
@@ -163,23 +148,15 @@ class CreateActorPage extends StatelessWidget {
   }
   void onCreateActorClick(){
     
-    String name = actorNameController.text;
-    String des =  actorDesController.text;
-    String phone = phoneController.text;
-    String email = emailController.text;
-    String username = usernameController.text;
-    String password = passwordController.text;
-    Actor actor = Actor(
-      actorName: name,
-      actorDes: des,
-      phone: phone,
-      email: email,
-      accountId: username,
-      password: password,
-      createdBy: username,
-      updatedBy: username,
+    String name = toolNameController.text;
+    String des =  toolDesController.text;
+    int quantity = int.parse(quantityController.text);
+    Tool tool = Tool(
+      toolName: name,
+      toolDes: des,
+      quantity: quantity,
       image: "aloha"
     );
-    bloc.createActor(actor);
+    bloc.createTool(tool);
   }
 }

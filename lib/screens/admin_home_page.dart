@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_task_planner_app/screens/manage_actor_task.dart';
+import 'package:flutter_task_planner_app/screens/manage_tool_dart.dart';
 import 'package:flutter_task_planner_app/screens/viewact.dart';
 import 'package:flutter_task_planner_app/widgets/active_project_card.dart';
 import 'menu.dart';
@@ -175,7 +176,8 @@ class _AdminHomePageState extends State<AdminHomePage> {
                                         onTap: (){
                                           print("Tool Tapped");
                                           String title = "Tool";
-                                          //onManageClicked(title);
+                                          var screen = ManageToolTaskPage();
+                                          onManageClicked(title,screen);
                                         },
                                       ),
                                       Container(
