@@ -1,29 +1,43 @@
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_task_planner_app/bloc/create_actor_bloc.dart';
 import 'package:flutter_task_planner_app/bloc/create_tool_bloc.dart';
-import 'package:flutter_task_planner_app/models/actor.dart';
+import 'package:flutter_task_planner_app/models/file.dart';
 import 'package:flutter_task_planner_app/models/tool.dart';
-import 'package:flutter_task_planner_app/widgets/top_container.dart';
+import 'package:flutter_task_planner_app/theme/colors/light_colors.dart';
 import 'package:flutter_task_planner_app/widgets/back_button.dart';
 import 'package:flutter_task_planner_app/widgets/my_text_field.dart';
+import 'package:flutter_task_planner_app/widgets/top_container.dart';
 
-class CreateToolPage extends StatelessWidget {
+class CreateToolPage extends StatefulWidget {
+  @override
+  _CreateToolPageState createState() => _CreateToolPageState();
+}
+
+class _CreateToolPageState extends State<CreateToolPage> {
   TextEditingController toolNameController = TextEditingController();
+
   TextEditingController toolDesController = TextEditingController();
+
   TextEditingController quantityController = TextEditingController();
-  //TextEditingController imageController = TextEditingController();
+
+  ChooseFile script ;
+
   var bloc = CreateToolBloc();
+@override
+  void initState() {
+    // TODO: implement initState
+    script = ChooseFile();
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
-    
     double width = MediaQuery.of(context).size.width;
     var downwardIcon = Icon(
       Icons.keyboard_arrow_down,
       color: Colors.black54,
     );
-    
+
     return Scaffold(
-      
       body: SafeArea(
         child: Column(
           children: <Widget>[
@@ -53,7 +67,6 @@ class CreateToolPage extends StatelessWidget {
                     children: <Widget>[
                       MyTextField(
                           label: 'Tool Name', controller: toolNameController),
-                      
                     ],
                   ))
                 ],
@@ -73,12 +86,39 @@ class CreateToolPage extends StatelessWidget {
                         controller: quantityController,
                       )),
                       SizedBox(width: 40),
-                      // Expanded(
-                      //   child: MyTextField(
-                      //     label: 'Image',
-                      //     controller: ima,
-                      //   ),
-                      // ),
+                      Container(
+                        width: width/2 - 10,
+                        child: ListTile(
+                          
+                          title: Text("Tool Image:"),
+                          subtitle:
+                              Text(script.filename ?? "Click to choose file"),
+                          trailing: Icon(
+                            Icons.file_upload,
+                            color: LightColors.kDarkYellow,
+                          ),
+                          onTap: () {
+                            FilePicker.getFile().then((file) {
+                              var filename = file.path
+                                  .substring(file.path.lastIndexOf('/') + 1);
+                              var extendsion = filename
+                                  .substring(filename.lastIndexOf('.') + 1);
+
+                              if (extendsion != 'pdf' && extendsion != 'jpg' && extendsion !='png') {
+                                return Text(
+                                  'File is not allowed',
+                                  style: TextStyle(color: Colors.red),
+                                );
+                              }
+                              setState(() {
+                                script.filename = filename;
+                                script.fileExtension = extendsion;
+                                script.file = file;
+                              });
+                            });
+                          },
+                        ),
+                      ),
                     ],
                   ),
                   SizedBox(height: 20),
@@ -107,7 +147,7 @@ class CreateToolPage extends StatelessWidget {
               onTap: () {
                 print("created");
                 FocusScope.of(context).unfocus();
-                onCreateActorClick();
+                onCreateActorClick(script);
               },
               child: Container(
                 height: 80,
@@ -146,17 +186,13 @@ class CreateToolPage extends StatelessWidget {
       ),
     );
   }
-  void onCreateActorClick(){
-    
+
+  void onCreateActorClick(script) {
     String name = toolNameController.text;
-    String des =  toolDesController.text;
+    String des = toolDesController.text;
     int quantity = int.parse(quantityController.text);
-    Tool tool = Tool(
-      toolName: name,
-      toolDes: des,
-      quantity: quantity,
-      image: "aloha"
-    );
-    bloc.createTool(tool);
+    Tool tool =
+        Tool(toolName: name, toolDes: des, quantity: quantity);
+    bloc.createTool(tool,script);
   }
 }

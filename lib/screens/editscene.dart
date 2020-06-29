@@ -1,43 +1,48 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_task_planner_app/bloc/edit_scene_bloc.dart';
 import 'package:flutter_task_planner_app/bloc/edit_tool_bloc.dart';
 import 'package:flutter_task_planner_app/models/file.dart';
-import 'package:flutter_task_planner_app/models/tool.dart';
+import 'package:flutter_task_planner_app/models/scene.dart';
 import 'package:flutter_task_planner_app/theme/colors/light_colors.dart';
+import 'package:flutter_task_planner_app/widgets/top_container.dart';
 import 'package:flutter_task_planner_app/widgets/back_button.dart';
 import 'package:flutter_task_planner_app/widgets/my_text_field.dart';
-import 'package:flutter_task_planner_app/widgets/top_container.dart';
 
-class EditToolPage extends StatefulWidget {
-  final Tool tool;
-  EditToolPage(this.tool);
+class EditScenePage extends StatefulWidget {
+  final Scene scene;
+  EditScenePage(this.scene);
 
   @override
-  _EditToolPageState createState() => _EditToolPageState();
+  _EditScenePageState createState() => _EditScenePageState();
 }
 
-class _EditToolPageState extends State<EditToolPage> {
-  var bloc = EditToolBloc();
+class _EditScenePageState extends State<EditScenePage> {
+  var bloc = EditSceneBloc();
 
   @override
   Widget build(BuildContext context) {
-    TextEditingController toolNameController =
-        TextEditingController(text: widget.tool.toolName);
-    TextEditingController toolDesController =
-        TextEditingController(text: widget.tool.toolDes);
-    TextEditingController quantityController =
-        TextEditingController(text: widget.tool.quantity.toString());
-        ChooseFile script ;
-        
+    TextEditingController sceneNameController =
+        TextEditingController(text: widget.scene.sceneName);
+    TextEditingController sceneDesController =
+        TextEditingController(text: widget.scene.sceneDes);
+    TextEditingController sceneRecController =
+        TextEditingController(text: widget.scene.sceneRec.toString());
+    TextEditingController sceneTimeStartController =
+        TextEditingController(text: widget.scene.sceneTimeStart);
+    TextEditingController sceneTimeStopController =
+        TextEditingController(text: widget.scene.scenetTimeStop);
+    TextEditingController sceneLocation =
+        TextEditingController(text: widget.scene.sceneLoc);
     double width = MediaQuery.of(context).size.width;
-    initState(){
-      script = ChooseFile();
-    }
+    ChooseFile chooseFile = ChooseFile();
+    
     var downwardIcon = Icon(
       Icons.keyboard_arrow_down,
       color: Colors.black54,
     );
 
+    
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -55,7 +60,7 @@ class _EditToolPageState extends State<EditToolPage> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
                       Text(
-                        'Edit tool',
+                        'Edit scene',
                         style: TextStyle(
                             fontSize: 30.0, fontWeight: FontWeight.w700),
                       ),
@@ -67,7 +72,7 @@ class _EditToolPageState extends State<EditToolPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       MyTextField(
-                          label: 'Tool Name', controller: toolNameController),
+                          label: 'Scene Name', controller: sceneNameController),
                     ],
                   ))
                 ],
@@ -83,57 +88,69 @@ class _EditToolPageState extends State<EditToolPage> {
                     children: <Widget>[
                       Expanded(
                           child: MyTextField(
-                        label: 'Quantity',
-                        controller: quantityController,
+                        label: 'Scene Rec',
+                        controller: sceneRecController,
                       )),
                       SizedBox(width: 40),
-                      // Expanded(
-                      //   child: MyTextField(
-                      //     label: 'Image',
-                      //     controller: ima,
-                      //   ),
-                      // ),
+                      Expanded(
+                        child: MyTextField(
+                          label: 'Scene Location',
+                          controller: sceneLocation,
+                        ),
+                      ),
                     ],
                   ),
                   SizedBox(height: 20),
                   MyTextField(
                     label: 'Description',
-                    controller: toolDesController,
+                    controller: sceneDesController,
+                  ),
+                  SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Expanded(
+                          child: MyTextField(
+                        label: 'Scene Time Start',
+                        controller: sceneTimeStartController,
+                      )),
+                      SizedBox(width: 40),
+                      Expanded(
+                        child: MyTextField(
+                          label: 'Scene Time Stop',
+                          controller: sceneTimeStopController,
+                        ),
+                      ),
+                    ],
                   ),
                   SizedBox(height: 20),
                   ListTile(
-                          
-                          title: Text("Tool Image:"),
-                          subtitle:
-                              Text(widget.tool.image ??  script.filename),
-                          trailing: Icon(
-                            Icons.file_upload,
-                            color: LightColors.kDarkYellow,
-                          ),
-                          onTap: () {
-                            FilePicker.getFile().then((file) {
-                              var filename = file.path
-                                  .substring(file.path.lastIndexOf('/') + 1);
-                              var extendsion = filename
-                                  .substring(filename.lastIndexOf('.') + 1);
-
-                              if (extendsion != 'pdf' && extendsion != 'jpg' && extendsion !='png') {
-                                return Text(
-                                  'File is not allowed',
-                                  style: TextStyle(color: Colors.red),
-                                );
-                              }
-                              setState(() {
-                                script.filename = filename;
-                                script.fileExtension = extendsion;
-                                script.file = file;
-                              });
-                            });
-                          },
-                        ),
-                  SizedBox(height: 20),
+                    title: Text("Script:"),
+                    subtitle: Text( widget.scene.sceneActors ?? chooseFile.filename ),
+                    trailing: Icon(
+                      Icons.file_upload,
+                      color: LightColors.kDarkYellow,
+                    ),
+                    onTap: () {
+                      FilePicker.getFile().then((file) {
+                        
+                        var filename =
+                            file.path.substring(file.path.lastIndexOf('/') + 1);
+                        var extendsion =
+                            filename.substring(filename.lastIndexOf('.') + 1);
+                        print(filename + " " + extendsion);
+                        if (extendsion != 'pdf' && extendsion != 'doc' && extendsion != 'txt' && extendsion != 'docx') {
+                          return Text("File is not allowed", style: TextStyle(color: Colors.red),);
+                        }
+                        print(filename + " " + extendsion);
+                          chooseFile.filename= filename;
+                          chooseFile.fileExtension = extendsion;
+                          chooseFile.file = file;
+                      });
+                    },
+                  ),
                   StreamBuilder(
-                    stream: bloc.editToolGet,
+                    stream: bloc.editSceneGet,
                     builder: (context, result) {
                       if (result.hasData) {
                         return Text(
@@ -150,11 +167,13 @@ class _EditToolPageState extends State<EditToolPage> {
             GestureDetector(
               onTap: () {
                 print("Save");
-                FocusScope.of(context).unfocus();
-                String name = toolNameController.text;
-                String des = toolDesController.text;
-                int quantity = int.parse(quantityController.text);
-                onCreateActorClick(name,des,quantity,false,widget.tool,script);
+                String name = sceneNameController.text;
+                String des = sceneDesController.text;
+                String timeStart = sceneTimeStartController.text;
+                String timeStop = sceneTimeStopController.text;
+                int sceneRec = int.parse(sceneRecController.text);
+                String sceneLoc = sceneLocation.text;
+                onEditSceneClick(name, des, sceneRec,timeStart, timeStop, sceneLoc,false,widget.scene,chooseFile);
               },
               child: Container(
                 height: 80,
@@ -164,7 +183,7 @@ class _EditToolPageState extends State<EditToolPage> {
                   children: <Widget>[
                     Container(
                       child: Text(
-                        'Save Tool',
+                        'Save Scene',
                         style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.w700,
@@ -192,10 +211,13 @@ class _EditToolPageState extends State<EditToolPage> {
               onTap: () {
                 print("Delete");
                 FocusScope.of(context).unfocus();
-                String name = toolNameController.text;
-                String des = toolDesController.text;
-                int quantity = int.parse(quantityController.text);
-                onCreateActorClick(name,des,quantity,true,widget.tool,script);
+                String name = sceneNameController.text;
+                String des = sceneDesController.text;
+                String timeStart = sceneTimeStartController.text;
+                String timeStop = sceneTimeStopController.text;
+                int sceneRec = int.parse(sceneRecController.text);
+                String sceneLoc = sceneLocation.text;
+                onEditSceneClick(name, des, sceneRec,timeStart, timeStop, sceneLoc,true,widget.scene,chooseFile);
                 Navigator.pop(context);
               },
               child: Container(
@@ -236,11 +258,14 @@ class _EditToolPageState extends State<EditToolPage> {
     );
   }
 
-  void onCreateActorClick(name, des, quantity,bool isDelete,Tool tool,script) {
-    tool.toolName = name;
-    tool.toolDes = des;
-    tool.isDelete = isDelete;
-    tool.quantity = quantity;
-    bloc.editTool(tool,script);
+  void onEditSceneClick(name, des, rec,timeStart, timeStop, sceneloc, bool isDelete, Scene scene,ChooseFile chooseFile) {
+   scene.sceneName = name;
+   scene.sceneDes = des;
+   scene.sceneTimeStart = timeStart;
+   scene.scenetTimeStop = timeStop;
+   scene.sceneLoc = scene.sceneLoc;
+   scene.isDelete = isDelete;
+   print(chooseFile.filename);
+   bloc.editScene(scene, chooseFile);
   }
 }

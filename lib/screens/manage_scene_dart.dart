@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_task_planner_app/bloc/getallactor_bloc.dart';
-import 'package:flutter_task_planner_app/bloc/getalltool_bloc.dart';
-import 'package:flutter_task_planner_app/screens/admin_menu.dart';
-import 'package:flutter_task_planner_app/screens/createactor.dart';
+import 'package:flutter_task_planner_app/bloc/getallscene_bloc.dart';
 import 'package:flutter_task_planner_app/screens/createtool.dart';
-import 'package:flutter_task_planner_app/screens/edittool.dart';
+import 'package:flutter_task_planner_app/screens/editscene.dart';
 import 'package:flutter_task_planner_app/theme/colors/light_colors.dart';
 import 'package:flutter_task_planner_app/widgets/act_column.dart';
-import 'package:percent_indicator/percent_indicator.dart';
 import 'package:flutter_task_planner_app/widgets/top_container.dart';
+import 'package:percent_indicator/percent_indicator.dart';
 
-class ManageToolTaskPage extends StatefulWidget {
+class ManageSceneTaskPage extends StatefulWidget {
   static CircleAvatar calendarIcon() {
     return CircleAvatar(
       radius: 25.0,
@@ -24,10 +21,10 @@ class ManageToolTaskPage extends StatefulWidget {
   }
 
   @override
-  _ManageToolTaskState createState() => _ManageToolTaskState();
+  _ManageSceneTaskState createState() => _ManageSceneTaskState();
 }
 
-class _ManageToolTaskState extends State<ManageToolTaskPage> {
+class _ManageSceneTaskState extends State<ManageSceneTaskPage> {
   Text subheading(String title) {
     return Text(
       title,
@@ -39,10 +36,10 @@ class _ManageToolTaskState extends State<ManageToolTaskPage> {
     );
   }
 
-  var bloc = GetAllToolBloc();
+  var bloc = GetAllSceneBloc();
   @override
   Widget build(BuildContext context) {
-    bloc.getAllToolFunction();
+    bloc.getAllSceneFunction();
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: LightColors.kLightYellow,
@@ -124,7 +121,7 @@ class _ManageToolTaskState extends State<ManageToolTaskPage> {
                       child: Column(
                         children: <Widget>[
                           Text(
-                            "Manage tool",
+                            "Manage Scene",
                             style: TextStyle(
                                 fontWeight: FontWeight.w900, fontSize: 28),
                           ),
@@ -174,24 +171,24 @@ class _ManageToolTaskState extends State<ManageToolTaskPage> {
                           ),
                           SizedBox(height: 15.0),
                           StreamBuilder(
-                              stream: bloc.getTools,
+                              stream: bloc.getScenes,
                               builder: (context, snapshot) {
                                 if (snapshot.hasData) {
                                   var listWidget = <Widget>[];
                                   snapshot.data.forEach((data) {
                                     listWidget.add(ActColumn(
-                                      title: data.toolId + ". " + data.toolName,
-                                      subtitle: data.toolDes,
+                                      title: data.sceneId.toString() + ". " + data.sceneName,
+                                      subtitle: data.sceneDes,
                                       onTap: () {
                                         print("tapped");
                                         Navigator.of(context)
                                             .push(
                                               MaterialPageRoute(
                                                   builder: (context) =>
-                                                      EditToolPage(data)),
+                                                      EditScenePage(data)),
                                             )
                                             .then((value) =>
-                                                bloc.getAllToolFunction());
+                                                bloc.getAllSceneFunction());
                                       },
                                     ));
                                   });
@@ -230,7 +227,7 @@ class _ManageToolTaskState extends State<ManageToolTaskPage> {
                           MaterialPageRoute(
                               builder: (context) => CreateToolPage()),
                         )
-                        .then((value) => bloc.getAllToolFunction());
+                        .then((value) => bloc.getAllSceneFunction());
                   },
                 ),
               ),

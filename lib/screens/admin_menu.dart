@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_task_planner_app/bloc/logout_bloc.dart';
+import 'package:flutter_task_planner_app/screens/admin_home_page.dart';
 import 'package:flutter_task_planner_app/screens/usersetting.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -127,7 +128,7 @@ class _AdminSideBarState extends State<AdminSideBar>
                         title: "Home",
                         onTap: (){
                           onIconPressed();
-                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => AdminMenuPage(screen: HomePage())));
+                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => AdminMenuPage(screen: AdminHomePage())));
                         },
                       ),
                       Divider(

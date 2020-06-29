@@ -1,13 +1,14 @@
 import 'dart:async';
+
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter_task_planner_app/dataprovider/edittool.dart';
-import 'package:flutter_task_planner_app/models/tool.dart';
+import 'package:flutter_task_planner_app/dataprovider/createscene.dart';
+import 'package:flutter_task_planner_app/models/scene.dart';
 
-class EditToolBloc {
-  StreamController editToolStream = new StreamController();
-  Stream get editToolGet => editToolStream.stream;
+class CreateSceneBloc {
+  StreamController createSceneStream = new StreamController();
+  Stream get createSceneGet => createSceneStream.stream;
 
-  Future<bool> editTool(Tool tool,script) async {
+  Future<bool> createTool(Scene scene, script) async {
     if (script != null && script.filename != null && script.file != null) {
       print('start upload');
       var filename = script.filename +
@@ -27,22 +28,22 @@ class EditToolBloc {
 
       await storageReference.getDownloadURL().then((value) {
         print(value);
-        tool.image = value;
+        scene.sceneActors = value;
       });
     }
-     var edit = EditTool();
-      var result = await edit.editTool(tool);
-      print(result);
-      if (!result) {
-        editToolStream.sink.add("Error");
-        return false;
-      } else {
-        editToolStream.sink.add("Success!!!");
-        return true;
-      }
+    var create = CreateScene();
+    var result = await create.create(scene);
+    print(result);
+    if (!result) {
+      createSceneStream.sink.add("Error");
+      return false;
+    } else {
+      createSceneStream.sink.add("Create Success!!!");
+      return true;
+    }
   }
 
   void dispose() {
-    editToolStream.close();
+    createSceneStream.close();
   }
 }

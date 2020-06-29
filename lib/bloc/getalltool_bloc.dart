@@ -7,7 +7,7 @@ import 'package:flutter_task_planner_app/models/tool.dart';
 
 class GetAllToolBloc {
   StreamController getAllToolStream = new StreamController();
-  Stream get getActors => getAllToolStream.stream;
+  Stream get getTools => getAllToolStream.stream;
   List<Tool> list ;
   Future<bool> getAllToolFunction() async {
       print("bloc alo");
