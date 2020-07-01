@@ -25,5 +25,10 @@ class SharePreferencesProvider{
       return null;
     }
   }
-    
+  
+  Future<String> getName() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    String name = pref.getString("Name");
+    return name;
+  }
 }

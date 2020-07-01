@@ -83,7 +83,7 @@ class _ManageSceneTaskState extends State<ManageSceneTaskPage> {
                             children: <Widget>[
                               Container(
                                 child: Text(
-                                  "aloha",
+                                  "Administation",
                                   textAlign: TextAlign.start,
                                   style: TextStyle(
                                     fontSize: 22.0,
@@ -94,7 +94,7 @@ class _ManageSceneTaskState extends State<ManageSceneTaskPage> {
                               ),
                               Container(
                                 child: Text(
-                                  "snapshot.data[0].email",
+                                  "",
                                   textAlign: TextAlign.start,
                                   style: TextStyle(
                                     fontSize: 16.0,

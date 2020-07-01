@@ -127,6 +127,7 @@ class _AdminSideBarState extends State<AdminSideBar>
                         icon: Icons.home,
                         title: "Home",
                         onTap: (){
+                          print("admin home page");
                           onIconPressed();
                           Navigator.of(context).push(MaterialPageRoute(builder: (context) => AdminMenuPage(screen: AdminHomePage())));
                         },

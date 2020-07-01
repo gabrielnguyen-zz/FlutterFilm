@@ -5,25 +5,36 @@ import 'package:flutter_task_planner_app/widgets/top_container.dart';
 import 'package:flutter_task_planner_app/widgets/back_button.dart';
 import 'package:flutter_task_planner_app/widgets/my_text_field.dart';
 
-class CreateActorPage extends StatelessWidget {
+class CreateActorPage extends StatefulWidget {
+  @override
+  _CreateActorPageState createState() => _CreateActorPageState();
+}
+
+class _CreateActorPageState extends State<CreateActorPage> {
   TextEditingController actorNameController = TextEditingController();
+
   TextEditingController actorDesController = TextEditingController();
+
   TextEditingController usernameController = TextEditingController();
+
   TextEditingController emailController = TextEditingController();
+
   TextEditingController phoneController = TextEditingController();
+
   TextEditingController passwordController = TextEditingController();
+
   var bloc = CreateActorBloc();
+
   @override
   Widget build(BuildContext context) {
-    
+    String dropDownScene;
     double width = MediaQuery.of(context).size.width;
     var downwardIcon = Icon(
       Icons.keyboard_arrow_down,
       color: Colors.black54,
     );
-    
+
     return Scaffold(
-      
       body: SafeArea(
         child: Column(
           children: <Widget>[
@@ -40,7 +51,7 @@ class CreateActorPage extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
                       Text(
-                        'Create new actor',
+                        'Add Actor to Scene',
                         style: TextStyle(
                             fontSize: 30.0, fontWeight: FontWeight.w700),
                       ),
@@ -132,7 +143,7 @@ class CreateActorPage extends StatelessWidget {
                   children: <Widget>[
                     Container(
                       child: Text(
-                        'Create Actor',
+                        'Add Actor To Scene',
                         style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.w700,
@@ -161,25 +172,24 @@ class CreateActorPage extends StatelessWidget {
       ),
     );
   }
-  void onCreateActorClick(){
-    
+
+  void onCreateActorClick() {
     String name = actorNameController.text;
-    String des =  actorDesController.text;
+    String des = actorDesController.text;
     String phone = phoneController.text;
     String email = emailController.text;
     String username = usernameController.text;
     String password = passwordController.text;
     Actor actor = Actor(
-      actorName: name,
-      actorDes: des,
-      phone: phone,
-      email: email,
-      accountId: username,
-      password: password,
-      createdBy: username,
-      updatedBy: username,
-      image: "aloha"
-    );
+        actorName: name,
+        actorDes: des,
+        phone: phone,
+        email: email,
+        accountId: username,
+        password: password,
+        createdBy: username,
+        updatedBy: username,
+        image: "aloha");
     bloc.createActor(actor);
   }
 }

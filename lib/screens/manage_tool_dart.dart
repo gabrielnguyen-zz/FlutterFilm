@@ -86,7 +86,7 @@ class _ManageToolTaskState extends State<ManageToolTaskPage> {
                             children: <Widget>[
                               Container(
                                 child: Text(
-                                  "aloha",
+                                  "Administration",
                                   textAlign: TextAlign.start,
                                   style: TextStyle(
                                     fontSize: 22.0,
@@ -97,7 +97,7 @@ class _ManageToolTaskState extends State<ManageToolTaskPage> {
                               ),
                               Container(
                                 child: Text(
-                                  "snapshot.data[0].email",
+                                  "",
                                   textAlign: TextAlign.start,
                                   style: TextStyle(
                                     fontSize: 16.0,

@@ -42,7 +42,7 @@ class ActiveProjectsCard extends StatelessWidget {
                     progressColor: Colors.white,
                     center: Icon(
                       icon,
-                      size: 30,
+                      size: 25,
                       color: Colors.white,
                     ),
                   ),

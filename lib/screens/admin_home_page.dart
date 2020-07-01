@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_task_planner_app/bloc/getuserinfo_bloc.dart';
+import 'package:flutter_task_planner_app/screens/addactortoscene.dart';
+import 'package:flutter_task_planner_app/screens/admin_menu.dart';
 import 'package:flutter_task_planner_app/screens/manage_actor_task.dart';
 import 'package:flutter_task_planner_app/screens/manage_scene_dart.dart';
 import 'package:flutter_task_planner_app/screens/manage_tool_dart.dart';
@@ -7,7 +9,6 @@ import 'package:flutter_task_planner_app/theme/colors/light_colors.dart';
 import 'package:flutter_task_planner_app/widgets/active_project_card.dart';
 import 'package:flutter_task_planner_app/widgets/top_container.dart';
 import 'package:percent_indicator/percent_indicator.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import 'menu.dart';
 
@@ -132,6 +133,7 @@ class _AdminHomePageState extends State<AdminHomePage> {
                                   horizontal: 20.0, vertical: 10.0),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
+                                
                                 children: <Widget>[
                                   subheading('Management Tasks'),
                                   SizedBox(height: 5.0),
@@ -141,25 +143,50 @@ class _AdminHomePageState extends State<AdminHomePage> {
                                         icon: Icons.person_add,
                                         cardColor: LightColors.kGreen,
                                         loadingPercent: 0.25,
-                                        title: 'Actor',
+                                        title: 'Add Actor To Scene',
                                         onTap: (){
-                                          print("actor");
-                                          String title = "Actor";
+                                          //String name = snapshot.data.actorName;
+                                          // Navigator.of(context).push(MaterialPageRoute(builder: (context) => AddActorToScenePage()));
+                                          Navigator.push(context, MaterialPageRoute(builder: (context) => AddActorToScenePage()));
+                                        },
+                                      ),
+                                      SizedBox(width: 20.0),
+                                      ActiveProjectsCard(
+                                        icon: Icons.camera_enhance,
+                                        cardColor: LightColors.kRed,
+                                        loadingPercent: 0.6,
+                                        title: 'Add Tool To Scene',
+                                        onTap: (){
+                                           String name = snapshot.data.actorName;
+                                          var screen = ManageSceneTaskPage();
+                                          onManageClicked(name,screen);
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: <Widget>[
+                                      ActiveProjectsCard(
+                                        icon: Icons.person,
+                                        cardColor: LightColors.kDarkBlue,
+                                        loadingPercent: 0.25,
+                                        title: 'Manage Actor',
+                                        onTap: (){
+                                          String name = snapshot.data.actorName;
                                           var screen = ManageActorTaskPage();
-                                          onManageClicked(title,screen);
+                                          onManageClicked(name,screen);
                                         },
                                       ),
                                       SizedBox(width: 20.0),
                                       ActiveProjectsCard(
                                         icon: Icons.camera_roll,
-                                        cardColor: LightColors.kRed,
+                                        cardColor: LightColors.kBlue,
                                         loadingPercent: 0.6,
-                                        title: 'Scene',
+                                        title: ' Manage Scene',
                                         onTap: (){
-                                          print("Scene Tapped");
-                                          String title = "Scene";
+                                           String name = snapshot.data.actorName;
                                           var screen = ManageSceneTaskPage();
-                                          onManageClicked(title,screen);
+                                          onManageClicked(name,screen);
                                         },
                                       ),
                                     ],
@@ -173,12 +200,11 @@ class _AdminHomePageState extends State<AdminHomePage> {
                                         icon: Icons.work,
                                         cardColor: LightColors.kDarkYellow,
                                         loadingPercent: 0.45,
-                                        title: 'Tool',
+                                        title: 'Manage Tool',
                                         onTap: (){
-                                          print("Tool Tapped");
-                                          String title = "Tool";
+                                           String name = snapshot.data.actorName;
                                           var screen = ManageToolTaskPage();
-                                          onManageClicked(title,screen);
+                                          onManageClicked(name,screen);
                                         },
                                       ),
                                       Container(
@@ -186,6 +212,7 @@ class _AdminHomePageState extends State<AdminHomePage> {
                                       ),
                                     ],
                                   ),
+                                  
                                 ],
                               ),
                             ),
@@ -204,10 +231,7 @@ class _AdminHomePageState extends State<AdminHomePage> {
         });
   }
 
-  Future<void> onManageClicked(String title, Widget screen) async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    sharedPreferences.setString("Manage", title);
-    print(sharedPreferences.getString("Manage"));
-    Navigator.of(context).push(MaterialPageRoute(builder: (context) => ActorMenuPage(screen: screen,) ));
+  Future<void> onManageClicked(String name, Widget screen) async {
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) => AdminMenuPage(screen: screen,) ));
   }
 }

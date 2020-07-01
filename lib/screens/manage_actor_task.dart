@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_task_planner_app/bloc/getallactor_bloc.dart';
-import 'package:flutter_task_planner_app/screens/admin_menu.dart';
 import 'package:flutter_task_planner_app/screens/createactor.dart';
 import 'package:flutter_task_planner_app/theme/colors/light_colors.dart';
 import 'package:flutter_task_planner_app/widgets/act_column.dart';
-import 'package:percent_indicator/percent_indicator.dart';
 import 'package:flutter_task_planner_app/widgets/top_container.dart';
+import 'package:percent_indicator/percent_indicator.dart';
 
 class ManageActorTaskPage extends StatefulWidget {
   static CircleAvatar calendarIcon() {
@@ -83,7 +82,7 @@ class _ManageActorTaskState extends State<ManageActorTaskPage> {
                             children: <Widget>[
                               Container(
                                 child: Text(
-                                  "aloha",
+                                  "Administration",
                                   textAlign: TextAlign.start,
                                   style: TextStyle(
                                     fontSize: 22.0,
@@ -94,7 +93,7 @@ class _ManageActorTaskState extends State<ManageActorTaskPage> {
                               ),
                               Container(
                                 child: Text(
-                                  "snapshot.data[0].email",
+                                  "",
                                   textAlign: TextAlign.start,
                                   style: TextStyle(
                                     fontSize: 16.0,
