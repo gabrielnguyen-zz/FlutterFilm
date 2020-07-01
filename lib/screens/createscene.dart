@@ -1,5 +1,6 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:flutter_task_planner_app/bloc/create_scene_bloc.dart';
 import 'package:flutter_task_planner_app/bloc/edit_scene_bloc.dart';
 import 'package:flutter_task_planner_app/bloc/edit_tool_bloc.dart';
@@ -23,9 +24,8 @@ class _CreateScenePageState extends State<CreateScenePage> {
     TextEditingController sceneNameController = TextEditingController();
     TextEditingController sceneDesController = TextEditingController();
     TextEditingController sceneRecController = TextEditingController();
-    TextEditingController sceneTimeStartController = TextEditingController();
-    TextEditingController sceneTimeStopController = TextEditingController();
     TextEditingController sceneLocation = TextEditingController();
+    String timeStart = 'Pick Date', timeStop = 'Pick Date';
     double width = MediaQuery.of(context).size.width;
     ChooseFile chooseFile = ChooseFile();
 
@@ -80,6 +80,7 @@ class _CreateScenePageState extends State<CreateScenePage> {
                       Expanded(
                           child: MyTextField(
                         label: 'Scene Rec',
+                        keyboard: TextInputType.number,
                         controller: sceneRecController,
                       )),
                       SizedBox(width: 40),
@@ -101,15 +102,44 @@ class _CreateScenePageState extends State<CreateScenePage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Expanded(
-                          child: MyTextField(
-                        label: 'Scene Time Start',
-                        controller: sceneTimeStartController,
-                      )),
+                        child: Column(
+                          children: <Widget>[
+                            Text('Time Start : '),
+                            FlatButton(
+                              color: LightColors.kDarkYellow,
+                              textColor: Colors.black,
+                              onPressed: () {
+                                DatePicker.showDatePicker(context,
+                                    showTitleActions: true, onConfirm: (date) {
+                                  setState(() {
+                                    timeStart = date.toString().split(" ")[0];
+                                  });
+                                });
+                              },
+                              child: Text(timeStart),
+                            ),
+                          ],
+                        ),
+                      ),
                       SizedBox(width: 40),
                       Expanded(
-                        child: MyTextField(
-                          label: 'Scene Time Stop',
-                          controller: sceneTimeStopController,
+                        child: Column(
+                          children: <Widget>[
+                            Text('Time Stop : '),
+                            FlatButton(
+                              color: LightColors.kDarkYellow,
+                              textColor: Colors.black,
+                              onPressed: () {
+                                DatePicker.showDatePicker(context,
+                                    showTitleActions: true, onConfirm: (date) {
+                                  setState(() {
+                                    timeStop = date.toString().split(" ")[0];
+                                  });
+                                });
+                              },
+                              child: Text(timeStop),
+                            ),
+                          ],
                         ),
                       ),
                     ],
@@ -166,8 +196,6 @@ class _CreateScenePageState extends State<CreateScenePage> {
                 print("Create");
                 String name = sceneNameController.text;
                 String des = sceneDesController.text;
-                String timeStart = sceneTimeStartController.text;
-                String timeStop = sceneTimeStopController.text;
                 int sceneRec = int.parse(sceneRecController.text);
                 String sceneLoc = sceneLocation.text;
                 onCreateSceneClick(name, des, sceneRec, timeStart, timeStop,

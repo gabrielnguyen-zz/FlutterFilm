@@ -83,6 +83,7 @@ class _CreateToolPageState extends State<CreateToolPage> {
                       Expanded(
                           child: MyTextField(
                         label: 'Quantity',
+                        keyboard: TextInputType.number,
                         controller: quantityController,
                       )),
                       SizedBox(width: 40),

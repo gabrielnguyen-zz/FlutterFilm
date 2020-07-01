@@ -168,6 +168,7 @@ class _UserSettingState extends State<UserSettingPage> {
                                             fontSize: 15),
                                       )),
                                   TextField(
+                                    keyboardType: TextInputType.number,
                                       controller: phoneController,
                                       style: TextStyle(
                                           fontSize: 18, color: Colors.black),

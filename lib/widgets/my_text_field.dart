@@ -6,8 +6,9 @@ class MyTextField extends StatelessWidget {
   final int minLines;
   final Icon icon;
   final String hint;
+  final TextInputType keyboard;
   final TextEditingController controller;
-  MyTextField({this.label, this.maxLines = 1, this.minLines = 1, this.icon,this.controller,this.hint});
+  MyTextField({this.label, this.maxLines = 1, this.minLines = 1, this.icon,this.controller,this.hint,this.keyboard});
 
   @override
   Widget build(BuildContext context) {
@@ -16,6 +17,7 @@ class MyTextField extends StatelessWidget {
       style: TextStyle(color: Colors.black87),
       minLines: minLines,
       maxLines: maxLines,
+      keyboardType: keyboard,
       decoration: InputDecoration(
         suffixIcon: icon == null ? null: icon,
           labelText: label,

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:flutter_task_planner_app/bloc/show_actor_scene_bloc.dart';
+import 'package:flutter_task_planner_app/theme/colors/light_colors.dart';
 import 'package:flutter_task_planner_app/widgets/back_button.dart';
 import 'package:flutter_task_planner_app/widgets/my_text_field.dart';
 import 'package:flutter_task_planner_app/widgets/top_container.dart';
@@ -11,18 +13,18 @@ class AddActorToScenePage extends StatefulWidget {
 
 class _AddActorToScenePageState extends State<AddActorToScenePage> {
   TextEditingController characterController = TextEditingController();
-  TextEditingController actFromController = TextEditingController();
-  TextEditingController actToController = TextEditingController();
   List<String> listStatus = ["Waiting", "In Progress", "Done"];
   var bloc = ShowActorSceneBloc();
   String status;
   String dropDownScene;
   String dropDownActor;
+  String actFrom = 'Pick Date', actTo = 'Pick Date';
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
@@ -66,7 +68,9 @@ class _AddActorToScenePageState extends State<AddActorToScenePage> {
                             if (snapshot.hasData) {
                               List<String> list = snapshot.data;
                               return DropdownButton<String>(
-                                  value: dropDownScene != null ? dropDownScene : null,
+                                  value: dropDownScene != null
+                                      ? dropDownScene
+                                      : null,
                                   items: list.map((e) {
                                     return DropdownMenuItem(
                                         value: e,
@@ -113,7 +117,9 @@ class _AddActorToScenePageState extends State<AddActorToScenePage> {
                                 if (snapshot.hasData) {
                                   List<String> list = snapshot.data;
                                   return DropdownButton<String>(
-                                      value: dropDownActor != null ? dropDownActor : null,
+                                      value: dropDownActor != null
+                                          ? dropDownActor
+                                          : null,
                                       items: list.map((e) {
                                         return DropdownMenuItem(
                                             value: e,
@@ -138,7 +144,7 @@ class _AddActorToScenePageState extends State<AddActorToScenePage> {
                               })
                         ],
                       )),
-                      SizedBox(width:10),
+                      SizedBox(width: 10),
                       Container(
                         child: Column(
                           children: <Widget>[
@@ -164,7 +170,6 @@ class _AddActorToScenePageState extends State<AddActorToScenePage> {
                       ),
                     ],
                   ),
-
                   MyTextField(
                     label: 'Character for Actor',
                     controller: characterController,
@@ -173,18 +178,60 @@ class _AddActorToScenePageState extends State<AddActorToScenePage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
+                      // Expanded(
+                      //     child: MyTextField(
+                      //   label: 'Act From',
+                      //   hint: "Ex: 2020-06-03",
+                      //   controller: actFromController,
+                      // )),
+                      // SizedBox(width: 40),
+                      // Expanded(
+                      //   child: MyTextField(
+                      //     label: 'Act To',
+                      //     hint: "Ex: 2020-06-03",
+                      //     controller: actToController,
+                      //   ),
+                      // ),
                       Expanded(
-                          child: MyTextField(
-                        label: 'Act From',
-                        hint: "Ex: 2020-06-03",
-                        controller: actFromController,
-                      )),
+                        child: Column(
+                          children: <Widget>[
+                            Text('Act From : '),
+                            FlatButton(
+                              color: LightColors.kDarkYellow,
+                              textColor: Colors.black,
+                              onPressed: () {
+                                DatePicker.showDatePicker(context,
+                                    showTitleActions: true, onConfirm: (date) {
+                                  setState(() {
+                                    actFrom = date.toString().split(" ")[0];
+                                  });
+                                });
+                              },
+                              child: Text(actFrom),
+                            ),
+                          ],
+                        ),
+                      ),
                       SizedBox(width: 40),
                       Expanded(
-                        child: MyTextField(
-                          label: 'Act To',
-                          hint: "Ex: 2020-06-03",
-                          controller: actToController,
+                        child: Column(
+                          children: <Widget>[
+                            Text('Act To : '),
+                            FlatButton(
+                              color: LightColors.kDarkYellow,
+                              textColor: Colors.black,
+                              onPressed: () {
+                                DatePicker.showDatePicker(context,
+                                    showTitleActions: true,
+                                    onConfirm: (date) {
+                                  setState(() {
+                                    actTo = date.toString().split(" ")[0];
+                                  });
+                                });
+                              },
+                              child: Text(actTo),
+                            ),
+                          ],
                         ),
                       ),
                     ],
@@ -210,9 +257,8 @@ class _AddActorToScenePageState extends State<AddActorToScenePage> {
                 print("added");
                 FocusScope.of(context).unfocus();
                 String character = characterController.text;
-                String actFrom = actFromController.text;
-                String actTo = actToController.text;
-                bloc.addActorToScene(dropDownActor, dropDownScene, character, actFrom, actTo, status);
+                bloc.addActorToScene(dropDownActor, dropDownScene, character,
+                    actFrom, actTo, status);
               },
               child: Container(
                 height: 80,

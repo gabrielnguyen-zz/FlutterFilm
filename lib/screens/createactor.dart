@@ -90,6 +90,7 @@ class _CreateActorPageState extends State<CreateActorPage> {
                       Expanded(
                         child: MyTextField(
                           label: 'Phone',
+                          keyboard: TextInputType.number,
                           controller: phoneController,
                         ),
                       ),

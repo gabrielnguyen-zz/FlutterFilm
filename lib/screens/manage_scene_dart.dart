@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_task_planner_app/bloc/getallscene_bloc.dart';
+import 'package:flutter_task_planner_app/screens/createscene.dart';
 import 'package:flutter_task_planner_app/screens/createtool.dart';
 import 'package:flutter_task_planner_app/screens/editscene.dart';
 import 'package:flutter_task_planner_app/theme/colors/light_colors.dart';
@@ -225,7 +226,7 @@ class _ManageSceneTaskState extends State<ManageSceneTaskPage> {
                     Navigator.of(context)
                         .push(
                           MaterialPageRoute(
-                              builder: (context) => CreateToolPage()),
+                              builder: (context) => CreateScenePage()),
                         )
                         .then((value) => bloc.getAllSceneFunction());
                   },
