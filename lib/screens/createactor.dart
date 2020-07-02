@@ -1,9 +1,14 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_task_planner_app/bloc/create_actor_bloc.dart';
 import 'package:flutter_task_planner_app/models/actor.dart';
+import 'package:flutter_task_planner_app/models/file.dart';
+import 'package:flutter_task_planner_app/theme/colors/light_colors.dart';
 import 'package:flutter_task_planner_app/widgets/top_container.dart';
 import 'package:flutter_task_planner_app/widgets/back_button.dart';
 import 'package:flutter_task_planner_app/widgets/my_text_field.dart';
+import 'package:image_picker/image_picker.dart';
 
 class CreateActorPage extends StatefulWidget {
   @override
@@ -24,7 +29,7 @@ class _CreateActorPageState extends State<CreateActorPage> {
   TextEditingController passwordController = TextEditingController();
 
   var bloc = CreateActorBloc();
-
+  ChooseFile script = ChooseFile();
   @override
   Widget build(BuildContext context) {
     String dropDownScene;
@@ -58,7 +63,7 @@ class _CreateActorPageState extends State<CreateActorPage> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: <Widget>[
                         Text(
-                          'Add Actor to Scene',
+                          'Create Actor',
                           style: TextStyle(
                               fontSize: 30.0, fontWeight: FontWeight.w700),
                         ),
@@ -122,6 +127,33 @@ class _CreateActorPageState extends State<CreateActorPage> {
                               borderSide: BorderSide(color: Colors.grey))),
                     ),
                     SizedBox(height: 20),
+                    ListTile(
+                            
+                            title: Text("Actor Image:"),
+                            subtitle:
+                                Text(script.filename??  'Click here to get picture'),
+                            trailing: Icon(
+                              Icons.file_upload,
+                              color: LightColors.kDarkYellow,
+                            ),
+                            onTap: () {
+                              ImagePicker()
+                                  .getImage(source: ImageSource.camera)
+                                  .then((value) {
+                                var file = File(value.path);
+                                var list = file.toString().split("/");
+                                var pic = list[list.length - 1].split("'")[0];
+                                setState(() {
+                                  print(pic);
+                                  script.filename =
+                                      pic.toString().split(".")[0];
+                                  script.fileExtension =
+                                      pic.toString().split(".")[1];
+                                  script.file = file;
+                                });
+                              });
+                            },
+                          ),
                     StreamBuilder(
                       stream: bloc.createActorGet,
                       builder: (context, result) {
@@ -141,7 +173,7 @@ class _CreateActorPageState extends State<CreateActorPage> {
                 onTap: () {
                   print("created");
                   FocusScope.of(context).unfocus();
-                  onCreateActorClick();
+                  onCreateActorClick(script);
                 },
                 child: Container(
                   height: 80,
@@ -151,7 +183,7 @@ class _CreateActorPageState extends State<CreateActorPage> {
                     children: <Widget>[
                       Container(
                         child: Text(
-                          'Add Actor To Scene',
+                          'Create Actor',
                           style: TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.w700,
@@ -182,7 +214,7 @@ class _CreateActorPageState extends State<CreateActorPage> {
     );
   }
 
-  void onCreateActorClick() {
+  void onCreateActorClick(script) {
     String name = actorNameController.text;
     String des = actorDesController.text;
     String phone = phoneController.text;
@@ -197,8 +229,7 @@ class _CreateActorPageState extends State<CreateActorPage> {
         accountId: username,
         password: password,
         createdBy: username,
-        updatedBy: username,
-        image: "aloha");
-    bloc.createActor(actor);
+        updatedBy: username,);
+    bloc.createActor(actor,script);
   }
 }

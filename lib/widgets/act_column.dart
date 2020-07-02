@@ -4,11 +4,13 @@ class ActColumn extends StatelessWidget {
   final String title;
   final String subtitle;
   final Function onTap;
+  final IconData icon;
   ActColumn(
       {
       this.title,
       this.subtitle,
-      this.onTap});
+      this.onTap,
+      this.icon});
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -38,7 +40,9 @@ class ActColumn extends StatelessWidget {
                 ),
               ],
             ),
-          )
+          ),
+          Spacer(),
+          Icon(icon),
         ],
       ),
     );

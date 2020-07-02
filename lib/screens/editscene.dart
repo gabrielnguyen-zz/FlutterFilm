@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_task_planner_app/bloc/edit_scene_bloc.dart';
@@ -8,6 +10,7 @@ import 'package:flutter_task_planner_app/theme/colors/light_colors.dart';
 import 'package:flutter_task_planner_app/widgets/top_container.dart';
 import 'package:flutter_task_planner_app/widgets/back_button.dart';
 import 'package:flutter_task_planner_app/widgets/my_text_field.dart';
+import 'package:image_picker/image_picker.dart';
 
 class EditScenePage extends StatefulWidget {
   final Scene scene;
@@ -154,6 +157,8 @@ class _EditScenePageState extends State<EditScenePage> {
                             chooseFile.fileExtension = extendsion;
                             chooseFile.file = file;
                         });
+                        
+
                       },
                     ),
                     StreamBuilder(

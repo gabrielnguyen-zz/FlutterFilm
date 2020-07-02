@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_task_planner_app/bloc/create_tool_bloc.dart';
@@ -7,6 +9,7 @@ import 'package:flutter_task_planner_app/theme/colors/light_colors.dart';
 import 'package:flutter_task_planner_app/widgets/back_button.dart';
 import 'package:flutter_task_planner_app/widgets/my_text_field.dart';
 import 'package:flutter_task_planner_app/widgets/top_container.dart';
+import 'package:image_picker/image_picker.dart';
 
 class CreateToolPage extends StatefulWidget {
   @override
@@ -20,15 +23,16 @@ class _CreateToolPageState extends State<CreateToolPage> {
 
   TextEditingController quantityController = TextEditingController();
 
-  ChooseFile script ;
+  ChooseFile script;
 
   var bloc = CreateToolBloc();
-@override
+  @override
   void initState() {
     // TODO: implement initState
     script = ChooseFile();
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
@@ -38,13 +42,13 @@ class _CreateToolPageState extends State<CreateToolPage> {
     );
 
     return GestureDetector(
-       onTap: (){
+      onTap: () {
         FocusScopeNode focusScopeNode = FocusScope.of(context);
-        if(!focusScopeNode.hasPrimaryFocus){
+        if (!focusScopeNode.hasPrimaryFocus) {
           focusScopeNode.unfocus();
         }
       },
-          child: Scaffold(
+      child: Scaffold(
         body: SafeArea(
           child: Column(
             children: <Widget>[
@@ -95,9 +99,8 @@ class _CreateToolPageState extends State<CreateToolPage> {
                         )),
                         SizedBox(width: 40),
                         Container(
-                          width: width/2 - 10,
+                          width: width / 2 - 10,
                           child: ListTile(
-                            
                             title: Text("Tool Image:"),
                             subtitle:
                                 Text(script.filename ?? "Click to choose file"),
@@ -106,21 +109,18 @@ class _CreateToolPageState extends State<CreateToolPage> {
                               color: LightColors.kDarkYellow,
                             ),
                             onTap: () {
-                              FilePicker.getFile().then((file) {
-                                var filename = file.path
-                                    .substring(file.path.lastIndexOf('/') + 1);
-                                var extendsion = filename
-                                    .substring(filename.lastIndexOf('.') + 1);
-
-                                if (extendsion != 'pdf' && extendsion != 'jpg' && extendsion !='png') {
-                                  return Text(
-                                    'File is not allowed',
-                                    style: TextStyle(color: Colors.red),
-                                  );
-                                }
+                              ImagePicker()
+                                  .getImage(source: ImageSource.camera)
+                                  .then((value) {
+                                var file = File(value.path);
+                                var list = file.toString().split("/");
+                                var pic = list[list.length - 1].split("'")[0];
                                 setState(() {
-                                  script.filename = filename;
-                                  script.fileExtension = extendsion;
+                                  print(pic);
+                                  script.filename =
+                                      pic.toString().split(".")[0];
+                                  script.fileExtension =
+                                      pic.toString().split(".")[1];
                                   script.file = file;
                                 });
                               });
@@ -200,8 +200,7 @@ class _CreateToolPageState extends State<CreateToolPage> {
     String name = toolNameController.text;
     String des = toolDesController.text;
     int quantity = int.parse(quantityController.text);
-    Tool tool =
-        Tool(toolName: name, toolDes: des, quantity: quantity);
-    bloc.createTool(tool,script);
+    Tool tool = Tool(toolName: name, toolDes: des, quantity: quantity);
+    bloc.createTool(tool, script);
   }
 }

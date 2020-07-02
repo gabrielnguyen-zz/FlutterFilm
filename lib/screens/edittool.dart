@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_task_planner_app/bloc/edit_tool_bloc.dart';
@@ -7,6 +9,7 @@ import 'package:flutter_task_planner_app/theme/colors/light_colors.dart';
 import 'package:flutter_task_planner_app/widgets/back_button.dart';
 import 'package:flutter_task_planner_app/widgets/my_text_field.dart';
 import 'package:flutter_task_planner_app/widgets/top_container.dart';
+import 'package:image_picker/image_picker.dart';
 
 class EditToolPage extends StatefulWidget {
   final Tool tool;
@@ -119,21 +122,18 @@ class _EditToolPageState extends State<EditToolPage> {
                               color: LightColors.kDarkYellow,
                             ),
                             onTap: () {
-                              FilePicker.getFile().then((file) {
-                                var filename = file.path
-                                    .substring(file.path.lastIndexOf('/') + 1);
-                                var extendsion = filename
-                                    .substring(filename.lastIndexOf('.') + 1);
-
-                                if (extendsion != 'pdf' && extendsion != 'jpg' && extendsion !='png') {
-                                  return Text(
-                                    'File is not allowed',
-                                    style: TextStyle(color: Colors.red),
-                                  );
-                                }
+                              ImagePicker()
+                                  .getImage(source: ImageSource.camera)
+                                  .then((value) {
+                                var file = File(value.path);
+                                var list = file.toString().split("/");
+                                var pic = list[list.length - 1].split("'")[0];
                                 setState(() {
-                                  script.filename = filename;
-                                  script.fileExtension = extendsion;
+                                  print(pic);
+                                  script.filename =
+                                      pic.toString().split(".")[0];
+                                  script.fileExtension =
+                                      pic.toString().split(".")[1];
                                   script.file = file;
                                 });
                               });

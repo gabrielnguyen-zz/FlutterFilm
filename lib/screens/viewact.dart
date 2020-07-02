@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_task_planner_app/bloc/viewact_bloc.dart';
-import 'package:flutter_task_planner_app/screens/menu.dart';
+import 'package:flutter_task_planner_app/dataprovider/getscene.dart';
 import 'package:flutter_task_planner_app/theme/colors/light_colors.dart';
 import 'package:flutter_task_planner_app/widgets/act_column.dart';
-import 'package:percent_indicator/percent_indicator.dart';
-
 import 'package:flutter_task_planner_app/widgets/top_container.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:percent_indicator/percent_indicator.dart';
 
 class ViewActPage extends StatefulWidget {
   static CircleAvatar calendarIcon() {
@@ -136,9 +134,10 @@ class _ViewActState extends State<ViewActPage> {
                                   ],
                                 ),
                                 SizedBox(height: 15.0),
-                                for (var data in snapshot.data) 
+                                for (var data in snapshot.data)
                                   ActColumn(
                                     title: "Character : " + data.character,
+                                    icon: Icons.file_download,
                                     subtitle: "From " +
                                         data.actFrom +
                                         " To " +
@@ -146,61 +145,24 @@ class _ViewActState extends State<ViewActPage> {
                                         "\nOn Scene No." +
                                         data.sceneId.toString(),
                                     onTap: () {
-                                      print("tapped");
+                                      bloc.viewDownloadFileUrl(data.sceneId);
                                     },
                                   ),
                               ],
                             ),
                           ),
-                          // Container(
-                          //   color: Colors.transparent,
-                          //   padding: EdgeInsets.symmetric(
-                          //       horizontal: 20.0, vertical: 10.0),
-                          //   child: Column(
-                          //     crossAxisAlignment: CrossAxisAlignment.start,
-                          //     children: <Widget>[
-                          //       subheading('Active Projects'),
-                          //       SizedBox(height: 5.0),
-                          //       Row(
-                          //         children: <Widget>[
-                          //           ActiveProjectsCard(
-                          //             cardColor: LightColors.kGreen,
-                          //             loadingPercent: 0.25,
-                          //             title: 'Medical App',
-                          //             subtitle: '9 hours progress',
-                          //           ),
-                          //           SizedBox(width: 20.0),
-                          //           ActiveProjectsCard(
-                          //             cardColor: LightColors.kRed,
-                          //             loadingPercent: 0.6,
-                          //             title: 'Making History Notes',
-                          //             subtitle: '20 hours progress',
-                          //           ),
-                          //         ],
-                          //       ),
-                          //       Row(
-                          //         children: <Widget>[
-                          //           ActiveProjectsCard(
-                          //             cardColor: LightColors.kDarkYellow,
-                          //             loadingPercent: 0.45,
-                          //             title: 'Sports App',
-                          //             subtitle: '5 hours progress',
-                          //           ),
-                          //           SizedBox(width: 20.0),
-                          //           ActiveProjectsCard(
-                          //             cardColor: LightColors.kBlue,
-                          //             loadingPercent: 0.9,
-                          //             title: 'Online Flutter Course',
-                          //             subtitle: '23 hours progress',
-                          //           ),
-                          //         ],
-                          //       ),
-                          //     ],
-                          //   ),
-                          // ),
                         ],
                       ),
                     ),
+                    StreamBuilder(
+                      stream: bloc.link,
+                      builder: (context,result){
+                        if(result.hasData){
+                          return Text(result.data,style: TextStyle(color:Colors.red, fontSize:20),);
+                        }else{
+                          return Text('');
+                        }
+                    },),
                   ],
                 ),
               ),
@@ -212,5 +174,15 @@ class _ViewActState extends State<ViewActPage> {
             );
           }
         });
+  }
+
+  Future<String> onDownLoadTap(sceneId) async {
+    var getScene = GetScene();
+    var result = await getScene.getScene(sceneId);
+    if(result != null){
+      return result.sceneActors;
+    }else{
+      return null;
+    }
   }
 }

@@ -10,14 +10,14 @@ class CreateToolBloc {
   Stream get createToolGet => createToolStream.stream;
 
   Future<bool> createTool(Tool tool, script) async {
-    if (script != null && script.filename != null && script.file != null) {
+    if (script != null && script.filename != null) {
       print('start upload');
       var filename = script.filename +
           "-" +
           DateTime.now().toString() +
           "." +
           script.fileExtension;
-
+      print(filename);
       StorageReference storageReference =
           FirebaseStorage.instance.ref().child('Tool/' + filename);
 
@@ -31,8 +31,7 @@ class CreateToolBloc {
         print(value);
         tool.image = value;
       });
-    }
-    var create = CreateTool();
+      var create = CreateTool();
     var result = await create.create(tool);
     print(result);
     if (!result) {
@@ -42,6 +41,8 @@ class CreateToolBloc {
       createToolStream.sink.add("Create Success!!!");
       return true;
     }
+    }
+    return false;
   }
 
   void dispose() {
