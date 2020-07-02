@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_task_planner_app/bloc/getuserinfo_bloc.dart';
 import 'package:flutter_task_planner_app/screens/addactortoscene.dart';
+import 'package:flutter_task_planner_app/screens/addtooltoscene.dart';
 import 'package:flutter_task_planner_app/screens/admin_menu.dart';
 import 'package:flutter_task_planner_app/screens/manage_actor_task.dart';
 import 'package:flutter_task_planner_app/screens/manage_scene_dart.dart';
@@ -157,9 +158,7 @@ class _AdminHomePageState extends State<AdminHomePage> {
                                         loadingPercent: 0.6,
                                         title: 'Add Tool To Scene',
                                         onTap: (){
-                                           String name = snapshot.data.actorName;
-                                          var screen = ManageSceneTaskPage();
-                                          onManageClicked(name,screen);
+                                           Navigator.push(context, MaterialPageRoute(builder: (context) => AddToolToScenePage()));
                                         },
                                       ),
                                     ],

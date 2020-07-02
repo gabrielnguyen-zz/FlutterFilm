@@ -1,29 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
-import 'package:flutter_task_planner_app/bloc/show_actor_scene_bloc.dart';
+import 'package:flutter_task_planner_app/bloc/show_tool_scene_bloc.dart';
 import 'package:flutter_task_planner_app/theme/colors/light_colors.dart';
 import 'package:flutter_task_planner_app/widgets/back_button.dart';
 import 'package:flutter_task_planner_app/widgets/my_text_field.dart';
 import 'package:flutter_task_planner_app/widgets/top_container.dart';
 
-class AddActorToScenePage extends StatefulWidget {
+class AddToolToScenePage extends StatefulWidget {
   @override
-  _AddActorToScenePageState createState() => _AddActorToScenePageState();
+  _AddToolToScenePageState createState() => _AddToolToScenePageState();
 }
 
-class _AddActorToScenePageState extends State<AddActorToScenePage> {
-  TextEditingController characterController = TextEditingController();
-  List<String> listStatus = ["Waiting", "In Progress", "Done"];
-  var bloc = ShowActorSceneBloc();
-  String status;
+class _AddToolToScenePageState extends State<AddToolToScenePage> {
+  var bloc = ShowToolSceneBloc();
+  TextEditingController quantityController = TextEditingController();
   String dropDownScene;
-  String dropDownActor;
-  String actFrom = 'Pick Date', actTo = 'Pick Date';
+  String dropDownTool;
+  String toolFrom = 'Pick Date', toolTo = 'Pick Date';
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    bloc.showActorScene();
+    bloc.showToolScene();
   }
 
   @override
@@ -58,7 +56,7 @@ class _AddActorToScenePageState extends State<AddActorToScenePage> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: <Widget>[
                         Text(
-                          'Add New Actor To Scene',
+                          'Add New Tool To Scene',
                           style: TextStyle(
                               fontSize: 26.0, fontWeight: FontWeight.w700),
                         ),
@@ -74,6 +72,7 @@ class _AddActorToScenePageState extends State<AddActorToScenePage> {
                             stream: bloc.showScenes,
                             builder: (context, snapshot) {
                               if (snapshot.hasData) {
+                                print('rebuild');
                                 List<String> list = snapshot.data;
                                 return DropdownButton<String>(
                                     value: dropDownScene != null
@@ -111,76 +110,48 @@ class _AddActorToScenePageState extends State<AddActorToScenePage> {
                 child: Column(
                   children: <Widget>[
                     SizedBox(height: 20),
-                    Row(
+                    Container(
+                        child: Column(
+                      //crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Container(
-                            child: Column(
-                          //crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text('Choose an actor',
-                                style: TextStyle(fontSize: 20)),
-                            StreamBuilder(
-                                stream: bloc.showActors,
-                                builder: (context, snapshot) {
-                                  if (snapshot.hasData) {
-                                    List<String> list = snapshot.data;
-                                    return DropdownButton<String>(
-                                        value: dropDownActor != null
-                                            ? dropDownActor
-                                            : null,
-                                        items: list.map((e) {
-                                          return DropdownMenuItem(
-                                              value: e,
-                                              child: Row(
-                                                children: <Widget>[
-                                                  Text(e.toString()),
-                                                ],
-                                              ));
-                                        }).toList(),
-                                        onChanged: (String newValue) {
-                                          setState(() {
-                                            dropDownActor = newValue;
-                                          });
-                                        });
-                                  } else {
-                                    return CircularProgressIndicator(
-                                      valueColor:
-                                          new AlwaysStoppedAnimation<Color>(
-                                              Colors.orange),
-                                    );
-                                  }
-                                })
-                          ],
-                        )),
-                        SizedBox(width: 10),
-                        Container(
-                          child: Column(
-                            children: <Widget>[
-                              Text('Status', style: TextStyle(fontSize: 20)),
-                              DropdownButton(
-                                  value: status != null ? status : null,
-                                  items: listStatus.map((e) {
-                                    return new DropdownMenuItem(
-                                        value: e,
-                                        child: Row(
-                                          children: <Widget>[
-                                            Text(e.toString()),
-                                          ],
-                                        ));
-                                  }).toList(),
-                                  onChanged: (String newValue) {
-                                    setState(() {
-                                      status = newValue;
+                        Text('Choose an Tool', style: TextStyle(fontSize: 20)),
+                        StreamBuilder(
+                            stream: bloc.showTools,
+                            builder: (context, snapshot) {
+                              if (snapshot.hasData) {
+                                List<String> list = snapshot.data;
+                                return DropdownButton<String>(
+                                    value: dropDownTool != null
+                                        ? dropDownTool
+                                        : null,
+                                    items: list.map((e) {
+                                      return DropdownMenuItem(
+                                          value: e,
+                                          child: Row(
+                                            children: <Widget>[
+                                              Text(e.toString()),
+                                            ],
+                                          ));
+                                    }).toList(),
+                                    onChanged: (String newValue) {
+                                      setState(() {
+                                        dropDownTool = newValue;
+                                      });
                                     });
-                                  }),
-                            ],
-                          ),
-                        ),
+                              } else {
+                                return CircularProgressIndicator(
+                                  valueColor: new AlwaysStoppedAnimation<Color>(
+                                      Colors.orange),
+                                );
+                              }
+                            })
                       ],
-                    ),
+                    )),
+                    SizedBox(width: 10),
                     MyTextField(
-                      label: 'Character for Actor',
-                      controller: characterController,
+                      label: 'Quantity',
+                      keyboard: TextInputType.number,
+                      controller: quantityController,
                     ),
                     SizedBox(height: 20),
                     Row(
@@ -203,7 +174,7 @@ class _AddActorToScenePageState extends State<AddActorToScenePage> {
                         Expanded(
                           child: Column(
                             children: <Widget>[
-                              Text('Act From : '),
+                              Text('Use Tool From : '),
                               FlatButton(
                                 color: LightColors.kDarkYellow,
                                 textColor: Colors.black,
@@ -211,11 +182,11 @@ class _AddActorToScenePageState extends State<AddActorToScenePage> {
                                   DatePicker.showDatePicker(context,
                                       showTitleActions: true, onConfirm: (date) {
                                     setState(() {
-                                      actFrom = date.toString().split(" ")[0];
+                                      toolFrom = date.toString().split(" ")[0];
                                     });
                                   });
                                 },
-                                child: Text(actFrom),
+                                child: Text(toolFrom),
                               ),
                             ],
                           ),
@@ -224,20 +195,19 @@ class _AddActorToScenePageState extends State<AddActorToScenePage> {
                         Expanded(
                           child: Column(
                             children: <Widget>[
-                              Text('Act To : '),
+                              Text('Use Tool To : '),
                               FlatButton(
                                 color: LightColors.kDarkYellow,
                                 textColor: Colors.black,
                                 onPressed: () {
                                   DatePicker.showDatePicker(context,
-                                      showTitleActions: true,
-                                      onConfirm: (date) {
+                                      showTitleActions: true, onConfirm: (date) {
                                     setState(() {
-                                      actTo = date.toString().split(" ")[0];
+                                      toolTo = date.toString().split(" ")[0];
                                     });
                                   });
                                 },
-                                child: Text(actTo),
+                                child: Text(toolTo),
                               ),
                             ],
                           ),
@@ -264,9 +234,8 @@ class _AddActorToScenePageState extends State<AddActorToScenePage> {
                 onTap: () {
                   print("added");
                   FocusScope.of(context).unfocus();
-                  String character = characterController.text;
-                  bloc.addActorToScene(dropDownActor, dropDownScene, character,
-                      actFrom, actTo, status);
+                  String quantity = quantityController.text;
+                  bloc.addToolToScene(dropDownTool, dropDownScene, quantity, toolFrom, toolTo);
                 },
                 child: Container(
                   height: 80,
@@ -276,7 +245,7 @@ class _AddActorToScenePageState extends State<AddActorToScenePage> {
                     children: <Widget>[
                       Container(
                         child: Text(
-                          'Add Actor',
+                          'Add Tool',
                           style: TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.w700,
