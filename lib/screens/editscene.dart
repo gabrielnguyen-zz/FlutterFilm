@@ -23,37 +23,47 @@ class EditScenePage extends StatefulWidget {
 class _EditScenePageState extends State<EditScenePage> {
   var bloc = EditSceneBloc();
 
+  TextEditingController sceneNameController;
+  TextEditingController sceneDesController;
+  TextEditingController sceneRecController;
+  TextEditingController sceneTimeStartController;
+  TextEditingController sceneTimeStopController;
+  TextEditingController sceneLocation;
+
+  ChooseFile chooseFile;
+
+  @override
+  void initState() {
+    sceneNameController = TextEditingController(text: widget.scene.sceneName);
+    sceneDesController = TextEditingController(text: widget.scene.sceneDes);
+    sceneRecController =
+        TextEditingController(text: widget.scene.sceneRec.toString());
+    sceneTimeStartController =
+        TextEditingController(text: widget.scene.sceneTimeStart);
+    sceneTimeStopController =
+        TextEditingController(text: widget.scene.scenetTimeStop);
+    sceneLocation = TextEditingController(text: widget.scene.sceneLoc);
+    chooseFile = ChooseFile();
+    // TODO: implement initState
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    TextEditingController sceneNameController =
-        TextEditingController(text: widget.scene.sceneName);
-    TextEditingController sceneDesController =
-        TextEditingController(text: widget.scene.sceneDes);
-    TextEditingController sceneRecController =
-        TextEditingController(text: widget.scene.sceneRec.toString());
-    TextEditingController sceneTimeStartController =
-        TextEditingController(text: widget.scene.sceneTimeStart);
-    TextEditingController sceneTimeStopController =
-        TextEditingController(text: widget.scene.scenetTimeStop);
-    TextEditingController sceneLocation =
-        TextEditingController(text: widget.scene.sceneLoc);
     double width = MediaQuery.of(context).size.width;
-    ChooseFile chooseFile = ChooseFile();
-    
     var downwardIcon = Icon(
       Icons.keyboard_arrow_down,
       color: Colors.black54,
     );
 
-    
     return GestureDetector(
-       onTap: (){
+      onTap: () {
         FocusScopeNode focusScopeNode = FocusScope.of(context);
-        if(!focusScopeNode.hasPrimaryFocus){
+        if (!focusScopeNode.hasPrimaryFocus) {
           focusScopeNode.unfocus();
         }
       },
-          child: Scaffold(
+      child: Scaffold(
         body: SafeArea(
           child: Column(
             children: <Widget>[
@@ -82,7 +92,8 @@ class _EditScenePageState extends State<EditScenePage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         MyTextField(
-                            label: 'Scene Name', controller: sceneNameController),
+                            label: 'Scene Name',
+                            controller: sceneNameController),
                       ],
                     ))
                   ],
@@ -136,29 +147,34 @@ class _EditScenePageState extends State<EditScenePage> {
                     SizedBox(height: 20),
                     ListTile(
                       title: Text("Script:"),
-                      subtitle: Text( widget.scene.sceneActors ?? chooseFile.filename ),
+                      subtitle:
+                          Text(chooseFile.filename ?? widget.scene.sceneActors),
                       trailing: Icon(
                         Icons.file_upload,
                         color: LightColors.kDarkYellow,
                       ),
                       onTap: () {
                         FilePicker.getFile().then((file) {
-                          
-                          var filename =
-                              file.path.substring(file.path.lastIndexOf('/') + 1);
+                          var filename = file.path
+                              .substring(file.path.lastIndexOf('/') + 1);
                           var extendsion =
                               filename.substring(filename.lastIndexOf('.') + 1);
                           print(filename + " " + extendsion);
-                          if (extendsion != 'pdf' && extendsion != 'doc' && extendsion != 'txt' && extendsion != 'docx') {
-                            return Text("File is not allowed", style: TextStyle(color: Colors.red),);
+                          if (extendsion != 'pdf' &&
+                              extendsion != 'doc' &&
+                              extendsion != 'txt' &&
+                              extendsion != 'docx') {
+                            return Text(
+                              "File is not allowed",
+                              style: TextStyle(color: Colors.red),
+                            );
                           }
-                          print(filename + " " + extendsion);
-                            chooseFile.filename= filename;
+                          setState(() {
+                            chooseFile.filename = filename;
                             chooseFile.fileExtension = extendsion;
                             chooseFile.file = file;
+                          });
                         });
-                        
-
                       },
                     ),
                     StreamBuilder(
@@ -185,7 +201,8 @@ class _EditScenePageState extends State<EditScenePage> {
                   String timeStop = sceneTimeStopController.text;
                   int sceneRec = int.parse(sceneRecController.text);
                   String sceneLoc = sceneLocation.text;
-                  onEditSceneClick(name, des, sceneRec,timeStart, timeStop, sceneLoc,false,widget.scene,chooseFile);
+                  onEditSceneClick(name, des, sceneRec, timeStart, timeStop,
+                      sceneLoc, false, widget.scene, chooseFile);
                 },
                 child: Container(
                   height: 80,
@@ -229,7 +246,8 @@ class _EditScenePageState extends State<EditScenePage> {
                   String timeStop = sceneTimeStopController.text;
                   int sceneRec = int.parse(sceneRecController.text);
                   String sceneLoc = sceneLocation.text;
-                  onEditSceneClick(name, des, sceneRec,timeStart, timeStop, sceneLoc,true,widget.scene,chooseFile);
+                  onEditSceneClick(name, des, sceneRec, timeStart, timeStop,
+                      sceneLoc, true, widget.scene, chooseFile);
                   Navigator.pop(context);
                 },
                 child: Container(
@@ -271,14 +289,15 @@ class _EditScenePageState extends State<EditScenePage> {
     );
   }
 
-  void onEditSceneClick(name, des, rec,timeStart, timeStop, sceneloc, bool isDelete, Scene scene,ChooseFile chooseFile) {
-   scene.sceneName = name;
-   scene.sceneDes = des;
-   scene.sceneTimeStart = timeStart;
-   scene.scenetTimeStop = timeStop;
-   scene.sceneLoc = scene.sceneLoc;
-   scene.isDelete = isDelete;
-   print(chooseFile.filename);
-   bloc.editScene(scene, chooseFile);
+  void onEditSceneClick(name, des, rec, timeStart, timeStop, sceneloc,
+      bool isDelete, Scene scene, ChooseFile chooseFile) {
+    scene.sceneName = name;
+    scene.sceneDes = des;
+    scene.sceneTimeStart = timeStart;
+    scene.scenetTimeStop = timeStop;
+    scene.sceneLoc = scene.sceneLoc;
+    scene.isDelete = isDelete;
+    print(chooseFile.filename);
+    bloc.editScene(scene, chooseFile);
   }
 }

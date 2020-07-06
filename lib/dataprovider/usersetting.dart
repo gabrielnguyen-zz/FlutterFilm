@@ -20,6 +20,7 @@ class UserSetting {
       'createdBy': actor.createdBy,
       'updatedTime': date.toString(),
       'updatedBy': actor.accountId,
+      'isDelete' : false,
       'accountId' : actor.accountId
     });
     print(body);

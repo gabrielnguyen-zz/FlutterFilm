@@ -55,7 +55,8 @@ class ShowToolSceneBloc {
     } else {
       var sceneId = dropDownScene.split(".")[0];
       var toolId = dropDownTool.split(".")[0];
-      if (int.parse(dropDownTool.split("-")[1].trim()) > int.parse(quantity)) {
+      print(int.parse(dropDownTool.split("-")[1].trim()) >= int.parse(quantity));
+      if (int.parse(dropDownTool.split("-")[1].trim()) >= int.parse(quantity)) {
         var addTool = AddToolScene();
         var result = await addTool.add(sceneId, toolId, quantity, toolFrom, toolTo);
         if (result) {

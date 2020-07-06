@@ -8,10 +8,9 @@ import 'package:flutter_task_planner_app/constants/constants.dart';
 class CreateScene{
 
   Future<bool> create(Scene scene) async {
-   String url = apiUrl + "/api/Scenes/" + scene.sceneId.toString();
+   String url = apiUrl + "/api/Scenes/";
     print(url);
     var body = jsonEncode({
-      'sceneId': scene.sceneId,
       'sceneName': scene.sceneName,
       'sceneLoc': scene.sceneLoc,
       'sceneDes': scene.sceneDes,

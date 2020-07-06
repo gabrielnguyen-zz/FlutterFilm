@@ -8,6 +8,7 @@ class CreateActor{
   Future<bool> create(Actor actor) async {
     String url = apiUrl + "/api/Actors/";
     print(url);
+    actor.isDelete = false;
     var body = jsonEncode({
       'actorName': actor.actorName,
       'image': actor.image,
@@ -17,7 +18,8 @@ class CreateActor{
       'createdBy': actor.createdBy,
       'updatedBy': actor.accountId,
       'accountId' : actor.accountId,
-      'password' : actor.password
+      'password' : actor.password,
+      'isDelete' : actor.isDelete
     });
     print(body);
     var response =  await http.post(Uri.encodeFull(url), body: body, headers: {"Content-Type": "application/json"});

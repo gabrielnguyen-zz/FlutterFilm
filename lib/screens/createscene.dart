@@ -18,16 +18,23 @@ class CreateScenePage extends StatefulWidget {
 
 class _CreateScenePageState extends State<CreateScenePage> {
   var bloc = CreateSceneBloc();
-
-  @override
-  Widget build(BuildContext context) {
-    TextEditingController sceneNameController = TextEditingController();
+   TextEditingController sceneNameController = TextEditingController();
     TextEditingController sceneDesController = TextEditingController();
     TextEditingController sceneRecController = TextEditingController();
     TextEditingController sceneLocation = TextEditingController();
     String timeStart = 'Pick Date', timeStop = 'Pick Date';
+    
+    ChooseFile chooseFile;
+    @override
+  void initState() {
+    // TODO: implement initState
+    chooseFile = ChooseFile();
+    super.initState();
+
+  }
+  @override
+  Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
-    ChooseFile chooseFile = ChooseFile();
 
     var downwardIcon = Icon(
       Icons.keyboard_arrow_down,
@@ -58,7 +65,7 @@ class _CreateScenePageState extends State<CreateScenePage> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: <Widget>[
                         Text(
-                          'Edit scene',
+                          'Create scene',
                           style: TextStyle(
                               fontSize: 30.0, fontWeight: FontWeight.w700),
                         ),
@@ -155,7 +162,7 @@ class _CreateScenePageState extends State<CreateScenePage> {
                     ListTile(
                       title: Text("Script:"),
                       subtitle:
-                          Text('Click to choose file' ?? chooseFile.filename),
+                          Text(chooseFile.filename ?? 'Click to choose file'),
                       trailing: Icon(
                         Icons.file_upload,
                         color: LightColors.kDarkYellow,
@@ -177,9 +184,12 @@ class _CreateScenePageState extends State<CreateScenePage> {
                             );
                           }
                           print(filename + " " + extendsion);
-                          chooseFile.filename = filename;
+                          setState(() {
+                            chooseFile.filename = filename;
                           chooseFile.fileExtension = extendsion;
                           chooseFile.file = file;
+                          });
+                          
                         });
                       },
                     ),
@@ -254,7 +264,8 @@ class _CreateScenePageState extends State<CreateScenePage> {
     scene.sceneDes = des;
     scene.sceneTimeStart = timeStart;
     scene.scenetTimeStop = timeStop;
-    scene.sceneLoc = scene.sceneLoc;
+    scene.sceneLoc = sceneloc;
+    scene.sceneRec = rec;
     scene.isDelete = isDelete;
     print(chooseFile.filename);
     bloc.createTool(scene, chooseFile);

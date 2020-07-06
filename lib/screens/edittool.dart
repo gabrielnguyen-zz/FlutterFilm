@@ -21,34 +21,39 @@ class EditToolPage extends StatefulWidget {
 
 class _EditToolPageState extends State<EditToolPage> {
   var bloc = EditToolBloc();
+  TextEditingController toolNameController;
+  TextEditingController toolDesController;
+  TextEditingController quantityController;
+  ChooseFile script;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    toolNameController = TextEditingController(text: widget.tool.toolName);
+    toolDesController = TextEditingController(text: widget.tool.toolDes);
+    quantityController =
+        TextEditingController(text: widget.tool.quantity.toString());
+    script = ChooseFile();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    TextEditingController toolNameController =
-        TextEditingController(text: widget.tool.toolName);
-    TextEditingController toolDesController =
-        TextEditingController(text: widget.tool.toolDes);
-    TextEditingController quantityController =
-        TextEditingController(text: widget.tool.quantity.toString());
-        ChooseFile script ;
-        
     double width = MediaQuery.of(context).size.width;
-    initState(){
-      script = ChooseFile();
-    }
+
     var downwardIcon = Icon(
       Icons.keyboard_arrow_down,
       color: Colors.black54,
     );
 
     return GestureDetector(
-       onTap: (){
+      onTap: () {
         FocusScopeNode focusScopeNode = FocusScope.of(context);
-        if(!focusScopeNode.hasPrimaryFocus){
+        if (!focusScopeNode.hasPrimaryFocus) {
           focusScopeNode.unfocus();
         }
       },
-          child: Scaffold(
+      child: Scaffold(
         body: SafeArea(
           child: Column(
             children: <Widget>[
@@ -113,32 +118,28 @@ class _EditToolPageState extends State<EditToolPage> {
                     ),
                     SizedBox(height: 20),
                     ListTile(
-                            
-                            title: Text("Tool Image:"),
-                            subtitle:
-                                Text(widget.tool.image ??  script.filename),
-                            trailing: Icon(
-                              Icons.file_upload,
-                              color: LightColors.kDarkYellow,
-                            ),
-                            onTap: () {
-                              ImagePicker()
-                                  .getImage(source: ImageSource.camera)
-                                  .then((value) {
-                                var file = File(value.path);
-                                var list = file.toString().split("/");
-                                var pic = list[list.length - 1].split("'")[0];
-                                setState(() {
-                                  print(pic);
-                                  script.filename =
-                                      pic.toString().split(".")[0];
-                                  script.fileExtension =
-                                      pic.toString().split(".")[1];
-                                  script.file = file;
-                                });
-                              });
-                            },
-                          ),
+                      title: Text("Tool Image:"),
+                      subtitle: Text(script.filename ?? widget.tool.image),
+                      trailing: Icon(
+                        Icons.file_upload,
+                        color: LightColors.kDarkYellow,
+                      ),
+                      onTap: () {
+                        ImagePicker()
+                            .getImage(source: ImageSource.camera)
+                            .then((value) {
+                          var file = File(value.path);
+                          var list = file.toString().split("/");
+                          var pic = list[list.length - 1].split("'")[0];
+                          setState(() {
+                            print(pic);
+                            script.filename = pic.toString().split(".")[0];
+                            script.fileExtension = pic.toString().split(".")[1];
+                            script.file = file;
+                          });
+                        });
+                      },
+                    ),
                     SizedBox(height: 20),
                     StreamBuilder(
                       stream: bloc.editToolGet,
@@ -162,7 +163,8 @@ class _EditToolPageState extends State<EditToolPage> {
                   String name = toolNameController.text;
                   String des = toolDesController.text;
                   int quantity = int.parse(quantityController.text);
-                  onCreateActorClick(name,des,quantity,false,widget.tool,script);
+                  onCreateActorClick(
+                      name, des, quantity, false, widget.tool, script);
                 },
                 child: Container(
                   height: 80,
@@ -203,7 +205,8 @@ class _EditToolPageState extends State<EditToolPage> {
                   String name = toolNameController.text;
                   String des = toolDesController.text;
                   int quantity = int.parse(quantityController.text);
-                  onCreateActorClick(name,des,quantity,true,widget.tool,script);
+                  onCreateActorClick(
+                      name, des, quantity, true, widget.tool, script);
                   Navigator.pop(context);
                 },
                 child: Container(
@@ -245,11 +248,12 @@ class _EditToolPageState extends State<EditToolPage> {
     );
   }
 
-  void onCreateActorClick(name, des, quantity,bool isDelete,Tool tool,script) {
+  void onCreateActorClick(
+      name, des, quantity, bool isDelete, Tool tool, script) {
     tool.toolName = name;
     tool.toolDes = des;
     tool.isDelete = isDelete;
     tool.quantity = quantity;
-    bloc.editTool(tool,script);
+    bloc.editTool(tool, script);
   }
 }
