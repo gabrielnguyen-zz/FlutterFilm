@@ -14,19 +14,19 @@ class MyTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextField(
       controller: controller,
-      style: TextStyle(color: Colors.black87),
+      style: TextStyle(color: Colors.white),
       minLines: minLines,
       maxLines: maxLines,
       keyboardType: keyboard,
       decoration: InputDecoration(
         suffixIcon: icon == null ? null: icon,
           labelText: label,
-          labelStyle: TextStyle(color: Colors.black45),
+          labelStyle: TextStyle(color: Colors.white),
           hintText: hint,
           focusedBorder:
-              UnderlineInputBorder(borderSide: BorderSide(color: Colors.black)),
+              UnderlineInputBorder(borderSide: BorderSide(color: Colors.white)),
           border:
-              UnderlineInputBorder(borderSide: BorderSide(color: Colors.grey))),
+              UnderlineInputBorder(borderSide: BorderSide(color: Colors.white))),
     );
   }
 }

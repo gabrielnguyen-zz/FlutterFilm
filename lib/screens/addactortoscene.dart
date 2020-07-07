@@ -42,6 +42,7 @@ class _AddActorToScenePageState extends State<AddActorToScenePage> {
         }
       },
           child: Scaffold(
+            backgroundColor: Color.fromRGBO(20, 9, 53, 1),
         body: SafeArea(
           child: Column(
             children: <Widget>[
@@ -59,7 +60,7 @@ class _AddActorToScenePageState extends State<AddActorToScenePage> {
                       children: <Widget>[
                         Text(
                           'Add New Actor To Scene',
-                          style: TextStyle(
+                          style: TextStyle(color: Colors.white,
                               fontSize: 26.0, fontWeight: FontWeight.w700),
                         ),
                       ],
@@ -69,13 +70,14 @@ class _AddActorToScenePageState extends State<AddActorToScenePage> {
                         child: Column(
                       //crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Text('Choose a scene', style: TextStyle(fontSize: 20)),
+                        Text('Choose a scene', style: TextStyle(fontSize: 20,color: Colors.white)),
                         StreamBuilder(
                             stream: bloc.showScenes,
                             builder: (context, snapshot) {
                               if (snapshot.hasData) {
                                 List<String> list = snapshot.data;
                                 return DropdownButton<String>(
+                                    dropdownColor: Color(0xff536976),
                                     value: dropDownScene != null
                                         ? dropDownScene
                                         : null,
@@ -84,7 +86,7 @@ class _AddActorToScenePageState extends State<AddActorToScenePage> {
                                           value: e,
                                           child: Row(
                                             children: <Widget>[
-                                              Text(e.toString()),
+                                              Text(e.toString(),style: TextStyle(color:Colors.white),),
                                             ],
                                           ));
                                     }).toList(),
@@ -96,7 +98,7 @@ class _AddActorToScenePageState extends State<AddActorToScenePage> {
                               } else {
                                 return CircularProgressIndicator(
                                   valueColor: new AlwaysStoppedAnimation<Color>(
-                                      Colors.orange),
+                                      Colors.white),
                                 );
                               }
                             })
@@ -118,13 +120,14 @@ class _AddActorToScenePageState extends State<AddActorToScenePage> {
                           //crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Text('Choose an actor',
-                                style: TextStyle(fontSize: 20)),
+                                style: TextStyle(fontSize: 20, color: Colors.white)),
                             StreamBuilder(
                                 stream: bloc.showActors,
                                 builder: (context, snapshot) {
                                   if (snapshot.hasData) {
                                     List<String> list = snapshot.data;
                                     return DropdownButton<String>(
+                                      dropdownColor: Color.fromRGBO(20, 9, 53, 1),
                                         value: dropDownActor != null
                                             ? dropDownActor
                                             : null,
@@ -133,7 +136,7 @@ class _AddActorToScenePageState extends State<AddActorToScenePage> {
                                               value: e,
                                               child: Row(
                                                 children: <Widget>[
-                                                  Text(e.toString()),
+                                                  Text(e.toString(),style: TextStyle(color: Colors.white),),
                                                 ],
                                               ));
                                         }).toList(),
@@ -146,7 +149,7 @@ class _AddActorToScenePageState extends State<AddActorToScenePage> {
                                     return CircularProgressIndicator(
                                       valueColor:
                                           new AlwaysStoppedAnimation<Color>(
-                                              Colors.orange),
+                                              Colors.white),
                                     );
                                   }
                                 })
@@ -156,15 +159,16 @@ class _AddActorToScenePageState extends State<AddActorToScenePage> {
                         Container(
                           child: Column(
                             children: <Widget>[
-                              Text('Status', style: TextStyle(fontSize: 20)),
+                              Text('Status', style: TextStyle(fontSize: 20,color: Colors.white)),
                               DropdownButton(
+                                dropdownColor: Color.fromRGBO(20, 9, 53, 1),
                                   value: status != null ? status : null,
                                   items: listStatus.map((e) {
                                     return new DropdownMenuItem(
                                         value: e,
                                         child: Row(
                                           children: <Widget>[
-                                            Text(e.toString()),
+                                            Text(e.toString(),style: TextStyle(color: Colors.white),),
                                           ],
                                         ));
                                   }).toList(),
@@ -203,9 +207,9 @@ class _AddActorToScenePageState extends State<AddActorToScenePage> {
                         Expanded(
                           child: Column(
                             children: <Widget>[
-                              Text('Act From : '),
+                              Text('Act From : ',style: TextStyle(color: Colors.white,fontSize:15),),
                               FlatButton(
-                                color: LightColors.kDarkYellow,
+                                color: Color(0xff536976),
                                 textColor: Colors.black,
                                 onPressed: () {
                                   DatePicker.showDatePicker(context,
@@ -215,7 +219,7 @@ class _AddActorToScenePageState extends State<AddActorToScenePage> {
                                     });
                                   });
                                 },
-                                child: Text(actFrom),
+                                child: Text(actFrom,style: TextStyle(color: Colors.white,fontSize:15)),
                               ),
                             ],
                           ),
@@ -224,9 +228,9 @@ class _AddActorToScenePageState extends State<AddActorToScenePage> {
                         Expanded(
                           child: Column(
                             children: <Widget>[
-                              Text('Act To : '),
+                              Text('Act To : ',style: TextStyle(color: Colors.white,fontSize:15)),
                               FlatButton(
-                                color: LightColors.kDarkYellow,
+                                color: Color(0xff536976),
                                 textColor: Colors.black,
                                 onPressed: () {
                                   DatePicker.showDatePicker(context,
@@ -237,7 +241,7 @@ class _AddActorToScenePageState extends State<AddActorToScenePage> {
                                     });
                                   });
                                 },
-                                child: Text(actTo),
+                                child: Text(actTo,style: TextStyle(color: Colors.white,fontSize:15)),
                               ),
                             ],
                           ),
@@ -245,18 +249,7 @@ class _AddActorToScenePageState extends State<AddActorToScenePage> {
                       ],
                     ),
                     SizedBox(height: 20),
-                    StreamBuilder(
-                      stream: bloc.result,
-                      builder: (context, result) {
-                        if (result.hasData) {
-                          return Text(
-                            result.data.toString(),
-                            style: TextStyle(color: Colors.red, fontSize: 20),
-                          );
-                        }
-                        return Text('');
-                      },
-                    ),
+                    
                   ],
                 ),
               )),
@@ -265,7 +258,7 @@ class _AddActorToScenePageState extends State<AddActorToScenePage> {
                   print("added");
                   FocusScope.of(context).unfocus();
                   String character = characterController.text;
-                  bloc.addActorToScene(dropDownActor, dropDownScene, character,
+                  bloc.addActorToScene(context,dropDownActor, dropDownScene, character,
                       actFrom, actTo, status);
                 },
                 child: Container(
@@ -290,8 +283,7 @@ class _AddActorToScenePageState extends State<AddActorToScenePage> {
                               begin: Alignment.topRight,
                               end: Alignment.topLeft,
                               colors: <Color>[
-                                Color(0xfff46b45),
-                                Color(0xffeea849)
+                                Color(0xFF536976),Color(0xFF292E49)
                               ]),
                           borderRadius: BorderRadius.circular(30),
                         ),

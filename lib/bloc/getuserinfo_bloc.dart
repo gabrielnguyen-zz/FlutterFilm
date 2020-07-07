@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'dart:convert';
 import 'package:flutter_task_planner_app/dataprovider/getuserinfo.dart';
 import 'package:flutter_task_planner_app/dataprovider/sharepreferences.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class GetUserInfoBloc {
   StreamController userInfoStream = new StreamController();
@@ -16,9 +18,12 @@ class GetUserInfoBloc {
       var result = await getUserInfo.getUserInfo(accountID);
       print(result);
       if (result == null) {
+        
         userInfoStream.sink.add("Error");
         return false;
       } else {
+        SharedPreferences pref = await SharedPreferences.getInstance();
+        await pref.setString("account", json.encode(result));
         userInfoStream.sink.add(result);
         return true;
       }

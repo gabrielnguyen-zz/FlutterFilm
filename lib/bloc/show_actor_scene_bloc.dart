@@ -4,6 +4,7 @@ import 'package:flutter_task_planner_app/dataprovider/addactortoscene.dart';
 import 'package:flutter_task_planner_app/dataprovider/getallactor.dart';
 import 'package:flutter_task_planner_app/dataprovider/getallscene.dart';
 import 'package:flutter_task_planner_app/screens/addactortoscene.dart';
+import 'package:flutter_task_planner_app/widgets/dialog.dart';
 
 class ShowActorSceneBloc {
   StreamController showActorStream = new StreamController();
@@ -43,7 +44,7 @@ class ShowActorSceneBloc {
       return false;
   }
 
-  Future<bool> addActorToScene(dropDownActor, dropDownScene, character,actFrom,actTo, status) async {
+  Future<bool> addActorToScene(context,dropDownActor, dropDownScene, character,actFrom,actTo, status) async {
     if(dropDownActor == null || dropDownScene == null || character.trim == '' || actFrom.trim() == '' || actTo.trim() == '' || status == null){
       resultStream.sink.add("All Fields must not blank");
       return false;
@@ -53,10 +54,10 @@ class ShowActorSceneBloc {
       var addActor = AddActorScene();
       var result = await addActor.add(sceneId, actorId, character, status, actFrom, actTo);
       if(result){
-        resultStream.sink.add("Add Success !!!!");
+        OpenDialog.displayDialog("Message", context, "Add Actor To Scene Success");
         return true;
       }else{
-        resultStream.sink.add("Error");
+        
       }
     }
   }

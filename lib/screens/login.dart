@@ -2,8 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_task_planner_app/bloc/login_bloc.dart';
 import 'package:flutter_task_planner_app/theme/colors/light_colors.dart';
-
-
+import 'package:flutter_task_planner_app/widgets/fadeanimation.dart';
 
 void main() => runApp(LoginPage());
 
@@ -13,8 +12,6 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -23,7 +20,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 }
 
-class LoginScreen extends StatelessWidget{
+class LoginScreen extends StatelessWidget {
   TextEditingController accountController = TextEditingController();
 
   TextEditingController passController = TextEditingController();
@@ -32,87 +29,120 @@ class LoginScreen extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body:
-        Container(
-          padding: EdgeInsets.fromLTRB(30, 0, 30, 0),
-          constraints: BoxConstraints.expand(),
-          color: LightColors.kLightYellow,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children:<Widget>[
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0, 0, 0, 60),
-                child: Text("Hello\nWelcome To \nNguyen Entertainment", style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
-                  fontSize: 30
-                ),
+      backgroundColor: Color.fromRGBO(3, 9, 23, 1),
+      body: Container(
+        padding: EdgeInsets.all(30),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            FadeAnimation(
+                1.2,
+                Text(
+                  "LOGIN",
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 40,
+                      fontWeight: FontWeight.bold),
+                )),
+            SizedBox(
+              height: 30,
+            ),
+            FadeAnimation(
+                1.5,
+                Container(
+                  padding: EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Colors.white),
+                  child: Column(
+                    children: <Widget>[
+                      Container(
+                        decoration: BoxDecoration(
+                            border: Border(
+                                bottom: BorderSide(color: Colors.grey[300]))),
+                        child: TextField(
+                          controller: accountController,
+                          decoration: InputDecoration(
+                              border: InputBorder.none,
+                              hintStyle:
+                                  TextStyle(color: Colors.grey.withOpacity(.8)),
+                              hintText: "Username"),
+                        ),
+                      ),
+                      Container(
+                        decoration: BoxDecoration(),
+                        child: TextField(
+                          obscureText: true,
+                          controller: passController,
+                          decoration: InputDecoration(
+                              border: InputBorder.none,
+                              hintStyle:
+                                  TextStyle(color: Colors.grey.withOpacity(.8)),
+                              hintText: "Password"),
+                        ),
+                      ),
+                    ],
+                  ),
+                )),
+            SizedBox(
+              height: 40,
+            ),
+            FadeAnimation(
+              1.8,
+              Center(
+                child: GestureDetector(
+                  onTap: () {
+                    onSignInClicked(context);
+                  },
+                  child: Container(
+                    width: 120,
+                    padding: EdgeInsets.all(15),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(50),
+                        color: Colors.blue[800]),
+                    child: Center(
+                        child: Text(
+                      "Login",
+                      style: TextStyle(color: Colors.white.withOpacity(.7)),
+                    )),
+                  ),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0, 0, 0, 40),
-                child:TextField(
-                  controller: accountController,
-                  style: TextStyle(fontSize:18, color: Colors.black),
-                  decoration: InputDecoration(
-                    labelText:"USERNAME",
-                    labelStyle: TextStyle(color: Color(0xff888888), 
-                    fontSize: 15),
-                  ),
-                ) 
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0, 0, 0, 40),
-                  child:StreamBuilder(
-                stream: bloc.notSignUpStream,
-                builder: (context, snapshot)=> TextField(
-                      controller: passController,
-                      style: TextStyle(fontSize:18, color: Colors.black),
-                      obscureText: true,
-                      decoration: InputDecoration(
-                        labelText:"PASSWORD",
-                        errorText: snapshot.hasError? snapshot.error : null,
-                        labelStyle: TextStyle(color: Color(0xff888888), fontSize: 15),
-                      )
-                    ),
-                  ),
-                ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0, 0, 0, 40),
-                child: SizedBox(
-                  width: double.infinity,
-                  height: 50,
-                  child:  RaisedButton(
-                      color: LightColors.kDarkYellow,
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(8))),
-                      onPressed:(){
-                        onSignInClicked(context);
-                        },
-                      child: Text(
-                        "SIGN IN",
-                      style: TextStyle(color: Colors.white,fontSize:16),),
-                  )
-                  ),
-                
-              ),
-              
-            ]
-          ) ,
-        )
-        
-      );
-      
+            ),
+            SizedBox(height: 20),
+            Padding(
+              padding: const EdgeInsets.only(left: 120),
+              child: StreamBuilder(
+                  stream: bloc.isLoggingStream,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      if (snapshot.data == 'Logging') {
+                        return Container(
+                          child: CircularProgressIndicator(
+                            valueColor:
+                                new AlwaysStoppedAnimation<Color>(Colors.white),
+                          ),
+                          padding: EdgeInsets.all(15),
+                        );
+                      } else {
+                        return Container();
+                      }
+                    } else {
+                      return Container();
+                    }
+                  }),
+            ),
+          ],
+        ),
+      ),
+    );
   }
-  
 
-
-  bool onSignInClicked(BuildContext context){
+  bool onSignInClicked(BuildContext context) {
     FocusScope.of(context).unfocus();
-    
     String accountID = accountController.text;
     String password = passController.text;
-    bloc.checkLogin(context,accountID, password);
-    
+    bloc.checkLogin(context, accountID, password);
   }
 }

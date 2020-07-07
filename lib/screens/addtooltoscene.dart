@@ -40,6 +40,7 @@ class _AddToolToScenePageState extends State<AddToolToScenePage> {
         }
       },
           child: Scaffold(
+            backgroundColor: Color.fromRGBO(20, 9, 53, 1),
         body: SafeArea(
           child: Column(
             children: <Widget>[
@@ -56,8 +57,8 @@ class _AddToolToScenePageState extends State<AddToolToScenePage> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: <Widget>[
                         Text(
-                          'Add New Tool To Scene',
-                          style: TextStyle(
+                          'Add New Actor To Scene',
+                          style: TextStyle(color: Colors.white,
                               fontSize: 26.0, fontWeight: FontWeight.w700),
                         ),
                       ],
@@ -67,14 +68,14 @@ class _AddToolToScenePageState extends State<AddToolToScenePage> {
                         child: Column(
                       //crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Text('Choose a scene', style: TextStyle(fontSize: 20)),
+                        Text('Choose a scene', style: TextStyle(fontSize: 20,color: Colors.white)),
                         StreamBuilder(
                             stream: bloc.showScenes,
                             builder: (context, snapshot) {
                               if (snapshot.hasData) {
-                                print('rebuild');
                                 List<String> list = snapshot.data;
                                 return DropdownButton<String>(
+                                    dropdownColor: Color(0xff536976),
                                     value: dropDownScene != null
                                         ? dropDownScene
                                         : null,
@@ -83,7 +84,7 @@ class _AddToolToScenePageState extends State<AddToolToScenePage> {
                                           value: e,
                                           child: Row(
                                             children: <Widget>[
-                                              Text(e.toString()),
+                                              Text(e.toString(),style: TextStyle(color:Colors.white),),
                                             ],
                                           ));
                                     }).toList(),
@@ -95,7 +96,7 @@ class _AddToolToScenePageState extends State<AddToolToScenePage> {
                               } else {
                                 return CircularProgressIndicator(
                                   valueColor: new AlwaysStoppedAnimation<Color>(
-                                      Colors.orange),
+                                      Colors.white),
                                 );
                               }
                             })
@@ -114,13 +115,14 @@ class _AddToolToScenePageState extends State<AddToolToScenePage> {
                         child: Column(
                       //crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Text('Choose an Tool', style: TextStyle(fontSize: 20)),
+                        Text('Choose a Tool', style: TextStyle(fontSize: 20,color: Colors.white)),
                         StreamBuilder(
                             stream: bloc.showTools,
                             builder: (context, snapshot) {
                               if (snapshot.hasData) {
                                 List<String> list = snapshot.data;
                                 return DropdownButton<String>(
+                                  dropdownColor: Color.fromRGBO(20, 9, 53, 1),
                                     value: dropDownTool != null
                                         ? dropDownTool
                                         : null,
@@ -129,7 +131,7 @@ class _AddToolToScenePageState extends State<AddToolToScenePage> {
                                           value: e,
                                           child: Row(
                                             children: <Widget>[
-                                              Text(e.toString()),
+                                              Text(e.toString(),style: TextStyle(color: Colors.white),),
                                             ],
                                           ));
                                     }).toList(),
@@ -141,7 +143,7 @@ class _AddToolToScenePageState extends State<AddToolToScenePage> {
                               } else {
                                 return CircularProgressIndicator(
                                   valueColor: new AlwaysStoppedAnimation<Color>(
-                                      Colors.orange),
+                                      Colors.white),
                                 );
                               }
                             })
@@ -174,9 +176,9 @@ class _AddToolToScenePageState extends State<AddToolToScenePage> {
                         Expanded(
                           child: Column(
                             children: <Widget>[
-                              Text('Use Tool From : '),
+                              Text('Use Tool From : ', style: TextStyle(color:Colors.white),),
                               FlatButton(
-                                color: LightColors.kDarkYellow,
+                                color: Color(0xff536976),
                                 textColor: Colors.black,
                                 onPressed: () {
                                   DatePicker.showDatePicker(context,
@@ -186,7 +188,7 @@ class _AddToolToScenePageState extends State<AddToolToScenePage> {
                                     });
                                   });
                                 },
-                                child: Text(toolFrom),
+                                child: Text(toolFrom,style: TextStyle(color:Colors.white)),
                               ),
                             ],
                           ),
@@ -195,9 +197,9 @@ class _AddToolToScenePageState extends State<AddToolToScenePage> {
                         Expanded(
                           child: Column(
                             children: <Widget>[
-                              Text('Use Tool To : '),
+                              Text('Use Tool To : ',style: TextStyle(color:Colors.white)),
                               FlatButton(
-                                color: LightColors.kDarkYellow,
+                                color: Color(0xff536976),
                                 textColor: Colors.black,
                                 onPressed: () {
                                   DatePicker.showDatePicker(context,
@@ -207,7 +209,7 @@ class _AddToolToScenePageState extends State<AddToolToScenePage> {
                                     });
                                   });
                                 },
-                                child: Text(toolTo),
+                                child: Text(toolTo,style: TextStyle(color:Colors.white)),
                               ),
                             ],
                           ),
@@ -259,8 +261,7 @@ class _AddToolToScenePageState extends State<AddToolToScenePage> {
                               begin: Alignment.topRight,
                               end: Alignment.topLeft,
                               colors: <Color>[
-                                Color(0xfff46b45),
-                                Color(0xffeea849)
+                                Color(0xFF536976),Color(0xFF292E49)
                               ]),
                           borderRadius: BorderRadius.circular(30),
                         ),

@@ -5,6 +5,7 @@ import 'package:flutter_task_planner_app/screens/createtool.dart';
 import 'package:flutter_task_planner_app/screens/editscene.dart';
 import 'package:flutter_task_planner_app/theme/colors/light_colors.dart';
 import 'package:flutter_task_planner_app/widgets/act_column.dart';
+import 'package:flutter_task_planner_app/widgets/actor_column.dart';
 import 'package:flutter_task_planner_app/widgets/top_container.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
@@ -39,11 +40,17 @@ class _ManageSceneTaskState extends State<ManageSceneTaskPage> {
 
   var bloc = GetAllSceneBloc();
   @override
-  Widget build(BuildContext context) {
+  void initState() {
+    // TODO: implement initState
     bloc.getAllSceneFunction();
+    super.initState();
+  }
+  @override
+  Widget build(BuildContext context) {
+    
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
-      backgroundColor: LightColors.kLightYellow,
+backgroundColor: Color.fromRGBO(20, 9, 53, 1),
       body: SafeArea(
         child: Column(
           children: <Widget>[
@@ -59,54 +66,69 @@ class _ManageSceneTaskState extends State<ManageSceneTaskPage> {
                     Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 0, vertical: 0.0),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: <Widget>[
-                          CircularPercentIndicator(
-                            radius: 90.0,
-                            lineWidth: 5.0,
-                            animation: true,
-                            percent: 0.75,
-                            circularStrokeCap: CircularStrokeCap.round,
-                            progressColor: LightColors.kRed,
-                            backgroundColor: LightColors.kDarkYellow,
-                            center: CircleAvatar(
-                              backgroundColor: LightColors.kBlue,
-                              radius: 35.0,
-                              backgroundImage: AssetImage(
-                                'assets/images/avatar.png',
-                              ),
-                            ),
-                          ),
-                          Column(
+                      child: StreamBuilder(
+                          stream: bloc.userInfoGet,
+                          builder: (context, snapshot) {
+                            if(snapshot.hasData){
+return Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: <Widget>[
-                              Container(
-                                child: Text(
-                                  "Administation",
-                                  textAlign: TextAlign.start,
-                                  style: TextStyle(
-                                    fontSize: 22.0,
-                                    color: LightColors.kDarkBlue,
-                                    fontWeight: FontWeight.w800,
+                              CircularPercentIndicator(
+                                    radius: 90.0,
+                                    lineWidth: 5.0,
+                                    animation: true,
+                                    percent: 0.75,
+                                    circularStrokeCap: CircularStrokeCap.round,
+                                    progressColor: LightColors.kRed,
+                                    backgroundColor: Color.fromRGBO(3, 9, 23, 1),
+                                    center: CircleAvatar(
+                                      backgroundColor: Color.fromRGBO(149, 161, 203, 1),
+                                      radius: 35.0,
+                                      backgroundImage: snapshot.data.split("`")[2] !=null ? NetworkImage(snapshot.data.split("`")[2]) : AssetImage(
+                                        'assets/images/avatar.png',
+                                      ),
+                                    ),
                                   ),
-                                ),
-                              ),
-                              Container(
-                                child: Text(
-                                  "",
-                                  textAlign: TextAlign.start,
-                                  style: TextStyle(
-                                    fontSize: 16.0,
-                                    color: Colors.black45,
-                                    fontWeight: FontWeight.w400,
-                                  ),
-                                ),
-                              ),
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: <Widget>[
+                                      Container(
+                                        child: Text(
+                                          snapshot.data.split("`")[0],
+                                          textAlign: TextAlign.start,
+                                          style: TextStyle(
+                                            fontSize: 22.0,
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.w800,
+                                          ),
+                                        ),
+                                      ),
+                                      Container(
+                                        child: Text(
+                                          snapshot.data.split("`")[1],
+                                          textAlign: TextAlign.start,
+                                          style: TextStyle(
+                                            fontSize: 16.0,
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.w400,
+                                          ),
+                                        ),
+                                      ),
+                                ],
+                              )
                             ],
-                          )
-                        ],
+                          );
+                            }else{
+                              return CircularProgressIndicator(
+                                    valueColor:
+                                        new AlwaysStoppedAnimation<Color>(
+                                            Colors.white),
+                                  );
+                            }
+                          
+                        }
                       ),
                     )
                   ]),
@@ -123,44 +145,49 @@ class _ManageSceneTaskState extends State<ManageSceneTaskPage> {
                         children: <Widget>[
                           Text(
                             "Manage Scene",
-                            style: TextStyle(
+                            style: TextStyle(color: Colors.white,
                                 fontWeight: FontWeight.w900, fontSize: 28),
                           ),
                           Container(
+                            decoration: BoxDecoration(
+                              border: Border.all(color:Colors.white)
+                            ),
                             margin: EdgeInsets.only(top: 10),
                             child: Column(
+                              
                               children: [
                                 Column(
                                   children: [
                                     TextField(
+                                      
                                       keyboardType: TextInputType.text,
                                       onChanged: (value) {
                                         bloc.searchByName(value);
                                       },
                                       style: TextStyle(
-                                        color: Color(0xFF212121),
+                                        color: Colors.white,
                                         fontFamily: 'OpenSans',
                                       ),
                                       decoration: InputDecoration(
                                         border: OutlineInputBorder(
                                           borderSide: BorderSide(
-                                              color: Color(0xFFE6EE9C),
+                                              color: Colors.white,
                                               width: 7.0),
                                         ),
                                         focusedBorder: OutlineInputBorder(
                                           borderSide: BorderSide(
-                                              color: Color(0xFFFFCCBC),
+                                              color: Colors.white,
                                               width: 3.0),
                                         ),
                                         contentPadding:
                                             EdgeInsets.only(top: 14.0),
                                         prefixIcon: Icon(
                                           Icons.search,
-                                          color: Color(0xFF212121),
+                                          color: Colors.white,
                                         ),
                                         hintText: 'Search by name',
                                         hintStyle: TextStyle(
-                                          color: Color(0xFF212121),
+                                          color: Colors.white,
                                           fontFamily: 'OpenSans',
                                         ),
                                       ),
@@ -178,6 +205,7 @@ class _ManageSceneTaskState extends State<ManageSceneTaskPage> {
                                   var listWidget = <Widget>[];
                                   snapshot.data.forEach((data) {
                                     listWidget.add(ActColumn(
+                                      
                                       title: data.sceneId.toString() + ". " + data.sceneName,
                                       subtitle: data.sceneDes,
                                       onTap: () {
@@ -200,7 +228,7 @@ class _ManageSceneTaskState extends State<ManageSceneTaskPage> {
                                   return CircularProgressIndicator(
                                     valueColor:
                                         new AlwaysStoppedAnimation<Color>(
-                                            Colors.orange),
+                                            Colors.white),
                                   );
                                 }
                               }),

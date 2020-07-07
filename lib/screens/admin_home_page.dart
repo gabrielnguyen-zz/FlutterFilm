@@ -11,8 +11,6 @@ import 'package:flutter_task_planner_app/widgets/active_project_card.dart';
 import 'package:flutter_task_planner_app/widgets/top_container.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
-import 'menu.dart';
-
 class AdminHomePage extends StatefulWidget{
   static CircleAvatar calendarIcon() {
     return CircleAvatar(
@@ -37,7 +35,7 @@ class _AdminHomePageState extends State<AdminHomePage> {
     return Text(
       title,
       style: TextStyle(
-          color: LightColors.kDarkBlue,
+          color: Colors.white,
           fontSize: 20.0,
           fontWeight: FontWeight.w700,
           letterSpacing: 1.2),
@@ -46,15 +44,18 @@ class _AdminHomePageState extends State<AdminHomePage> {
 
   GetUserInfoBloc bloc = GetUserInfoBloc();
   @override
-  Widget build(BuildContext context) {
+  void initState() {
+    // TODO: implement initState
     bloc.getAllStatusScene();
+    super.initState();
+  }
+  @override
+  Widget build(BuildContext context) {
+    
     double width = MediaQuery.of(context).size.width;
-    return StreamBuilder(
-        stream: bloc.userInfo,
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
+         
             return Scaffold(
-              backgroundColor: LightColors.kLightYellow,
+              backgroundColor: Color.fromRGBO(20, 9, 53, 1),
               body: SafeArea(
                 child: Column(
                   children: <Widget>[
@@ -62,67 +63,83 @@ class _AdminHomePageState extends State<AdminHomePage> {
                       height: 200,
                       width: width,
                       child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: <Widget>[
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 0, vertical: 0.0),
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: <Widget>[
-                                  CircularPercentIndicator(
-                                    radius: 90.0,
-                                    lineWidth: 5.0,
-                                    animation: true,
-                                    percent: 0.75,
-                                    circularStrokeCap: CircularStrokeCap.round,
-                                    progressColor: LightColors.kRed,
-                                    backgroundColor: LightColors.kDarkYellow,
-                                    center: CircleAvatar(
-                                      backgroundColor: LightColors.kBlue,
-                                      radius: 35.0,
-                                      backgroundImage: AssetImage(
-                                        'assets/images/avatar.png',
-                                      ),
-                                    ),
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: <Widget>[
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 0, vertical: 0.0),
+                                  child: StreamBuilder(
+                                    stream: bloc.userInfo,
+                                    builder: (context, snapshot) {
+                                      if(snapshot.hasData){
+                                        return Row(
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        children: <Widget>[
+                                          CircularPercentIndicator(
+                                            radius: 90.0,
+                                            lineWidth: 5.0,
+                                            animation: true,
+                                            percent: 0.75,
+                                            circularStrokeCap: CircularStrokeCap.round,
+                                            progressColor: LightColors.kRed,
+                                            backgroundColor: Color.fromRGBO(3, 9, 23, 1),
+                                            center: CircleAvatar(
+                                              backgroundColor: Color.fromRGBO(149, 161, 203, 1),
+                                              radius: 35.0,
+                                              backgroundImage: snapshot.data.image !=null ? NetworkImage(snapshot.data.image) : AssetImage(
+                                                'assets/images/avatar.png',
+                                              ),
+                                            ),
+                                          ),
+                                          Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children: <Widget>[
+                                              Container(
+                                                child: Text(
+                                                  snapshot.data.actorName,
+                                                  textAlign: TextAlign.start,
+                                                  style: TextStyle(
+                                                    fontSize: 22.0,
+                                                    color: Colors.white,
+                                                    fontWeight: FontWeight.w800,
+                                                  ),
+                                                ),
+                                              ),
+                                              Container(
+                                                child: Text(
+                                                  "Administration",
+                                                  textAlign: TextAlign.start,
+                                                  style: TextStyle(
+                                                    fontSize: 16.0,
+                                                    color: Colors.white,
+                                                    fontWeight: FontWeight.w400,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          )
+                                        ],
+                                      );
+                                      }else{
+                                        return CircularProgressIndicator(
+                                    valueColor:
+                                        new AlwaysStoppedAnimation<Color>(
+                                            Colors.white),
+                                  );
+                                      }
+                                      
+                                    }
                                   ),
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: <Widget>[
-                                      Container(
-                                        child: Text(
-                                          snapshot.data.actorName,
-                                          textAlign: TextAlign.start,
-                                          style: TextStyle(
-                                            fontSize: 22.0,
-                                            color: LightColors.kDarkBlue,
-                                            fontWeight: FontWeight.w800,
-                                          ),
-                                        ),
-                                      ),
-                                      Container(
-                                        child: Text(
-                                          "Administration",
-                                          textAlign: TextAlign.start,
-                                          style: TextStyle(
-                                            fontSize: 16.0,
-                                            color: Colors.black45,
-                                            fontWeight: FontWeight.w400,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  )
-                                ],
-                              ),
-                            )
-                          ]),
+                                )
+                              ]
+                        
+                      ),
                     ),
                     Expanded(
                       child: SingleChildScrollView(
@@ -167,13 +184,12 @@ class _AdminHomePageState extends State<AdminHomePage> {
                                     children: <Widget>[
                                       ActiveProjectsCard(
                                         icon: Icons.person,
-                                        cardColor: LightColors.kDarkBlue,
+                                        cardColor: Color(0xFF348F50),
                                         loadingPercent: 0.25,
                                         title: 'Manage Actor',
                                         onTap: (){
-                                          String name = snapshot.data.actorName;
                                           var screen = ManageActorTaskPage();
-                                          onManageClicked(name,screen);
+                                          onManageClicked(screen);
                                         },
                                       ),
                                       SizedBox(width: 20.0),
@@ -183,9 +199,8 @@ class _AdminHomePageState extends State<AdminHomePage> {
                                         loadingPercent: 0.6,
                                         title: ' Manage Scene',
                                         onTap: (){
-                                           String name = snapshot.data.actorName;
                                           var screen = ManageSceneTaskPage();
-                                          onManageClicked(name,screen);
+                                          onManageClicked(screen);
                                         },
                                       ),
                                     ],
@@ -201,9 +216,9 @@ class _AdminHomePageState extends State<AdminHomePage> {
                                         loadingPercent: 0.45,
                                         title: 'Manage Tool',
                                         onTap: (){
-                                           String name = snapshot.data.actorName;
+                        
                                           var screen = ManageToolTaskPage();
-                                          onManageClicked(name,screen);
+                                          onManageClicked(screen);
                                         },
                                       ),
                                       Container(
@@ -223,14 +238,10 @@ class _AdminHomePageState extends State<AdminHomePage> {
                 ),
               ),
             );
-          }
-          return CircularProgressIndicator(
-            valueColor: new AlwaysStoppedAnimation<Color>(Colors.orange),
-          );
-        });
+         
   }
 
-  Future<void> onManageClicked(String name, Widget screen) async {
+  Future<void> onManageClicked( Widget screen) async {
     Navigator.of(context).push(MaterialPageRoute(builder: (context) => AdminMenuPage(screen: screen,) ));
   }
 }

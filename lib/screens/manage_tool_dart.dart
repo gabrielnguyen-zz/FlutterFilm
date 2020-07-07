@@ -7,6 +7,7 @@ import 'package:flutter_task_planner_app/screens/createtool.dart';
 import 'package:flutter_task_planner_app/screens/edittool.dart';
 import 'package:flutter_task_planner_app/theme/colors/light_colors.dart';
 import 'package:flutter_task_planner_app/widgets/act_column.dart';
+import 'package:flutter_task_planner_app/widgets/actor_column.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:flutter_task_planner_app/widgets/top_container.dart';
 
@@ -41,11 +42,17 @@ class _ManageToolTaskState extends State<ManageToolTaskPage> {
 
   var bloc = GetAllToolBloc();
   @override
-  Widget build(BuildContext context) {
+  void initState() {
+    // TODO: implement initState
     bloc.getAllToolFunction();
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
-      backgroundColor: LightColors.kLightYellow,
+      backgroundColor: Color.fromRGBO(20, 9, 53, 1),
       body: SafeArea(
         child: Column(
           children: <Widget>[
@@ -61,55 +68,73 @@ class _ManageToolTaskState extends State<ManageToolTaskPage> {
                     Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 0, vertical: 0.0),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: <Widget>[
-                          CircularPercentIndicator(
-                            radius: 90.0,
-                            lineWidth: 5.0,
-                            animation: true,
-                            percent: 0.75,
-                            circularStrokeCap: CircularStrokeCap.round,
-                            progressColor: LightColors.kRed,
-                            backgroundColor: LightColors.kDarkYellow,
-                            center: CircleAvatar(
-                              backgroundColor: LightColors.kBlue,
-                              radius: 35.0,
-                              backgroundImage: AssetImage(
-                                'assets/images/avatar.png',
-                              ),
-                            ),
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: <Widget>[
-                              Container(
-                                child: Text(
-                                  "Administration",
-                                  textAlign: TextAlign.start,
-                                  style: TextStyle(
-                                    fontSize: 22.0,
-                                    color: LightColors.kDarkBlue,
-                                    fontWeight: FontWeight.w800,
+                      child: StreamBuilder(
+                          stream: bloc.getUserInfo,
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              return Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: <Widget>[
+                                  CircularPercentIndicator(
+                                    radius: 90.0,
+                                    lineWidth: 5.0,
+                                    animation: true,
+                                    percent: 0.75,
+                                    circularStrokeCap: CircularStrokeCap.round,
+                                    progressColor: LightColors.kRed,
+                                    backgroundColor:
+                                        Color.fromRGBO(3, 9, 23, 1),
+                                    center: CircleAvatar(
+                                      backgroundColor:
+                                          Color.fromRGBO(149, 161, 203, 1),
+                                      radius: 35.0,
+                                      backgroundImage:
+                                          snapshot.data.split("`")[2] != null
+                                              ? NetworkImage(
+                                                  snapshot.data.split("`")[2])
+                                              : AssetImage(
+                                                  'assets/images/avatar.png',
+                                                ),
+                                    ),
                                   ),
-                                ),
-                              ),
-                              Container(
-                                child: Text(
-                                  "",
-                                  textAlign: TextAlign.start,
-                                  style: TextStyle(
-                                    fontSize: 16.0,
-                                    color: Colors.black45,
-                                    fontWeight: FontWeight.w400,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          )
-                        ],
-                      ),
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: <Widget>[
+                                      Container(
+                                        child: Text(
+                                          snapshot.data.split("`")[0],
+                                          textAlign: TextAlign.start,
+                                          style: TextStyle(
+                                            fontSize: 22.0,
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.w800,
+                                          ),
+                                        ),
+                                      ),
+                                      Container(
+                                        child: Text(
+                                          snapshot.data.split("`")[1],
+                                          textAlign: TextAlign.start,
+                                          style: TextStyle(
+                                            fontSize: 16.0,
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.w400,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                ],
+                              );
+                            } else {
+                              return CircularProgressIndicator(
+                                  valueColor: new AlwaysStoppedAnimation<Color>(
+                                      Colors.white));
+                            }
+                          }),
                     )
                   ]),
             ),
@@ -126,9 +151,13 @@ class _ManageToolTaskState extends State<ManageToolTaskPage> {
                           Text(
                             "Manage tool",
                             style: TextStyle(
-                                fontWeight: FontWeight.w900, fontSize: 28),
+                                color: Colors.white,
+                                fontWeight: FontWeight.w900,
+                                fontSize: 28),
                           ),
                           Container(
+                            decoration: BoxDecoration(
+                                border: Border.all(color: Colors.white)),
                             margin: EdgeInsets.only(top: 10),
                             child: Column(
                               children: [
@@ -140,29 +169,27 @@ class _ManageToolTaskState extends State<ManageToolTaskPage> {
                                         bloc.searchByName(value);
                                       },
                                       style: TextStyle(
-                                        color: Color(0xFF212121),
+                                        color: Colors.white,
                                         fontFamily: 'OpenSans',
                                       ),
                                       decoration: InputDecoration(
                                         border: OutlineInputBorder(
                                           borderSide: BorderSide(
-                                              color: Color(0xFFE6EE9C),
-                                              width: 7.0),
+                                              color: Colors.white, width: 7.0),
                                         ),
                                         focusedBorder: OutlineInputBorder(
                                           borderSide: BorderSide(
-                                              color: Color(0xFFFFCCBC),
-                                              width: 3.0),
+                                              color: Colors.white, width: 3.0),
                                         ),
                                         contentPadding:
                                             EdgeInsets.only(top: 14.0),
                                         prefixIcon: Icon(
                                           Icons.search,
-                                          color: Color(0xFF212121),
+                                          color: Colors.white,
                                         ),
                                         hintText: 'Search by name',
                                         hintStyle: TextStyle(
-                                          color: Color(0xFF212121),
+                                          color: Colors.white,
                                           fontFamily: 'OpenSans',
                                         ),
                                       ),
@@ -179,7 +206,8 @@ class _ManageToolTaskState extends State<ManageToolTaskPage> {
                                 if (snapshot.hasData) {
                                   var listWidget = <Widget>[];
                                   snapshot.data.forEach((data) {
-                                    listWidget.add(ActColumn(
+                                    listWidget.add(ActorColumn(
+                                      url: data.image,
                                       title: data.toolId + ". " + data.toolName,
                                       subtitle: data.toolDes,
                                       onTap: () {

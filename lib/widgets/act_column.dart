@@ -27,6 +27,7 @@ class ActColumn extends StatelessWidget {
                 Text(
                   title,
                   style: TextStyle(
+                    color: Colors.white,
                     fontSize: 16.0,
                     fontWeight: FontWeight.w700,
                   ),
@@ -36,7 +37,7 @@ class ActColumn extends StatelessWidget {
                   style: TextStyle(
                       fontSize: 14.0,
                       fontWeight: FontWeight.w500,
-                      color: Colors.black45),
+                      color: Colors.white),
                 ),
               ],
             ),

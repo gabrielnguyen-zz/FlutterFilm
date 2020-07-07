@@ -107,13 +107,13 @@ class _ActorSideBarState extends State<ActorSideBar>
             top: 0,
             bottom: 0,
             left: isSideBarOpenedAsync.data ? 0 : -screenWidth,
-            right: isSideBarOpenedAsync.data ? 0 : screenWidth - 45,
+            right: isSideBarOpenedAsync.data ? 0 : screenWidth - 35,
             child: Row(
               children: <Widget>[
                 Expanded(
                   child: Container(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
-                    color: Colors.orange[300],
+                    color: Color.fromRGBO(3, 9, 23, 1),
                     child: Column(children: <Widget>[
                       Divider(
                         height: 64,
@@ -169,7 +169,7 @@ class _ActorSideBarState extends State<ActorSideBar>
                       child: Container(
                         width: 35,
                         height: 110,
-                        color: Colors.orange[300],
+                        color: Color.fromRGBO(3, 9, 23, 1),
                         alignment: Alignment.center,
                         child: AnimatedIcon(
                           progress: animationController.view,

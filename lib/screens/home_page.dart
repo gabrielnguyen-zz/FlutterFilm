@@ -81,7 +81,7 @@ class _HomePageState extends State<HomePage> {
                                     center: CircleAvatar(
                                       backgroundColor: LightColors.kBlue,
                                       radius: 35.0,
-                                      backgroundImage: AssetImage(
+                                       backgroundImage: snapshot.data.image !=null ? NetworkImage(snapshot.data.image) : AssetImage(
                                         'assets/images/avatar.png',
                                       ),
                                     ),

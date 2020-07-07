@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'dart:convert';
 
 
+import 'package:flutter_task_planner_app/models/actor.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SharePreferencesProvider{
@@ -30,5 +32,13 @@ class SharePreferencesProvider{
     SharedPreferences pref = await SharedPreferences.getInstance();
     String name = pref.getString("Name");
     return name;
+  }
+
+  Future<Actor> getUserInfo() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    var object = await pref.getString("account");
+    print(object);
+    Actor actor = Actor.fromJSON(json.decode(object));
+    return actor;
   }
 }
