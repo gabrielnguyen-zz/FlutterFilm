@@ -3,12 +3,14 @@ import 'dart:async';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_task_planner_app/dataprovider/createscene.dart';
 import 'package:flutter_task_planner_app/models/scene.dart';
+import 'package:flutter_task_planner_app/widgets/dialog.dart';
 
 class CreateSceneBloc {
   StreamController createSceneStream = new StreamController();
   Stream get createSceneGet => createSceneStream.stream;
 
-  Future<bool> createTool(Scene scene, script) async {
+  Future<bool> createTool(context, Scene scene, script) async {
+    createSceneStream.sink.add("Logging");
     if (script != null && script.filename != null && script.file != null) {
       print('start upload');
       var filename = script.filename +
@@ -30,15 +32,21 @@ class CreateSceneBloc {
         print(value);
         scene.sceneActors = value;
       });
+    } else {
+      createSceneStream.sink.add("Done");
     }
     var create = CreateScene();
     var result = await create.create(scene);
     print(result);
     if (!result) {
-      createSceneStream.sink.add("Error");
+      OpenDialog.displayDialog("Error", context, "Error!!!");
+      createSceneStream.sink.add("Done");
+
       return false;
     } else {
-      createSceneStream.sink.add("Create Success!!!");
+      OpenDialog.displayDialog("Message", context, "Create Success!!!");
+      createSceneStream.sink.add("Done");
+
       return true;
     }
   }

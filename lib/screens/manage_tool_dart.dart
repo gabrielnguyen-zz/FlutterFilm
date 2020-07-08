@@ -52,7 +52,7 @@ class _ManageToolTaskState extends State<ManageToolTaskPage> {
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
-      backgroundColor: Color.fromRGBO(20, 9, 53, 1),
+      backgroundColor: Color.fromRGBO(3, 9, 23, 1),
       body: SafeArea(
         child: Column(
           children: <Widget>[
@@ -230,7 +230,7 @@ class _ManageToolTaskState extends State<ManageToolTaskPage> {
                                   return CircularProgressIndicator(
                                     valueColor:
                                         new AlwaysStoppedAnimation<Color>(
-                                            Colors.orange),
+                                            Colors.white),
                                   );
                                 }
                               }),
@@ -250,7 +250,7 @@ class _ManageToolTaskState extends State<ManageToolTaskPage> {
                     Icons.add,
                     size: 30,
                   ),
-                  backgroundColor: LightColors.kDarkYellow,
+                  backgroundColor: Colors.blue[800],
                   onPressed: () {
                     print('btnAdd Clicked');
                     Navigator.of(context)

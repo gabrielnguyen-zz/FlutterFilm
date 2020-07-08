@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:flutter_task_planner_app/bloc/show_actor_scene_bloc.dart';
-import 'package:flutter_task_planner_app/theme/colors/light_colors.dart';
 import 'package:flutter_task_planner_app/widgets/back_button.dart';
 import 'package:flutter_task_planner_app/widgets/my_text_field.dart';
 import 'package:flutter_task_planner_app/widgets/top_container.dart';
@@ -279,12 +278,7 @@ class _AddActorToScenePageState extends State<AddActorToScenePage> {
                         margin: EdgeInsets.fromLTRB(20, 10, 20, 20),
                         width: width - 40,
                         decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                              begin: Alignment.topRight,
-                              end: Alignment.topLeft,
-                              colors: <Color>[
-                                Color(0xFF536976),Color(0xFF292E49)
-                              ]),
+                          color: Colors.blue[800],
                           borderRadius: BorderRadius.circular(30),
                         ),
                       ),

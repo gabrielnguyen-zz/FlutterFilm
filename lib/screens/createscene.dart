@@ -18,20 +18,20 @@ class CreateScenePage extends StatefulWidget {
 
 class _CreateScenePageState extends State<CreateScenePage> {
   var bloc = CreateSceneBloc();
-   TextEditingController sceneNameController = TextEditingController();
-    TextEditingController sceneDesController = TextEditingController();
-    TextEditingController sceneRecController = TextEditingController();
-    TextEditingController sceneLocation = TextEditingController();
-    String timeStart = 'Pick Date', timeStop = 'Pick Date';
-    
-    ChooseFile chooseFile;
-    @override
+  TextEditingController sceneNameController = TextEditingController();
+  TextEditingController sceneDesController = TextEditingController();
+  TextEditingController sceneRecController = TextEditingController();
+  TextEditingController sceneLocation = TextEditingController();
+  String timeStart = 'Pick Date', timeStop = 'Pick Date';
+
+  ChooseFile chooseFile;
+  @override
   void initState() {
     // TODO: implement initState
     chooseFile = ChooseFile();
     super.initState();
-
   }
+
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
@@ -42,13 +42,14 @@ class _CreateScenePageState extends State<CreateScenePage> {
     );
 
     return GestureDetector(
-       onTap: (){
+      onTap: () {
         FocusScopeNode focusScopeNode = FocusScope.of(context);
-        if(!focusScopeNode.hasPrimaryFocus){
+        if (!focusScopeNode.hasPrimaryFocus) {
           focusScopeNode.unfocus();
         }
       },
-          child: Scaffold(
+      child: Scaffold(
+        backgroundColor: Color.fromRGBO(3, 9, 23, 1),
         body: SafeArea(
           child: Column(
             children: <Widget>[
@@ -67,7 +68,9 @@ class _CreateScenePageState extends State<CreateScenePage> {
                         Text(
                           'Create scene',
                           style: TextStyle(
-                              fontSize: 30.0, fontWeight: FontWeight.w700),
+                              color: Colors.white,
+                              fontSize: 30.0,
+                              fontWeight: FontWeight.w700),
                         ),
                       ],
                     ),
@@ -77,7 +80,8 @@ class _CreateScenePageState extends State<CreateScenePage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         MyTextField(
-                            label: 'Scene Name', controller: sceneNameController),
+                            label: 'Scene Name',
+                            controller: sceneNameController),
                       ],
                     ))
                   ],
@@ -118,13 +122,17 @@ class _CreateScenePageState extends State<CreateScenePage> {
                         Expanded(
                           child: Column(
                             children: <Widget>[
-                              Text('Time Start : '),
+                              Text(
+                                'Time Start : ',
+                                style: TextStyle(color: Colors.white),
+                              ),
                               FlatButton(
-                                color: LightColors.kDarkYellow,
-                                textColor: Colors.black,
+                                color: Color(0xff536976),
+                                textColor: Colors.white,
                                 onPressed: () {
                                   DatePicker.showDatePicker(context,
-                                      showTitleActions: true, onConfirm: (date) {
+                                      showTitleActions: true,
+                                      onConfirm: (date) {
                                     setState(() {
                                       timeStart = date.toString().split(" ")[0];
                                     });
@@ -139,13 +147,15 @@ class _CreateScenePageState extends State<CreateScenePage> {
                         Expanded(
                           child: Column(
                             children: <Widget>[
-                              Text('Time Stop : '),
+                              Text('Time Stop : ',
+                                  style: TextStyle(color: Colors.white)),
                               FlatButton(
-                                color: LightColors.kDarkYellow,
-                                textColor: Colors.black,
+                                color: Color(0xff536976),
+                                textColor: Colors.white,
                                 onPressed: () {
                                   DatePicker.showDatePicker(context,
-                                      showTitleActions: true, onConfirm: (date) {
+                                      showTitleActions: true,
+                                      onConfirm: (date) {
                                     setState(() {
                                       timeStop = date.toString().split(" ")[0];
                                     });
@@ -160,17 +170,21 @@ class _CreateScenePageState extends State<CreateScenePage> {
                     ),
                     SizedBox(height: 20),
                     ListTile(
-                      title: Text("Script:"),
-                      subtitle:
-                          Text(chooseFile.filename ?? 'Click to choose file'),
+                      title: Text(
+                        "Script:",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      subtitle: Text(
+                          chooseFile.filename ?? 'Click to choose file',
+                          style: TextStyle(color: Colors.white)),
                       trailing: Icon(
                         Icons.file_upload,
-                        color: LightColors.kDarkYellow,
+                        color: Colors.white,
                       ),
                       onTap: () {
                         FilePicker.getFile().then((file) {
-                          var filename =
-                              file.path.substring(file.path.lastIndexOf('/') + 1);
+                          var filename = file.path
+                              .substring(file.path.lastIndexOf('/') + 1);
                           var extendsion =
                               filename.substring(filename.lastIndexOf('.') + 1);
                           print(filename + " " + extendsion);
@@ -186,24 +200,34 @@ class _CreateScenePageState extends State<CreateScenePage> {
                           print(filename + " " + extendsion);
                           setState(() {
                             chooseFile.filename = filename;
-                          chooseFile.fileExtension = extendsion;
-                          chooseFile.file = file;
+                            chooseFile.fileExtension = extendsion;
+                            chooseFile.file = file;
                           });
-                          
                         });
                       },
                     ),
-                    StreamBuilder(
-                      stream: bloc.createSceneGet,
-                      builder: (context, result) {
-                        if (result.hasData) {
-                          return Text(
-                            result.data.toString(),
-                            style: TextStyle(color: Colors.red, fontSize: 20),
-                          );
-                        }
-                        return Text('');
-                      },
+                    Padding(
+                      padding: const EdgeInsets.only(left: 0),
+                      child: StreamBuilder(
+                          stream: bloc.createSceneGet,
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              if (snapshot.data == 'Logging') {
+                                return Container(
+                                  child: CircularProgressIndicator(
+                                    valueColor:
+                                        new AlwaysStoppedAnimation<Color>(
+                                            Colors.white),
+                                  ),
+                                  padding: EdgeInsets.all(15),
+                                );
+                              } else {
+                                return Container();
+                              }
+                            } else {
+                              return Container();
+                            }
+                          }),
                     ),
                   ],
                 ),
@@ -215,8 +239,8 @@ class _CreateScenePageState extends State<CreateScenePage> {
                   String des = sceneDesController.text;
                   int sceneRec = int.parse(sceneRecController.text);
                   String sceneLoc = sceneLocation.text;
-                  onCreateSceneClick(name, des, sceneRec, timeStart, timeStop,
-                      sceneLoc, false, chooseFile);
+                  onCreateSceneClick(context, name, des, sceneRec, timeStart,
+                      timeStop, sceneLoc, false, chooseFile);
                 },
                 child: Container(
                   height: 80,
@@ -236,13 +260,7 @@ class _CreateScenePageState extends State<CreateScenePage> {
                         margin: EdgeInsets.fromLTRB(20, 10, 20, 20),
                         width: width - 40,
                         decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                              begin: Alignment.topRight,
-                              end: Alignment.topLeft,
-                              colors: <Color>[
-                                Color(0xfff46b45),
-                                Color(0xffeea849)
-                              ]),
+                          color: Colors.blue[800],
                           borderRadius: BorderRadius.circular(30),
                         ),
                       ),
@@ -257,8 +275,8 @@ class _CreateScenePageState extends State<CreateScenePage> {
     );
   }
 
-  void onCreateSceneClick(name, des, rec, timeStart, timeStop, sceneloc,
-      bool isDelete, ChooseFile chooseFile) {
+  void onCreateSceneClick(context, name, des, rec, timeStart, timeStop,
+      sceneloc, bool isDelete, ChooseFile chooseFile) {
     Scene scene = Scene();
     scene.sceneName = name;
     scene.sceneDes = des;
@@ -268,6 +286,6 @@ class _CreateScenePageState extends State<CreateScenePage> {
     scene.sceneRec = rec;
     scene.isDelete = isDelete;
     print(chooseFile.filename);
-    bloc.createTool(scene, chooseFile);
+    bloc.createTool(context, scene, chooseFile);
   }
 }

@@ -55,7 +55,7 @@ class _AdminHomePageState extends State<AdminHomePage> {
     double width = MediaQuery.of(context).size.width;
          
             return Scaffold(
-              backgroundColor: Color.fromRGBO(20, 9, 53, 1),
+              backgroundColor: Color.fromRGBO(3, 9, 23, 1),
               body: SafeArea(
                 child: Column(
                   children: <Widget>[

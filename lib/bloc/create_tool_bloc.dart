@@ -4,12 +4,14 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_task_planner_app/dataprovider/createtool.dart';
 
 import 'package:flutter_task_planner_app/models/tool.dart';
+import 'package:flutter_task_planner_app/widgets/dialog.dart';
 
 class CreateToolBloc {
   StreamController createToolStream = new StreamController();
   Stream get createToolGet => createToolStream.stream;
 
-  Future<bool> createTool(Tool tool, script) async {
+  Future<bool> createTool(context, Tool tool, script) async {
+    createToolStream.sink.add("Logging");
     if (script != null && script.filename != null) {
       print('start upload');
       var filename = script.filename +
@@ -32,16 +34,20 @@ class CreateToolBloc {
         tool.image = value;
       });
       var create = CreateTool();
-    var result = await create.create(tool);
-    print(result);
-    if (!result) {
-      createToolStream.sink.add("Error");
-      return false;
-    } else {
-      createToolStream.sink.add("Create Success!!!");
-      return true;
+      var result = await create.create(tool);
+      print(result);
+      if (!result) {
+    OpenDialog.displayDialog("Error", context, "Error");
+        createToolStream.sink.add("Done");
+        return false;
+      } else {
+    OpenDialog.displayDialog("Message", context, "Add Success !!!");
+        createToolStream.sink.add("Done");
+        return true;
+      }
     }
-    }
+    OpenDialog.displayDialog("Error", context, "Add Picture");
+    createToolStream.sink.add("Done");
     return false;
   }
 

@@ -47,7 +47,7 @@ class _ManageActorTaskState extends State<ManageActorTaskPage> {
     
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
-      backgroundColor: Color.fromRGBO(20, 9, 53, 1),
+      backgroundColor: Color.fromRGBO(3, 9, 23, 1),
       body: SafeArea(
         child: Column(
           children: <Widget>[
@@ -231,7 +231,7 @@ class _ManageActorTaskState extends State<ManageActorTaskPage> {
                     Icons.add,
                     size: 30,
                   ),
-                  backgroundColor: LightColors.kDarkYellow,
+                  backgroundColor: Colors.blue[800],
                   onPressed: () {
                     print('btnAdd Clicked');
                     Navigator.of(context)

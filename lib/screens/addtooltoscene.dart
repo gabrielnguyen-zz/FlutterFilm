@@ -217,18 +217,7 @@ class _AddToolToScenePageState extends State<AddToolToScenePage> {
                       ],
                     ),
                     SizedBox(height: 20),
-                    StreamBuilder(
-                      stream: bloc.result,
-                      builder: (context, result) {
-                        if (result.hasData) {
-                          return Text(
-                            result.data.toString(),
-                            style: TextStyle(color: Colors.red, fontSize: 20),
-                          );
-                        }
-                        return Text('');
-                      },
-                    ),
+                    
                   ],
                 ),
               )),
@@ -237,7 +226,7 @@ class _AddToolToScenePageState extends State<AddToolToScenePage> {
                   print("added");
                   FocusScope.of(context).unfocus();
                   String quantity = quantityController.text;
-                  bloc.addToolToScene(dropDownTool, dropDownScene, quantity, toolFrom, toolTo);
+                  bloc.addToolToScene(context,dropDownTool, dropDownScene, quantity, toolFrom, toolTo);
                 },
                 child: Container(
                   height: 80,
@@ -257,12 +246,7 @@ class _AddToolToScenePageState extends State<AddToolToScenePage> {
                         margin: EdgeInsets.fromLTRB(20, 10, 20, 20),
                         width: width - 40,
                         decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                              begin: Alignment.topRight,
-                              end: Alignment.topLeft,
-                              colors: <Color>[
-                                Color(0xFF536976),Color(0xFF292E49)
-                              ]),
+                          color: Colors.blue[800],
                           borderRadius: BorderRadius.circular(30),
                         ),
                       ),

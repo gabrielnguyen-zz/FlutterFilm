@@ -49,6 +49,7 @@ class _CreateToolPageState extends State<CreateToolPage> {
         }
       },
       child: Scaffold(
+        backgroundColor: Color.fromRGBO(3, 9, 23, 1),
         body: SafeArea(
           child: Column(
             children: <Widget>[
@@ -67,7 +68,9 @@ class _CreateToolPageState extends State<CreateToolPage> {
                         Text(
                           'Create new tool',
                           style: TextStyle(
-                              fontSize: 30.0, fontWeight: FontWeight.w700),
+                              color: Colors.white,
+                              fontSize: 30.0,
+                              fontWeight: FontWeight.w700),
                         ),
                       ],
                     ),
@@ -88,65 +91,42 @@ class _CreateToolPageState extends State<CreateToolPage> {
                 padding: EdgeInsets.symmetric(horizontal: 20),
                 child: Column(
                   children: <Widget>[
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Expanded(
-                            child: MyTextField(
-                          label: 'Quantity',
-                          keyboard: TextInputType.number,
-                          controller: quantityController,
-                        )),
-                        SizedBox(width: 40),
-                        Container(
-                          width: width / 2 - 10,
-                          child: ListTile(
-                            title: Text("Tool Image:"),
-                            subtitle:
-                                Text(script.filename ?? "Click to choose file"),
-                            trailing: Icon(
-                              Icons.file_upload,
-                              color: LightColors.kDarkYellow,
-                            ),
-                            onTap: () {
-                              ImagePicker()
-                                  .getImage(source: ImageSource.camera)
-                                  .then((value) {
-                                var file = File(value.path);
-                                var list = file.toString().split("/");
-                                var pic = list[list.length - 1].split("'")[0];
-                                setState(() {
-                                  print(pic);
-                                  script.filename =
-                                      pic.toString().split(".")[0];
-                                  script.fileExtension =
-                                      pic.toString().split(".")[1];
-                                  script.file = file;
-                                });
-                              });
-                            },
-                          ),
-                        ),
-                      ],
+                    MyTextField(
+                      label: 'Quantity',
+                      keyboard: TextInputType.number,
+                      controller: quantityController,
                     ),
+                    SizedBox(width: 40),
                     SizedBox(height: 20),
                     MyTextField(
                       label: 'Description',
                       controller: toolDesController,
                     ),
                     SizedBox(height: 20),
-                    SizedBox(height: 20),
-                    StreamBuilder(
-                      stream: bloc.createToolGet,
-                      builder: (context, result) {
-                        if (result.hasData) {
-                          return Text(
-                            result.data.toString(),
-                            style: TextStyle(color: Colors.red, fontSize: 20),
-                          );
-                        }
-                        return Text('');
-                      },
+                    buildImg(),
+                    SizedBox(height:20),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 0),
+                      child: StreamBuilder(
+                          stream: bloc.createToolGet,
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              if (snapshot.data == 'Logging') {
+                                return Container(
+                                  child: CircularProgressIndicator(
+                                    valueColor:
+                                        new AlwaysStoppedAnimation<Color>(
+                                            Colors.white),
+                                  ),
+                                  padding: EdgeInsets.all(15),
+                                );
+                              } else {
+                                return Container();
+                              }
+                            } else {
+                              return Container();
+                            }
+                          }),
                     ),
                   ],
                 ),
@@ -155,7 +135,7 @@ class _CreateToolPageState extends State<CreateToolPage> {
                 onTap: () {
                   print("created");
                   FocusScope.of(context).unfocus();
-                  onCreateActorClick(script);
+                  onCreateActorClick(context, script);
                 },
                 child: Container(
                   height: 80,
@@ -175,13 +155,7 @@ class _CreateToolPageState extends State<CreateToolPage> {
                         margin: EdgeInsets.fromLTRB(20, 10, 20, 20),
                         width: width - 40,
                         decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                              begin: Alignment.topRight,
-                              end: Alignment.topLeft,
-                              colors: <Color>[
-                                Color(0xfff46b45),
-                                Color(0xffeea849)
-                              ]),
+                          color: Colors.blue[800],
                           borderRadius: BorderRadius.circular(30),
                         ),
                       ),
@@ -195,12 +169,68 @@ class _CreateToolPageState extends State<CreateToolPage> {
       ),
     );
   }
+  buildImg() {
+    return Container(
+      child: Column(
+        children: <Widget>[
+          Container(
+              child: Center(
+            child: ButtonTheme(
+              buttonColor: Colors.blue[800],
+              child: RaisedButton(
+                child: Text("Add Image",style : TextStyle(color: Colors.white)),
+                onPressed: () {
+                ImagePicker()
+                    .getImage(source: ImageSource.gallery)
+                    .then((value) {
+                  var file = File(value.path);
+                  var list = file.toString().split("/");
+                  var pic = list[list.length - 1].split("'")[0];
+                  this.setState(() {
+                    print(pic);
+                    script.filename = pic.toString().split(".")[0];
+                    script.fileExtension = pic.toString().split(".")[1];
+                    script.file = file;
+                  });
+                });
+              }),
+            ),
+          ),
+          ),
+          showImage(script)
+        ],
+      ),
+    );
+  }
+  showImage(ChooseFile script){
+    if(script.file!=null){
+      return Stack(
+            children: <Widget>[
+              Container(
+                margin: EdgeInsets.symmetric(vertical: 5),
+                child: Center(
+                  child: Container(
+                    height: 230,
+                    width: 230,
+                    child: CircleAvatar(
+                      radius: 35,
+                      backgroundImage: FileImage(script.file) ,
+                    ),
+                  ),
+                ),
+              )
+            ],
+          );
+    }else{
+      return Container();
+    }
+  }
 
-  void onCreateActorClick(script) {
+  void onCreateActorClick(context, script) {
     String name = toolNameController.text;
     String des = toolDesController.text;
     int quantity = int.parse(quantityController.text);
     Tool tool = Tool(toolName: name, toolDes: des, quantity: quantity);
-    bloc.createTool(tool, script);
+    bloc.createTool(context, tool, script);
   }
 }

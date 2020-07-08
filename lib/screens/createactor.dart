@@ -40,13 +40,14 @@ class _CreateActorPageState extends State<CreateActorPage> {
     );
 
     return GestureDetector(
-       onTap: (){
+      onTap: () {
         FocusScopeNode focusScopeNode = FocusScope.of(context);
-        if(!focusScopeNode.hasPrimaryFocus){
+        if (!focusScopeNode.hasPrimaryFocus) {
           focusScopeNode.unfocus();
         }
       },
-          child: Scaffold(
+      child: Scaffold(
+        backgroundColor: Color.fromRGBO(3, 9, 23, 1),
         body: SafeArea(
           child: Column(
             children: <Widget>[
@@ -65,7 +66,9 @@ class _CreateActorPageState extends State<CreateActorPage> {
                         Text(
                           'Create Actor',
                           style: TextStyle(
-                              fontSize: 30.0, fontWeight: FontWeight.w700),
+                              color: Colors.white,
+                              fontSize: 30.0,
+                              fontWeight: FontWeight.w700),
                         ),
                       ],
                     ),
@@ -75,7 +78,8 @@ class _CreateActorPageState extends State<CreateActorPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         MyTextField(
-                            label: 'Actor Name', controller: actorNameController),
+                            label: 'Actor Name',
+                            controller: actorNameController),
                         MyTextField(
                           label: 'Username',
                           controller: usernameController,
@@ -116,56 +120,40 @@ class _CreateActorPageState extends State<CreateActorPage> {
                     SizedBox(height: 20),
                     TextField(
                       controller: passwordController,
-                      style: TextStyle(color: Colors.black87),
+                      style: TextStyle(color: Colors.white),
                       obscureText: true,
                       decoration: InputDecoration(
                           labelText: "Password",
-                          labelStyle: TextStyle(color: Colors.black45),
+                          labelStyle: TextStyle(color: Colors.white),
                           focusedBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.black)),
+                              borderSide: BorderSide(color: Colors.white)),
                           border: UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.grey))),
+                              borderSide: BorderSide(color: Colors.white))),
                     ),
                     SizedBox(height: 20),
-                    ListTile(
-                            
-                            title: Text("Actor Image:"),
-                            subtitle:
-                                Text(script.filename??  'Click here to get picture'),
-                            trailing: Icon(
-                              Icons.file_upload,
-                              color: LightColors.kDarkYellow,
-                            ),
-                            onTap: () {
-                              ImagePicker()
-                                  .getImage(source: ImageSource.camera)
-                                  .then((value) {
-                                var file = File(value.path);
-                                var list = file.toString().split("/");
-                                var pic = list[list.length - 1].split("'")[0];
-                                setState(() {
-                                  print(pic);
-                                  script.filename =
-                                      pic.toString().split(".")[0];
-                                  script.fileExtension =
-                                      pic.toString().split(".")[1];
-                                  script.file = file;
-                                });
-                              });
-                            },
+                    buildImg(),
+                    Padding(
+              padding: const EdgeInsets.only(left: 00),
+              child: StreamBuilder(
+                  stream: bloc.createActorGet,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      if (snapshot.data == 'Logging') {
+                        return Container(
+                          child: CircularProgressIndicator(
+                            valueColor:
+                                new AlwaysStoppedAnimation<Color>(Colors.white),
                           ),
-                    StreamBuilder(
-                      stream: bloc.createActorGet,
-                      builder: (context, result) {
-                        if (result.hasData) {
-                          return Text(
-                            result.data.toString(),
-                            style: TextStyle(color: Colors.red, fontSize: 20),
-                          );
-                        }
-                        return Text('');
-                      },
-                    ),
+                          padding: EdgeInsets.all(15),
+                        );
+                      } else {
+                        return Container();
+                      }
+                    } else {
+                      return Container();
+                    }
+                  }),
+            ),
                   ],
                 ),
               )),
@@ -173,7 +161,7 @@ class _CreateActorPageState extends State<CreateActorPage> {
                 onTap: () {
                   print("created");
                   FocusScope.of(context).unfocus();
-                  onCreateActorClick(script);
+                  onCreateActorClick(context, script);
                 },
                 child: Container(
                   height: 80,
@@ -193,13 +181,7 @@ class _CreateActorPageState extends State<CreateActorPage> {
                         margin: EdgeInsets.fromLTRB(20, 10, 20, 20),
                         width: width - 40,
                         decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                              begin: Alignment.topRight,
-                              end: Alignment.topLeft,
-                              colors: <Color>[
-                                Color(0xfff46b45),
-                                Color(0xffeea849)
-                              ]),
+                          color: Colors.blue[800],
                           borderRadius: BorderRadius.circular(30),
                         ),
                       ),
@@ -214,7 +196,63 @@ class _CreateActorPageState extends State<CreateActorPage> {
     );
   }
 
-  void onCreateActorClick(script) {
+  buildImg() {
+    return Container(
+      child: Column(
+        children: <Widget>[
+          Container(
+              child: Center(
+            child: ButtonTheme(
+              buttonColor: Colors.blue[800],
+              child: RaisedButton(
+                child: Text("Add Image",style : TextStyle(color: Colors.white)),
+                onPressed: () {
+                ImagePicker()
+                    .getImage(source: ImageSource.gallery)
+                    .then((value) {
+                  var file = File(value.path);
+                  var list = file.toString().split("/");
+                  var pic = list[list.length - 1].split("'")[0];
+                  this.setState(() {
+                    print(pic);
+                    script.filename = pic.toString().split(".")[0];
+                    script.fileExtension = pic.toString().split(".")[1];
+                    script.file = file;
+                  });
+                });
+              }),
+            ),
+          ),
+          ),
+          showImage(script)
+        ],
+      ),
+    );
+  }
+  showImage(ChooseFile script){
+    if(script.file!=null){
+      return Stack(
+            children: <Widget>[
+              Container(
+                margin: EdgeInsets.symmetric(vertical: 5),
+                child: Center(
+                  child: Container(
+                    height: 230,
+                    width: 230,
+                    child: CircleAvatar(
+                      radius: 35,
+                      backgroundImage: FileImage(script.file) ,
+                    ),
+                  ),
+                ),
+              )
+            ],
+          );
+    }else{
+      return Container();
+    }
+  }
+  void onCreateActorClick(BuildContext buildContext,script) {
     String name = actorNameController.text;
     String des = actorDesController.text;
     String phone = phoneController.text;
@@ -222,14 +260,15 @@ class _CreateActorPageState extends State<CreateActorPage> {
     String username = usernameController.text;
     String password = passwordController.text;
     Actor actor = Actor(
-        actorName: name,
-        actorDes: des,
-        phone: phone,
-        email: email,
-        accountId: username,
-        password: password,
-        createdBy: username,
-        updatedBy: username,);
-    bloc.createActor(actor,script);
+      actorName: name,
+      actorDes: des,
+      phone: phone,
+      email: email,
+      accountId: username,
+      password: password,
+      createdBy: username,
+      updatedBy: username,
+    );
+    bloc.createActor(buildContext,actor, script);
   }
 }

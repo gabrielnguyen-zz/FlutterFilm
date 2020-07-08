@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter_task_planner_app/dataprovider/addtooltoscene.dart';
 import 'package:flutter_task_planner_app/dataprovider/getallscene.dart';
 import 'package:flutter_task_planner_app/dataprovider/getalltool.dart';
+import 'package:flutter_task_planner_app/widgets/dialog.dart';
 
 class ShowToolSceneBloc {
   StreamController showToolStream = new StreamController();
@@ -41,7 +42,7 @@ class ShowToolSceneBloc {
     return false;
   }
 
-  Future<bool> addToolToScene(
+  Future<bool> addToolToScene(context,
       dropDownTool, dropDownScene, quantity, toolFrom, toolTo) async {
         print("bloc aloo");
     if (dropDownTool == null ||
@@ -60,15 +61,14 @@ class ShowToolSceneBloc {
         var addTool = AddToolScene();
         var result = await addTool.add(sceneId, toolId, quantity, toolFrom, toolTo);
         if (result) {
-          resultStream.sink.add("Add Success !!!!");
+          OpenDialog.displayDialog("Message", context, "Add Tool to Scene Success");
           return true;
         } else {
-          resultStream.sink.add("Error");
+          OpenDialog.displayDialog("Error", context, "Error!!!");
           return false;
         }
       } else {
-        resultStream.sink
-            .add("Quantity must not larger than quantity in storage");
+        OpenDialog.displayDialog("Error", context, "Quantity must not larger than quantity in storage!!!");
             return false;
       }
     }

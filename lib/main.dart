@@ -102,7 +102,7 @@ class _MyAppState extends State<MyApp> with TickerProviderStateMixin{
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
 
-    return Scaffold(
+    return Scaffold( 
       backgroundColor: Color.fromRGBO(3, 9, 23, 1),
       body: Container(
         width: double.infinity,
