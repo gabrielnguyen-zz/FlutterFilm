@@ -78,6 +78,7 @@ class GetUserInfo{
             var character = scene['character'];
             var sceneID = scene['sceneId'];
             Actor actor = new Actor(
+              image: image,
               actorName: actorName,
               email: email,
               sceneId: sceneID, 

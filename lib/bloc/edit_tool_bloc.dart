@@ -10,7 +10,7 @@ class EditToolBloc {
 
   Future<bool> editTool(context,Tool tool, script, image) async {
     editToolStream.sink.add("Logging");
-    if (image == null) {
+    if (script != null) {
       if (script != null && script.filename != null && script.file != null) {
         print('start upload');
         var filename = script.filename +

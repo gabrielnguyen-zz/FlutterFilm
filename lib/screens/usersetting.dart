@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_task_planner_app/bloc/getuserinfo_bloc.dart';
 import 'package:flutter_task_planner_app/bloc/usersetting_bloc.dart';
-import 'package:flutter_task_planner_app/bloc/viewact_bloc.dart';
 import 'package:flutter_task_planner_app/models/actor.dart';
 import 'package:flutter_task_planner_app/theme/colors/light_colors.dart';
 import 'package:percent_indicator/percent_indicator.dart';
@@ -30,21 +29,27 @@ class _UserSettingState extends State<UserSettingPage> {
     return Text(
       title,
       style: TextStyle(
-          color: LightColors.kDarkBlue,
+          color: Colors.white,
           fontSize: 20.0,
           fontWeight: FontWeight.w700,
           letterSpacing: 1.2),
     );
   }
-
+  
   TextEditingController mailController = TextEditingController();
   TextEditingController actorDesController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
   GetUserInfoBloc bloc = GetUserInfoBloc();
   UserSettingBloc setBloc = UserSettingBloc();
   @override
-  Widget build(BuildContext context) {
+  void initState() {
+    // TODO: implement initState
     bloc.getAllStatusScene();
+    super.initState();
+  }
+  @override
+  Widget build(BuildContext context) {
+   
     double width = MediaQuery.of(context).size.width;
     return GestureDetector(
       onTap: () {
@@ -58,7 +63,7 @@ class _UserSettingState extends State<UserSettingPage> {
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               return Scaffold(
-                backgroundColor: LightColors.kLightYellow,
+                backgroundColor: Color.fromRGBO(3, 9, 23, 1),
                 body: SafeArea(
                   child: Column(
                     children: <Widget>[
@@ -88,43 +93,43 @@ class _UserSettingState extends State<UserSettingPage> {
                                       circularStrokeCap:
                                           CircularStrokeCap.round,
                                       progressColor: LightColors.kRed,
-                                      backgroundColor: LightColors.kDarkYellow,
+                                      backgroundColor: Color.fromRGBO(3, 9, 23, 1),
                                       center: CircleAvatar(
                                         backgroundColor: LightColors.kBlue,
                                         radius: 35.0,
-                                        backgroundImage: AssetImage(
-                                          'assets/images/avatar.png',
-                                        ),
+                                        backgroundImage: snapshot.data.image !=null ? NetworkImage(snapshot.data.image) : AssetImage(
+                                                'assets/images/avatar.png',
+                                              ),
                                       ),
                                     ),
                                     Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: <Widget>[
-                                        Container(
-                                          child: Text(
-                                            snapshot.data.actorName,
-                                            textAlign: TextAlign.start,
-                                            style: TextStyle(
-                                              fontSize: 22.0,
-                                              color: LightColors.kDarkBlue,
-                                              fontWeight: FontWeight.w800,
-                                            ),
-                                          ),
-                                        ),
-                                        Container(
-                                          child: Text(
-                                            snapshot.data.email,
-                                            textAlign: TextAlign.start,
-                                            style: TextStyle(
-                                              fontSize: 16.0,
-                                              color: Colors.black45,
-                                              fontWeight: FontWeight.w400,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    )
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children: <Widget>[
+                                              Container(
+                                                child: Text(
+                                                  snapshot.data.actorName,
+                                                  textAlign: TextAlign.start,
+                                                  style: TextStyle(
+                                                    fontSize: 22.0,
+                                                    color: Colors.white,
+                                                    fontWeight: FontWeight.w800,
+                                                  ),
+                                                ),
+                                              ),
+                                              Container(
+                                                child: Text(
+                                                  snapshot.data.email,
+                                                  textAlign: TextAlign.start,
+                                                  style: TextStyle(
+                                                    fontSize: 16.0,
+                                                    color: Colors.white,
+                                                    fontWeight: FontWeight.w400,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          )
                                   ],
                                 ),
                               )
@@ -146,7 +151,7 @@ class _UserSettingState extends State<UserSettingPage> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: <Widget>[
-                                        subheading('Edit Information'),
+                                        subheading('Edit Information',),
                                       ],
                                     ),
                                     SizedBox(height: 15.0),
@@ -195,8 +200,9 @@ class _UserSettingState extends State<UserSettingPage> {
                                         onSaveClicked(snapshot.data);
                                       },
                                       child: Container(
+                                        height: 50,
                                         child: Text(
-                                          'Create Task',
+                                          'Save',
                                           style: TextStyle(
                                               color: Colors.white,
                                               fontWeight: FontWeight.w700,
@@ -207,81 +213,17 @@ class _UserSettingState extends State<UserSettingPage> {
                                             EdgeInsets.fromLTRB(20, 10, 20, 20),
                                         width: width - 40,
                                         decoration: BoxDecoration(
-                                          gradient: LinearGradient(
-                                              begin: Alignment.topRight,
-                                              end: Alignment.topLeft,
-                                              colors: <Color>[
-                                                Color(0xfff46b45),
-                                                Color(0xffeea849)
-                                              ]),
+                                          color: Colors.blue[800],
                                           borderRadius:
                                               BorderRadius.circular(30),
                                         ),
                                       ),
                                     ),
-                                    StreamBuilder(
-                                      stream: setBloc.userSet,
-                                      builder: (context, result) {
-                                        if (result.hasData) {
-                                          return Text(
-                                            result.data.toString(),
-                                            style: TextStyle(
-                                                color: Colors.red,
-                                                fontSize: 20),
-                                          );
-                                        }
-                                        return Text('');
-                                      },
-                                    ),
+                                    
                                   ],
                                 ),
                               ),
-                              // Container(
-                              //   color: Colors.transparent,
-                              //   padding: EdgeInsets.symmetric(
-                              //       horizontal: 20.0, vertical: 10.0),
-                              //   child: Column(
-                              //     crossAxisAlignment: CrossAxisAlignment.start,
-                              //     children: <Widget>[
-                              //       subheading('Active Projects'),
-                              //       SizedBox(height: 5.0),
-                              //       Row(
-                              //         children: <Widget>[
-                              //           ActiveProjectsCard(
-                              //             cardColor: LightColors.kGreen,
-                              //             loadingPercent: 0.25,
-                              //             title: 'Medical App',
-                              //             subtitle: '9 hours progress',
-                              //           ),
-                              //           SizedBox(width: 20.0),
-                              //           ActiveProjectsCard(
-                              //             cardColor: LightColors.kRed,
-                              //             loadingPercent: 0.6,
-                              //             title: 'Making History Notes',
-                              //             subtitle: '20 hours progress',
-                              //           ),
-                              //         ],
-                              //       ),
-                              //       Row(
-                              //         children: <Widget>[
-                              //           ActiveProjectsCard(
-                              //             cardColor: LightColors.kDarkYellow,
-                              //             loadingPercent: 0.45,
-                              //             title: 'Sports App',
-                              //             subtitle: '5 hours progress',
-                              //           ),
-                              //           SizedBox(width: 20.0),
-                              //           ActiveProjectsCard(
-                              //             cardColor: LightColors.kBlue,
-                              //             loadingPercent: 0.9,
-                              //             title: 'Online Flutter Course',
-                              //             subtitle: '23 hours progress',
-                              //           ),
-                              //         ],
-                              //       ),
-                              //     ],
-                              //   ),
-                              // ),
+
                             ],
                           ),
                         ),

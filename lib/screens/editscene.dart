@@ -64,6 +64,7 @@ class _EditScenePageState extends State<EditScenePage> {
         }
       },
       child: Scaffold(
+        backgroundColor: Color.fromRGBO(3, 9, 23, 1),
         body: SafeArea(
           child: Column(
             children: <Widget>[
@@ -81,7 +82,7 @@ class _EditScenePageState extends State<EditScenePage> {
                       children: <Widget>[
                         Text(
                           'Edit scene',
-                          style: TextStyle(
+                          style: TextStyle(color: Colors.white,
                               fontSize: 30.0, fontWeight: FontWeight.w700),
                         ),
                       ],
@@ -146,12 +147,12 @@ class _EditScenePageState extends State<EditScenePage> {
                     ),
                     SizedBox(height: 20),
                     ListTile(
-                      title: Text("Script:"),
+                      title: Text("Script:",style: TextStyle(color : Colors.white),),
                       subtitle:
-                          Text(chooseFile.filename ?? widget.scene.sceneActors),
+                          Text(chooseFile.filename ?? widget.scene.sceneActors,style: TextStyle(color : Colors.white)),
                       trailing: Icon(
                         Icons.file_upload,
-                        color: LightColors.kDarkYellow,
+                        color: Colors.white,
                       ),
                       onTap: () {
                         FilePicker.getFile().then((file) {
@@ -173,21 +174,34 @@ class _EditScenePageState extends State<EditScenePage> {
                             chooseFile.filename = filename;
                             chooseFile.fileExtension = extendsion;
                             chooseFile.file = file;
+                            chooseFile.isNew = true;
                           });
                         });
                       },
                     ),
-                    StreamBuilder(
-                      stream: bloc.editSceneGet,
-                      builder: (context, result) {
-                        if (result.hasData) {
-                          return Text(
-                            result.data.toString(),
-                            style: TextStyle(color: Colors.red, fontSize: 20),
-                          );
-                        }
-                        return Text('');
-                      },
+                    Padding(
+                      padding: const EdgeInsets.only(left: 0),
+                      child: StreamBuilder(
+                          stream: bloc.editSceneGet,
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              if (snapshot.data == 'Logging') {
+                                FocusScope.of(context).requestFocus();
+                                return Container(
+                                  child: CircularProgressIndicator(
+                                    valueColor:
+                                        new AlwaysStoppedAnimation<Color>(
+                                            Colors.white),
+                                  ),
+                                  padding: EdgeInsets.all(15),
+                                );
+                              } else {
+                                return Container();
+                              }
+                            } else {
+                              return Container();
+                            }
+                          }),
                     ),
                   ],
                 ),
@@ -201,7 +215,7 @@ class _EditScenePageState extends State<EditScenePage> {
                   String timeStop = sceneTimeStopController.text;
                   int sceneRec = int.parse(sceneRecController.text);
                   String sceneLoc = sceneLocation.text;
-                  onEditSceneClick(name, des, sceneRec, timeStart, timeStop,
+                  onEditSceneClick(context,name, des, sceneRec, timeStart, timeStop,
                       sceneLoc, false, widget.scene, chooseFile);
                 },
                 child: Container(
@@ -222,13 +236,7 @@ class _EditScenePageState extends State<EditScenePage> {
                         margin: EdgeInsets.fromLTRB(20, 10, 20, 20),
                         width: width - 40,
                         decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                              begin: Alignment.topRight,
-                              end: Alignment.topLeft,
-                              colors: <Color>[
-                                Color(0xfff46b45),
-                                Color(0xffeea849)
-                              ]),
+                          color: Colors.blue[800],
                           borderRadius: BorderRadius.circular(30),
                         ),
                       ),
@@ -246,7 +254,7 @@ class _EditScenePageState extends State<EditScenePage> {
                   String timeStop = sceneTimeStopController.text;
                   int sceneRec = int.parse(sceneRecController.text);
                   String sceneLoc = sceneLocation.text;
-                  onEditSceneClick(name, des, sceneRec, timeStart, timeStop,
+                  onEditSceneClick(context,name, des, sceneRec, timeStart, timeStop,
                       sceneLoc, true, widget.scene, chooseFile);
                   Navigator.pop(context);
                 },
@@ -268,13 +276,7 @@ class _EditScenePageState extends State<EditScenePage> {
                         margin: EdgeInsets.fromLTRB(20, 10, 20, 20),
                         width: width - 40,
                         decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                              begin: Alignment.topRight,
-                              end: Alignment.topLeft,
-                              colors: <Color>[
-                                Color(0xffff9900),
-                                Color(0xffffcc00)
-                              ]),
+                          color: Colors.red,
                           borderRadius: BorderRadius.circular(30),
                         ),
                       ),
@@ -289,7 +291,7 @@ class _EditScenePageState extends State<EditScenePage> {
     );
   }
 
-  void onEditSceneClick(name, des, rec, timeStart, timeStop, sceneloc,
+  void onEditSceneClick(context,name, des, rec, timeStart, timeStop, sceneloc,
       bool isDelete, Scene scene, ChooseFile chooseFile) {
     scene.sceneName = name;
     scene.sceneDes = des;
@@ -298,6 +300,6 @@ class _EditScenePageState extends State<EditScenePage> {
     scene.sceneLoc = scene.sceneLoc;
     scene.isDelete = isDelete;
     print(chooseFile.filename);
-    bloc.editScene(scene, chooseFile);
+    bloc.editScene(context,scene, chooseFile);
   }
 }

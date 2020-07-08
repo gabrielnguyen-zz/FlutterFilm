@@ -43,7 +43,8 @@ class ActColumn extends StatelessWidget {
             ),
           ),
           Spacer(),
-          Icon(icon),
+          Icon(icon,
+          color: Colors.white,),
         ],
       ),
     );

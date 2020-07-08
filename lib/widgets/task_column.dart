@@ -20,11 +20,11 @@ class TaskColumn extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           CircleAvatar(
-            radius: 20.0,
+            radius: 30.0,
             backgroundColor: iconBackgroundColor,
             child: Icon(
               icon,
-              size: 15.0,
+              size: 30.0,
               color: Colors.white,
             ),
           ),
@@ -34,8 +34,8 @@ class TaskColumn extends StatelessWidget {
             children: <Widget>[
               Text(
                 title,
-                style: TextStyle(
-                  fontSize: 16.0,
+                style: TextStyle(color: Colors.white,
+                  fontSize: 20.0,
                   fontWeight: FontWeight.w700,
                 ),
               ),
@@ -44,7 +44,7 @@ class TaskColumn extends StatelessWidget {
                 style: TextStyle(
                     fontSize: 14.0,
                     fontWeight: FontWeight.w500,
-                    color: Colors.black45),
+                    color: Colors.white70),
               ),
             ],
           )

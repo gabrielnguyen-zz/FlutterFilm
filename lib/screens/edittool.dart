@@ -1,11 +1,9 @@
 import 'dart:io';
 
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_task_planner_app/bloc/edit_tool_bloc.dart';
 import 'package:flutter_task_planner_app/models/file.dart';
 import 'package:flutter_task_planner_app/models/tool.dart';
-import 'package:flutter_task_planner_app/theme/colors/light_colors.dart';
 import 'package:flutter_task_planner_app/widgets/back_button.dart';
 import 'package:flutter_task_planner_app/widgets/my_text_field.dart';
 import 'package:flutter_task_planner_app/widgets/top_container.dart';

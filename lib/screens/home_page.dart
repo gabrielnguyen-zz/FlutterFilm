@@ -8,7 +8,7 @@ import 'package:flutter_task_planner_app/widgets/task_column.dart';
 import 'package:flutter_task_planner_app/widgets/top_container.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class HomePage extends StatefulWidget{
+class HomePage extends StatefulWidget {
   static CircleAvatar calendarIcon() {
     return CircleAvatar(
       radius: 25.0,
@@ -32,7 +32,7 @@ class _HomePageState extends State<HomePage> {
     return Text(
       title,
       style: TextStyle(
-          color: LightColors.kDarkBlue,
+          color: Colors.white,
           fontSize: 20.0,
           fontWeight: FontWeight.w700,
           letterSpacing: 1.2),
@@ -44,14 +44,15 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     bloc.getAllStatusScene();
     double width = MediaQuery.of(context).size.width;
-    return StreamBuilder(
-        stream: bloc.userInfo,
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return Scaffold(
-              backgroundColor: LightColors.kLightYellow,
-              body: SafeArea(
-                child: Column(
+
+    return Scaffold(
+      backgroundColor: Color.fromRGBO(3, 9, 23, 1),
+      body: SafeArea(
+        child: StreamBuilder(
+            stream: bloc.userInfo,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return Column(
                   children: <Widget>[
                     TopContainer(
                       height: 200,
@@ -77,13 +78,18 @@ class _HomePageState extends State<HomePage> {
                                     percent: 0.75,
                                     circularStrokeCap: CircularStrokeCap.round,
                                     progressColor: LightColors.kRed,
-                                    backgroundColor: LightColors.kDarkYellow,
+                                    backgroundColor:
+                                        Color.fromRGBO(3, 9, 23, 1),
                                     center: CircleAvatar(
-                                      backgroundColor: LightColors.kBlue,
+                                      backgroundColor:
+                                          Color.fromRGBO(149, 161, 203, 1),
                                       radius: 35.0,
-                                       backgroundImage: snapshot.data.image !=null ? NetworkImage(snapshot.data.image) : AssetImage(
-                                        'assets/images/avatar.png',
-                                      ),
+                                      backgroundImage: snapshot.data.image !=
+                                              null
+                                          ? NetworkImage(snapshot.data.image)
+                                          : AssetImage(
+                                              'assets/images/avatar.png',
+                                            ),
                                     ),
                                   ),
                                   Column(
@@ -96,7 +102,7 @@ class _HomePageState extends State<HomePage> {
                                           textAlign: TextAlign.start,
                                           style: TextStyle(
                                             fontSize: 22.0,
-                                            color: LightColors.kDarkBlue,
+                                            color: Colors.white,
                                             fontWeight: FontWeight.w800,
                                           ),
                                         ),
@@ -107,7 +113,7 @@ class _HomePageState extends State<HomePage> {
                                           textAlign: TextAlign.start,
                                           style: TextStyle(
                                             fontSize: 16.0,
-                                            color: Colors.black45,
+                                            color: Colors.white,
                                             fontWeight: FontWeight.w400,
                                           ),
                                         ),
@@ -150,7 +156,7 @@ class _HomePageState extends State<HomePage> {
                                       String title = "Waiting";
 
                                       print("tapped");
-                                      onTaskClicked(title);
+                                      onTaskClicked(snapshot.data.waiting,title);
                                     },
                                   ),
                                   SizedBox(
@@ -167,7 +173,7 @@ class _HomePageState extends State<HomePage> {
                                       String title = "In Progress";
 
                                       print("tapped");
-                                      onTaskClicked(title);
+                                      onTaskClicked(snapshot.data.inProgress,title);
                                     },
                                   ),
                                   SizedBox(height: 15.0),
@@ -180,77 +186,36 @@ class _HomePageState extends State<HomePage> {
                                     onTap: () {
                                       String title = "Done";
                                       print("tapped");
-                                      onTaskClicked(title);
+                                      onTaskClicked(snapshot.data.done,title);
                                     },
                                   ),
                                 ],
                               ),
                             ),
-                            // Container(
-                            //   color: Colors.transparent,
-                            //   padding: EdgeInsets.symmetric(
-                            //       horizontal: 20.0, vertical: 10.0),
-                            //   child: Column(
-                            //     crossAxisAlignment: CrossAxisAlignment.start,
-                            //     children: <Widget>[
-                            //       subheading('Active Projects'),
-                            //       SizedBox(height: 5.0),
-                            //       Row(
-                            //         children: <Widget>[
-                            //           ActiveProjectsCard(
-                            //             cardColor: LightColors.kGreen,
-                            //             loadingPercent: 0.25,
-                            //             title: 'Medical App',
-                            //             subtitle: '9 hours progress',
-                            //           ),
-                            //           SizedBox(width: 20.0),
-                            //           ActiveProjectsCard(
-                            //             cardColor: LightColors.kRed,
-                            //             loadingPercent: 0.6,
-                            //             title: 'Making History Notes',
-                            //             subtitle: '20 hours progress',
-                            //           ),
-                            //         ],
-                            //       ),
-                            //       Row(
-                            //         children: <Widget>[
-                            //           ActiveProjectsCard(
-                            //             cardColor: LightColors.kDarkYellow,
-                            //             loadingPercent: 0.45,
-                            //             title: 'Sports App',
-                            //             subtitle: '5 hours progress',
-                            //           ),
-                            //           SizedBox(width: 20.0),
-                            //           ActiveProjectsCard(
-                            //             cardColor: LightColors.kBlue,
-                            //             loadingPercent: 0.9,
-                            //             title: 'Online Flutter Course',
-                            //             subtitle: '23 hours progress',
-                            //           ),
-                            //         ],
-                            //       ),
-                            //     ],
-                            //   ),
-                            // ),
                           ],
                         ),
                       ),
                     ),
                   ],
-                ),
-              ),
-            );
-          }
-          return CircularProgressIndicator(
-            valueColor: new AlwaysStoppedAnimation<Color>(Colors.orange),
-          );
-        });
+                );
+              } else {
+                return CircularProgressIndicator(
+                  valueColor: new AlwaysStoppedAnimation<Color>(Colors.white),
+                );
+              }
+            }),
+      ),
+    );
   }
 
-  Future<void> onTaskClicked(String title) async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    sharedPreferences.setString("Act", title);
-    print(sharedPreferences.getString("Act"));
-    Navigator.of(context).push(MaterialPageRoute(builder: (context) => ActorMenuPage(screen: ViewActPage(),) ));
+  Future<void> onTaskClicked(int number, String title) async {
+    if (number > 0) {
+      SharedPreferences sharedPreferences =
+          await SharedPreferences.getInstance();
+      sharedPreferences.setString("Act", title);
+      print(sharedPreferences.getString("Act"));
+      Navigator.of(context)
+          .push(MaterialPageRoute(builder: (context) => ViewActPage()));
+    }
   }
 }

@@ -3,6 +3,7 @@ import 'package:flutter_task_planner_app/bloc/viewact_bloc.dart';
 import 'package:flutter_task_planner_app/dataprovider/getscene.dart';
 import 'package:flutter_task_planner_app/theme/colors/light_colors.dart';
 import 'package:flutter_task_planner_app/widgets/act_column.dart';
+import 'package:flutter_task_planner_app/widgets/back_button.dart';
 import 'package:flutter_task_planner_app/widgets/top_container.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
@@ -28,7 +29,7 @@ class _ViewActState extends State<ViewActPage> {
     return Text(
       title,
       style: TextStyle(
-          color: LightColors.kDarkBlue,
+          color: Colors.white,
           fontSize: 20.0,
           fontWeight: FontWeight.w700,
           letterSpacing: 1.2),
@@ -41,14 +42,14 @@ class _ViewActState extends State<ViewActPage> {
     print("alo");
     bloc.viewActBasedOnTitle();
     double width = MediaQuery.of(context).size.width;
-    return StreamBuilder(
-        stream: bloc.viewAct,
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return Scaffold(
-              backgroundColor: LightColors.kLightYellow,
-              body: SafeArea(
-                child: Column(
+    return Scaffold(
+      backgroundColor: Color.fromRGBO(3, 9, 23, 1),
+      body: SafeArea(
+        child: StreamBuilder(
+            stream: bloc.viewAct,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return Column(
                   children: <Widget>[
                     TopContainer(
                       height: 200,
@@ -56,6 +57,7 @@ class _ViewActState extends State<ViewActPage> {
                       child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: <Widget>[
+                            MyBackButton(),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             ),
@@ -63,6 +65,7 @@ class _ViewActState extends State<ViewActPage> {
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 0, vertical: 0.0),
                               child: Row(
+                                
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceEvenly,
@@ -74,13 +77,14 @@ class _ViewActState extends State<ViewActPage> {
                                     percent: 0.75,
                                     circularStrokeCap: CircularStrokeCap.round,
                                     progressColor: LightColors.kRed,
-                                    backgroundColor: LightColors.kDarkYellow,
+                                    backgroundColor: Color.fromRGBO(3, 9, 23, 1),
                                     center: CircleAvatar(
                                       backgroundColor: LightColors.kBlue,
                                       radius: 35.0,
-                                      backgroundImage: AssetImage(
-                                        'assets/images/avatar.png',
-                                      ),
+                                      backgroundImage: snapshot.data[0].image !=
+                                              null
+                                          ? NetworkImage(snapshot.data[0].image)
+                                          : null,
                                     ),
                                   ),
                                   Column(
@@ -154,34 +158,24 @@ class _ViewActState extends State<ViewActPage> {
                         ],
                       ),
                     ),
-                    StreamBuilder(
-                      stream: bloc.link,
-                      builder: (context,result){
-                        if(result.hasData){
-                          return Text(result.data,style: TextStyle(color:Colors.red, fontSize:20),);
-                        }else{
-                          return Text('');
-                        }
-                    },),
                   ],
-                ),
-              ),
-            );
-          } else {
-            print("loading");
-            return CircularProgressIndicator(
-              valueColor: new AlwaysStoppedAnimation<Color>(Colors.orange),
-            );
-          }
-        });
+                );
+              } else {
+                return CircularProgressIndicator(
+                  valueColor: new AlwaysStoppedAnimation<Color>(Colors.white),
+                );
+              }
+            }),
+      ),
+    );
   }
 
   Future<String> onDownLoadTap(sceneId) async {
     var getScene = GetScene();
     var result = await getScene.getScene(sceneId);
-    if(result != null){
+    if (result != null) {
       return result.sceneActors;
-    }else{
+    } else {
       return null;
     }
   }
