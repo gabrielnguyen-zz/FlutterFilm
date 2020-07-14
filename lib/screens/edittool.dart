@@ -149,8 +149,6 @@ class _EditToolPageState extends State<EditToolPage> {
                   String name = toolNameController.text;
                   String des = toolDesController.text;
                   int quantity = int.parse(quantityController.text);
-                  print("script : " + script.filename);
-                  print("image :" + image);
                   onCreateActorClick(
                       name, des, quantity, false, widget.tool, script,image);
                 },
@@ -189,7 +187,6 @@ class _EditToolPageState extends State<EditToolPage> {
                   int quantity = int.parse(quantityController.text);
                   onCreateActorClick(
                       name, des, quantity, true, widget.tool, script,image);
-                  Navigator.pop(context);
                 },
                 child: Container(
                   height: 80,

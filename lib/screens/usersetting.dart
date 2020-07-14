@@ -35,7 +35,7 @@ class _UserSettingState extends State<UserSettingPage> {
           letterSpacing: 1.2),
     );
   }
-  
+
   TextEditingController mailController = TextEditingController();
   TextEditingController actorDesController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
@@ -47,9 +47,9 @@ class _UserSettingState extends State<UserSettingPage> {
     bloc.getAllStatusScene();
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
-   
     double width = MediaQuery.of(context).size.width;
     return GestureDetector(
       onTap: () {
@@ -93,43 +93,47 @@ class _UserSettingState extends State<UserSettingPage> {
                                       circularStrokeCap:
                                           CircularStrokeCap.round,
                                       progressColor: LightColors.kRed,
-                                      backgroundColor: Color.fromRGBO(3, 9, 23, 1),
+                                      backgroundColor:
+                                          Color.fromRGBO(3, 9, 23, 1),
                                       center: CircleAvatar(
                                         backgroundColor: LightColors.kBlue,
                                         radius: 35.0,
-                                        backgroundImage: snapshot.data.image !=null ? NetworkImage(snapshot.data.image) : AssetImage(
+                                        backgroundImage: snapshot.data.image !=
+                                                null
+                                            ? NetworkImage(snapshot.data.image)
+                                            : AssetImage(
                                                 'assets/images/avatar.png',
                                               ),
                                       ),
                                     ),
                                     Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            children: <Widget>[
-                                              Container(
-                                                child: Text(
-                                                  snapshot.data.actorName,
-                                                  textAlign: TextAlign.start,
-                                                  style: TextStyle(
-                                                    fontSize: 22.0,
-                                                    color: Colors.white,
-                                                    fontWeight: FontWeight.w800,
-                                                  ),
-                                                ),
-                                              ),
-                                              Container(
-                                                child: Text(
-                                                  snapshot.data.email,
-                                                  textAlign: TextAlign.start,
-                                                  style: TextStyle(
-                                                    fontSize: 16.0,
-                                                    color: Colors.white,
-                                                    fontWeight: FontWeight.w400,
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          )
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: <Widget>[
+                                        Container(
+                                          child: Text(
+                                            snapshot.data.actorName,
+                                            textAlign: TextAlign.start,
+                                            style: TextStyle(
+                                              fontSize: 22.0,
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.w800,
+                                            ),
+                                          ),
+                                        ),
+                                        Container(
+                                          child: Text(
+                                            snapshot.data.email,
+                                            textAlign: TextAlign.start,
+                                            style: TextStyle(
+                                              fontSize: 16.0,
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.w400,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    )
                                   ],
                                 ),
                               )
@@ -151,14 +155,16 @@ class _UserSettingState extends State<UserSettingPage> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: <Widget>[
-                                        subheading('Edit Information',),
+                                        subheading(
+                                          'Edit Information',
+                                        ),
                                       ],
                                     ),
                                     SizedBox(height: 15.0),
                                     TextField(
                                         controller: actorDesController,
                                         style: TextStyle(
-                                            fontSize: 18, color: Colors.black),
+                                            fontSize: 18, color: Colors.white),
                                         decoration: InputDecoration(
                                           labelText: "ACTOR DESCRIPTION",
                                           errorText: snapshot.hasError
@@ -171,7 +177,7 @@ class _UserSettingState extends State<UserSettingPage> {
                                     TextField(
                                         controller: mailController,
                                         style: TextStyle(
-                                            fontSize: 18, color: Colors.black),
+                                            fontSize: 18, color: Colors.white),
                                         decoration: InputDecoration(
                                           labelText: "MAIL",
                                           errorText: snapshot.hasError
@@ -185,7 +191,7 @@ class _UserSettingState extends State<UserSettingPage> {
                                         keyboardType: TextInputType.number,
                                         controller: phoneController,
                                         style: TextStyle(
-                                            fontSize: 18, color: Colors.black),
+                                            fontSize: 18, color: Colors.white),
                                         decoration: InputDecoration(
                                           labelText: "PHONE",
                                           errorText: snapshot.hasError
@@ -195,9 +201,39 @@ class _UserSettingState extends State<UserSettingPage> {
                                               color: Color(0xff888888),
                                               fontSize: 15),
                                         )),
+                                    Padding(
+                                      padding: const EdgeInsets.only(left: 0),
+                                      child: StreamBuilder(
+                                          stream: setBloc.userSet,
+                                          builder: (context, snapshot) {
+                                            if (snapshot.hasData) {
+                                              if (snapshot.data == 'Logging') {
+                                                FocusScope.of(context)
+                                                    .requestFocus();
+                                                return Container(
+                                                  child:
+                                                      CircularProgressIndicator(
+                                                    valueColor:
+                                                        new AlwaysStoppedAnimation<
+                                                                Color>(
+                                                            Colors.white),
+                                                  ),
+                                                  padding: EdgeInsets.all(15),
+                                                );
+                                              } else {
+                                                return Container();
+                                              }
+                                            } else {
+                                              return Container();
+                                            }
+                                          }),
+                                    ),
                                     GestureDetector(
                                       onTap: () {
-                                        onSaveClicked(snapshot.data);
+                                        bool check = onSaveClicked(context,snapshot.data);
+                                        if(check){
+                                          bloc.getAllStatusScene();
+                                        }
                                       },
                                       child: Container(
                                         height: 50,
@@ -219,11 +255,9 @@ class _UserSettingState extends State<UserSettingPage> {
                                         ),
                                       ),
                                     ),
-                                    
                                   ],
                                 ),
                               ),
-
                             ],
                           ),
                         ),
@@ -235,14 +269,14 @@ class _UserSettingState extends State<UserSettingPage> {
             } else {
               print("loading");
               return CircularProgressIndicator(
-                valueColor: new AlwaysStoppedAnimation<Color>(Colors.orange),
+                valueColor: new AlwaysStoppedAnimation<Color>(Colors.white),
               );
             }
           }),
     );
   }
 
-  void onSaveClicked(Actor actor) {
+  bool onSaveClicked(context,Actor actor) {
     FocusScope.of(context).unfocus();
     String email = mailController.text;
     String phone = phoneController.text;
@@ -250,6 +284,9 @@ class _UserSettingState extends State<UserSettingPage> {
     actor.email = email;
     actor.phone = phone;
     actor.actorDes = actorDes;
-    setBloc.updateUser(actor);
+    bool check = false;
+    setBloc.updateUser(context,actor).then((value) => check = value);
+    print("check " + check.toString());
+    return check;
   }
 }

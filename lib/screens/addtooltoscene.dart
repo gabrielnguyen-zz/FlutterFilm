@@ -57,7 +57,7 @@ class _AddToolToScenePageState extends State<AddToolToScenePage> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: <Widget>[
                         Text(
-                          'Add New Actor To Scene',
+                          'Add New Tool To Scene',
                           style: TextStyle(color: Colors.white,
                               fontSize: 26.0, fontWeight: FontWeight.w700),
                         ),

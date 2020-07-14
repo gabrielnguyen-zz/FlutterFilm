@@ -256,7 +256,7 @@ class _EditScenePageState extends State<EditScenePage> {
                   String sceneLoc = sceneLocation.text;
                   onEditSceneClick(context,name, des, sceneRec, timeStart, timeStop,
                       sceneLoc, true, widget.scene, chooseFile);
-                  Navigator.pop(context);
+                  
                 },
                 child: Container(
                   height: 80,

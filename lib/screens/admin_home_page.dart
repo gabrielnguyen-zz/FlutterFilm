@@ -6,6 +6,7 @@ import 'package:flutter_task_planner_app/screens/admin_menu.dart';
 import 'package:flutter_task_planner_app/screens/manage_actor_task.dart';
 import 'package:flutter_task_planner_app/screens/manage_scene_dart.dart';
 import 'package:flutter_task_planner_app/screens/manage_tool_dart.dart';
+import 'package:flutter_task_planner_app/screens/show_tool_scene.dart';
 import 'package:flutter_task_planner_app/theme/colors/light_colors.dart';
 import 'package:flutter_task_planner_app/widgets/active_project_card.dart';
 import 'package:flutter_task_planner_app/widgets/top_container.dart';
@@ -214,9 +215,6 @@ class _AdminHomePageState extends State<AdminHomePage> {
                           ),
                           Row(
                             children: <Widget>[
-                              Container(
-                                width: MediaQuery.of(context).size.width / 4,
-                              ),
                               ActiveProjectsCard(
                                 icon: Icons.work,
                                 cardColor: LightColors.kDarkYellow,
@@ -227,8 +225,16 @@ class _AdminHomePageState extends State<AdminHomePage> {
                                   onManageClicked(screen);
                                 },
                               ),
-                              Container(
-                                width: MediaQuery.of(context).size.width / 4,
+                              SizedBox(width: 20.0),
+                              ActiveProjectsCard(
+                                icon: Icons.featured_video,
+                                cardColor: Colors.cyan,
+                                loadingPercent: 0.45,
+                                title: 'Tool Statistics',
+                                onTap: () {
+                                  var screen = ShowToolScenePage();
+                                  onManageClicked(screen);
+                                },
                               ),
                             ],
                           ),
