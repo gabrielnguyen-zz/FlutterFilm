@@ -7,24 +7,20 @@ class GetUserInfo{
 
   Future<Actor> getUserInfo(String accountID) async {
     print("get user info alo");
-    String url = apiUrl + "/api/Actors/accountID/" + accountID;
+    String url = apiUrl + "/api/Actors/" + accountID;
     print(url);
     var response = await http.get(Uri.encodeFull(url),headers: {"Content-Type": "application/json"});
     print(response.body);
     if(response.statusCode == 200){
-      final data  = json.decode(response.body);
-        var actorName  = data['actorName'].toString();
-        var actorID = data['actorId'].toString();
+        final data  = json.decode(response.body);
+        var actorName  = data['fullname'].toString();
+        var actorID = data['username'].toString();
         var image = data['image'];
         var phone = data['phone'];
-        var actorDes = data['actorDes'];
+        var actorDes = data['description'];
         var email = data['email'];
-        var createdTime = data['createdTime'];
-        var createdBy = data['createdBy'];
-        var updatedTime = data['updatedTime'];
-        var updatedBy = data['updatedBy'];
         int done = 0,inProgress = 0 ,waiting = 0;
-        List scenes = data['sceneActor'];
+        List scenes = data['sceneActors'];
         for(var scene in scenes){
           var status = scene['status'].toString();
           if(status == statusDone){
@@ -40,16 +36,11 @@ class GetUserInfo{
           actorName: actorName,
           actorDes: actorDes,
           image: image,
-          phone: phone,
+          phone: phone.toString(),
           email: email,
           inProgress: inProgress,
           done: done,
-          waiting: waiting,
-          createdTime: createdTime,
-          createdBy: createdBy,
-          updatedBy: updatedBy,
-          updatedTime: updatedTime,
-          accountId: accountID
+          waiting: waiting
         );
         return actor;
     }
@@ -57,18 +48,18 @@ class GetUserInfo{
 
   Future<List<dynamic>> getUserAct(String accountID,String title) async {
     print("get user info alo");
-    String url = apiUrl + "/api/Actors/accountID/" + accountID;
+    String url = apiUrl + "/api/Actors/" + accountID;
     print(url);
     var response = await http.get(Uri.encodeFull(url),headers: {"Content-Type": "application/json"});
     print(response.body);
     if(response.statusCode == 200){
       final data  = json.decode(response.body);
-        var actorName  = data['actorName'].toString();
+        var actorName  = data['fullname'].toString();
         var image = data['image'];
         var phone = data['phone'];
-        var actorDes = data['actorDes'];
+        var actorDes = data['description'];
         var email = data['email'];
-        List scenes = data['sceneActor'];
+        List scenes = data['sceneActors'];
         List<Actor> list = List();
         for(var scene in scenes){
           var status = scene['status'].toString();

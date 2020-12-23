@@ -9,7 +9,7 @@ class CreateSceneBloc {
   StreamController createSceneStream = new StreamController();
   Stream get createSceneGet => createSceneStream.stream;
 
-  Future<bool> createTool(context, Scene scene, script) async {
+  Future<bool> createScene(context, Scene scene, script) async {
     createSceneStream.sink.add("Logging");
     if (script != null && script.filename != null && script.file != null) {
       print('start upload');
@@ -20,7 +20,7 @@ class CreateSceneBloc {
           script.fileExtension;
 
       StorageReference storageReference =
-          FirebaseStorage.instance.ref().child('Tool/' + filename);
+          FirebaseStorage.instance.ref().child('Scene/' + filename);
 
       StorageUploadTask uploadTask = storageReference.putFile(script.file);
 

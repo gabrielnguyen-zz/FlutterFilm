@@ -11,14 +11,11 @@ class CreateScene{
    String url = apiUrl + "/api/Scenes/";
     print(url);
     var body = jsonEncode({
-      'sceneName': scene.sceneName,
-      'sceneLoc': scene.sceneLoc,
-      'sceneDes': scene.sceneDes,
-      'sceneRec': scene.sceneRec,
-      'sceneTimeStart': scene.sceneTimeStart,
-      'sceneTimeStop' : scene.scenetTimeStop,
-      'isDelete': scene.isDelete,
-      'sceneActors' : scene.sceneActors
+      'title': scene.sceneName,
+      'description': scene.sceneDes,
+      'dateBegin': scene.sceneTimeStart,
+      'dateEnd' : scene.scenetTimeStop,
+      'script' : scene.sceneActors
 });
     print(body);
     var response =  await http.post(Uri.encodeFull(url), body: body, headers: {"Content-Type": "application/json"});

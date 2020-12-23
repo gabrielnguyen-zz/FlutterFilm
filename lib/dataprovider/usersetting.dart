@@ -10,18 +10,12 @@ class UserSetting {
     print(url);
     var date =  DateTime.now().toString().split(" ")[0];
     var body = jsonEncode({
-      'actorID': actor.actorId,
-      'actorName': actor.actorName,
+      'username': actor.actorId,
+      'fullname': actor.actorName,
       'image': actor.image,
-      'actorDes': actor.actorDes,
+      'description': actor.actorDes,
       'phone': actor.phone,
       'email': actor.email,
-      'createdTime': actor.createdTime,
-      'createdBy': actor.createdBy,
-      'updatedTime': date.toString(),
-      'updatedBy': actor.accountId,
-      'isDelete' : false,
-      'accountId' : actor.accountId
     });
     print(body);
     var response =  await http.put(Uri.encodeFull(url), body: body, headers: {"Content-Type": "application/json"});

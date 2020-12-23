@@ -21,7 +21,6 @@ class UserSettingBloc {
       return false;
     } else {
       OpenDialog.displayDialog("Message", context, "Edit Info Success !!!");
-
       userSettingStream.sink.add("Done");
       return true;
     }

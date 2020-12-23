@@ -285,6 +285,7 @@ class _UserSettingState extends State<UserSettingPage> {
     actor.phone = phone;
     actor.actorDes = actorDes;
     bool check = false;
+    actor.isDelete = false;
     setBloc.updateUser(context,actor).then((value) => check = value);
     print("check " + check.toString());
     return check;

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_task_planner_app/bloc/getallactor_bloc.dart';
 import 'package:flutter_task_planner_app/screens/createactor.dart';
+import 'package:flutter_task_planner_app/screens/editactor.dart';
 import 'package:flutter_task_planner_app/theme/colors/light_colors.dart';
 import 'package:flutter_task_planner_app/widgets/actor_column.dart';
 import 'package:flutter_task_planner_app/widgets/top_container.dart';
@@ -200,7 +201,7 @@ class _ManageActorTaskState extends State<ManageActorTaskPage> {
                                       title: data.actorName,
                                       subtitle: data.actorDes,
                                       onTap: () {
-                                        print("tapped");
+                                        Navigator.of(context).push(MaterialPageRoute(builder: (context)=> EditActorPage(data))).then((value) => bloc.getAllActorFunction());
                                       },
                                     ));
                                   });

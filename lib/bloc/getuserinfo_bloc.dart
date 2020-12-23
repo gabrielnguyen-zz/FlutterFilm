@@ -18,7 +18,6 @@ class GetUserInfoBloc {
       var result = await getUserInfo.getUserInfo(accountID);
       print(result);
       if (result == null) {
-        
         userInfoStream.sink.add("Error");
         return false;
       } else {

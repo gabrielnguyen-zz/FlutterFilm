@@ -92,24 +92,7 @@ class _CreateScenePageState extends State<CreateScenePage> {
                 padding: EdgeInsets.symmetric(horizontal: 20),
                 child: Column(
                   children: <Widget>[
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Expanded(
-                            child: MyTextField(
-                          label: 'Scene Rec',
-                          keyboard: TextInputType.number,
-                          controller: sceneRecController,
-                        )),
-                        SizedBox(width: 40),
-                        Expanded(
-                          child: MyTextField(
-                            label: 'Scene Location',
-                            controller: sceneLocation,
-                          ),
-                        ),
-                      ],
-                    ),
+                    
                     SizedBox(height: 20),
                     MyTextField(
                       label: 'Description',
@@ -237,10 +220,8 @@ class _CreateScenePageState extends State<CreateScenePage> {
                   print("Create");
                   String name = sceneNameController.text;
                   String des = sceneDesController.text;
-                  int sceneRec = int.parse(sceneRecController.text);
-                  String sceneLoc = sceneLocation.text;
-                  onCreateSceneClick(context, name, des, sceneRec, timeStart,
-                      timeStop, sceneLoc, false, chooseFile);
+                  onCreateSceneClick(context, name, des, timeStart,
+                      timeStop, chooseFile);
                 },
                 child: Container(
                   height: 80,
@@ -275,17 +256,14 @@ class _CreateScenePageState extends State<CreateScenePage> {
     );
   }
 
-  void onCreateSceneClick(context, name, des, rec, timeStart, timeStop,
-      sceneloc, bool isDelete, ChooseFile chooseFile) {
+  void onCreateSceneClick(context, name, des, timeStart, timeStop,
+       ChooseFile chooseFile) {
     Scene scene = Scene();
     scene.sceneName = name;
     scene.sceneDes = des;
     scene.sceneTimeStart = timeStart;
     scene.scenetTimeStop = timeStop;
-    scene.sceneLoc = sceneloc;
-    scene.sceneRec = rec;
-    scene.isDelete = isDelete;
     print(chooseFile.filename);
-    bloc.createTool(context, scene, chooseFile);
+    bloc.createScene(context, scene, chooseFile);
   }
 }

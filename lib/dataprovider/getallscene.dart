@@ -14,28 +14,22 @@ class GetAllScene {
     if (response.statusCode == 200) {
       final dataList = json.decode(response.body);
       for (var data in dataList) {
-        var isDelete = data['isDelete'].toString();
-        if (isDelete == 'false') {
-          var sceneName = data['sceneName'].toString();
-          var sceneId = data['sceneId'].toString();
-          var sceneDes = data['sceneDes'];
-          var sceneLoc = data['sceneLoc'];
-          var sceneTimeStart = data['sceneTimeStart'].split("T")[0];
-          var sceneTimeStop = data['sceneTimeStop'].split("T")[0];
-          var sceneRec = data['sceneRec'].toString();
-          var sceneActors = data['sceneActors'];
+          var sceneName = data['title'].toString();
+          var sceneId = data['id'].toString();
+          var sceneDes = data['description'];
+          var sceneTimeStart = data['dateBegin'].split("T")[0];
+          var sceneTimeStop = data['dateEnd'].split("T")[0];
+          var sceneActors = data['script'];
           Scene scene = Scene(
             sceneId: int.parse(sceneId),
             sceneName: sceneName,
             sceneDes: sceneDes,
-            sceneLoc: sceneLoc,
             sceneTimeStart: sceneTimeStart,
             scenetTimeStop: sceneTimeStop,
-            sceneRec: int.parse(sceneRec),
             sceneActors: sceneActors
           );
           list.add(scene);
-        }
+        
       }
       return list;
     }

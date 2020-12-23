@@ -210,6 +210,7 @@ return Row(
                                       subtitle: data.sceneDes,
                                       onTap: () {
                                         print("tapped");
+                                        print(data.sceneActor);
                                         Navigator.of(context)
                                             .push(
                                               MaterialPageRoute(

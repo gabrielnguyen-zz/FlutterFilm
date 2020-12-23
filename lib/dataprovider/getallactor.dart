@@ -14,32 +14,22 @@ class GetAllActor {
     if (response.statusCode == 200) {
       final dataList = json.decode(response.body);
       for (var data in dataList) {
-        var isDelete = data['isDelete'].toString();
-        if (isDelete == 'false') {
-          var actorName = data['actorName'].toString();
-          var actorID = data['actorId'].toString();
+          var actorName = data['fullname'].toString();
+          var actorID = data['username'].toString();
           var image = data['image'];
           var phone = data['phone'];
-          var actorDes = data['actorDes'];
+          var actorDes = data['description'];
           var email = data['email'];
-          var createdTime = data['createdTime'];
-          var createdBy = data['createdBy'];
-          var updatedTime = data['updatedTime'];
-          var updatedBy = data['updatedBy'];
           Actor actor = new Actor(
             actorId: actorID,
             actorName: actorName,
             actorDes: actorDes,
             image: image,
-            phone: phone,
-            email: email,
-            createdTime: createdTime,
-            createdBy: createdBy,
-            updatedBy: updatedBy,
-            updatedTime: updatedTime,
+            phone: phone.toString(),
+            email: email
           );
           list.add(actor);
-        }
+        
       }
       return list;
     }

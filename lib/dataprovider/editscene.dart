@@ -11,15 +11,12 @@ class EditScene{
     String url = apiUrl + "/api/Scenes/" + scene.sceneId.toString();
     print(url);
     var body = jsonEncode({
-      'sceneId': scene.sceneId,
-      'sceneName': scene.sceneName,
-      'sceneLoc': scene.sceneLoc,
-      'sceneDes': scene.sceneDes,
-      'sceneRec': scene.sceneRec,
-      'sceneTimeStart': scene.sceneTimeStart,
-      'sceneTimeStop' : scene.scenetTimeStop,
-      'isDelete': scene.isDelete,
-      'sceneActors' : scene.sceneActors
+      'id': scene.sceneId,
+      'title': scene.sceneName,
+      'description': scene.sceneDes,
+      'dateBegin': scene.sceneTimeStart,
+      'dateEnd' : scene.scenetTimeStop,
+      'scripts' : scene.sceneActors
 });
     print(body);
     var response =  await http.put(Uri.encodeFull(url), body: body, headers: {"Content-Type": "application/json"});

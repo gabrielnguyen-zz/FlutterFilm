@@ -6,15 +6,16 @@ class LoginValidations{
 
   Future<String> checkLogin (String accountID, String password) async {
     print("validation alo");
-    String url = apiUrl + "/api/login";
+    String url = apiUrl + "/api/Accounts/login";
     print("url " + url);
-    var body = jsonEncode({'accountID': accountID , 'password' : password});
+    var body = jsonEncode({'username': accountID , 'password' : password});
     print(body);
     var response =  await http.post(Uri.encodeFull(url), body: body, headers: {"Content-Type": "application/json"});
     print(response.body);
+    print(response.statusCode);
     if(response.statusCode ==200 ){
       final data = json.decode(response.body);
-      return data['role'];
+      return data['role'];  
     }else{
       return null;
     }

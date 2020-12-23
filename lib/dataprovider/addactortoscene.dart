@@ -10,7 +10,7 @@ class AddActorScene{
     print(url);
     var body = jsonEncode({
       'sceneId': sceneId,
-      'actorId': actorId,
+      'actorUsername': actorId,
       'character': character,
       'status': status,
       'actFrom': actFrom,

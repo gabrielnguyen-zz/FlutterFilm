@@ -135,7 +135,7 @@ class _AddActorToScenePageState extends State<AddActorToScenePage> {
                                               value: e,
                                               child: Row(
                                                 children: <Widget>[
-                                                  Text(e.toString(),style: TextStyle(color: Colors.white),),
+                                                  Text(e.split(".")[1].toString(),style: TextStyle(color: Colors.white),),
                                                 ],
                                               ));
                                         }).toList(),
@@ -154,7 +154,7 @@ class _AddActorToScenePageState extends State<AddActorToScenePage> {
                                 })
                           ],
                         )),
-                        SizedBox(width: 10),
+                        SizedBox(width: 40),
                         Container(
                           child: Column(
                             children: <Widget>[
